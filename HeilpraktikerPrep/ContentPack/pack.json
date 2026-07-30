@@ -1,0 +1,975 @@
+{
+  "examName": "Heilpraktikerprüfung (Überprüfung nach dem HeilprG)",
+  "examShortName": "HP",
+  "tagline": "Bestehe die schriftliche Überprüfung nach dem Heilpraktikergesetz.",
+  "language": "de",
+  "accentHex": "#1B9AF7",
+  "subjects": [
+    {
+      "id": "anatomie",
+      "name": "Anatomie & Physiologie",
+      "sfSymbol": "figure.stand"
+    },
+    {
+      "id": "berufsrecht",
+      "name": "Berufs- & Gesetzeskunde",
+      "sfSymbol": "book.closed.fill"
+    },
+    {
+      "id": "diagnostik",
+      "name": "Diagnostik & Untersuchung",
+      "sfSymbol": "waveform.path.ecg"
+    },
+    {
+      "id": "hygiene",
+      "name": "Hygiene",
+      "sfSymbol": "drop.fill"
+    },
+    {
+      "id": "infektionsschutz",
+      "name": "Infektionskrankheiten & IfSG",
+      "sfSymbol": "cross.case.fill"
+    },
+    {
+      "id": "innere-medizin",
+      "name": "Innere Medizin",
+      "sfSymbol": "heart.fill"
+    },
+    {
+      "id": "neurologie",
+      "name": "Neurologie",
+      "sfSymbol": "brain.head.profile"
+    },
+    {
+      "id": "notfallmedizin",
+      "name": "Notfallmedizin & Erste Hilfe",
+      "sfSymbol": "cross.fill"
+    },
+    {
+      "id": "pharmakologie",
+      "name": "Pharmakologie",
+      "sfSymbol": "pills.fill"
+    },
+    {
+      "id": "psychiatrie",
+      "name": "Psychiatrie",
+      "sfSymbol": "brain"
+    }
+  ],
+  "mockExam": {
+    "questionCount": 60,
+    "minutes": 120,
+    "passPercent": 75
+  },
+  "dailyQuestionsCount": 10,
+  "quickQuizCount": 10,
+  "freeQuickQuizzes": 3,
+  "freeDailyQuizzes": 3,
+  "products": {
+    "weekly": "app.hermesdigital.hp.weekly",
+    "monthly": "app.hermesdigital.hp.monthly"
+  },
+  "appStoreUrl": null,
+  "legal": {
+    "privacyUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/privacy.html",
+    "termsUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/terms.html",
+    "supportEmail": "support@hermesdigital.app",
+    "supportUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/support.html"
+  },
+  "achievements": [
+    {
+      "id": "first-quiz",
+      "title": "Erste Schritte",
+      "detail": "Schließe dein erstes Quiz ab",
+      "icon": "flag.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 1
+      }
+    },
+    {
+      "id": "quizzes-10",
+      "title": "Jetzt wird's ernst",
+      "detail": "Schließe 10 Quizze ab",
+      "icon": "books.vertical.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 10
+      }
+    },
+    {
+      "id": "quizzes-25",
+      "title": "Vierteljahrhundert",
+      "detail": "Übe 25 Quizze",
+      "icon": "rectangle.stack.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 25
+      }
+    },
+    {
+      "id": "quizzes-50",
+      "title": "Quiz-Veteran",
+      "detail": "Schließe 50 Quizze ab",
+      "icon": "trophy.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 50
+      }
+    },
+    {
+      "id": "quizzes-100",
+      "title": "Zenturio",
+      "detail": "Schließe 100 Quizze ab",
+      "icon": "rosette",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 100
+      }
+    },
+    {
+      "id": "quizzes-250",
+      "title": "Quiz-Maschine",
+      "detail": "Übe 250 Quizze",
+      "icon": "gearshape.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 250
+      }
+    },
+    {
+      "id": "quizzes-500",
+      "title": "Quiz-Meister",
+      "detail": "Übe 500 Quizze",
+      "icon": "flag.checkered",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "totalQuizzes",
+        "value": 500
+      }
+    },
+    {
+      "id": "answered-100",
+      "title": "Aufgewärmt",
+      "detail": "Beantworte 100 Fragen",
+      "icon": "square.stack.3d.up.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 100
+      }
+    },
+    {
+      "id": "answered-250",
+      "title": "Es wird heiß",
+      "detail": "Beantworte 250 Fragen",
+      "icon": "square.stack.3d.up.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 250
+      }
+    },
+    {
+      "id": "answered-500",
+      "title": "Fragenknacker",
+      "detail": "Beantworte 500 Fragen",
+      "icon": "square.stack.3d.up.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 500
+      }
+    },
+    {
+      "id": "answered-1000",
+      "title": "Nicht zu bremsen",
+      "detail": "Beantworte 1.000 Fragen",
+      "icon": "bolt.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 1000
+      }
+    },
+    {
+      "id": "answered-2500",
+      "title": "Marathonkopf",
+      "detail": "Beantworte 2.500 Fragen",
+      "icon": "brain.head.profile",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 2500
+      }
+    },
+    {
+      "id": "answered-5000",
+      "title": "Fragen-Legende",
+      "detail": "Beantworte 5.000 Fragen",
+      "icon": "infinity",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 5000
+      }
+    },
+    {
+      "id": "answered-10000",
+      "title": "Club der Zehntausend",
+      "detail": "Beantworte 10.000 Fragen",
+      "icon": "10.square.fill",
+      "tint": "#B5202A",
+      "criterion": {
+        "type": "totalAnswered",
+        "value": 10000
+      }
+    },
+    {
+      "id": "correct-100",
+      "title": "Volltreffer",
+      "detail": "Beantworte 100 Fragen richtig",
+      "icon": "checkmark.circle.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "totalCorrect",
+        "value": 100
+      }
+    },
+    {
+      "id": "correct-500",
+      "title": "Meisterschütze",
+      "detail": "Beantworte 500 Fragen richtig",
+      "icon": "checkmark.shield.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalCorrect",
+        "value": 500
+      }
+    },
+    {
+      "id": "correct-1000",
+      "title": "Adlerauge",
+      "detail": "Beantworte 1.000 Fragen richtig",
+      "icon": "scope",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "totalCorrect",
+        "value": 1000
+      }
+    },
+    {
+      "id": "correct-2500",
+      "title": "Ins Schwarze",
+      "detail": "Beantworte 2.500 Fragen richtig",
+      "icon": "trophy.circle.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "totalCorrect",
+        "value": 2500
+      }
+    },
+    {
+      "id": "correct-5000",
+      "title": "Legende der Präzision",
+      "detail": "Beantworte 5.000 Fragen richtig",
+      "icon": "medal.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "totalCorrect",
+        "value": 5000
+      }
+    },
+    {
+      "id": "accuracy-80",
+      "title": "Guter Schütze",
+      "detail": "Halte insgesamt 80 % Trefferquote",
+      "icon": "dot.scope",
+      "tint": "#23A566",
+      "criterion": {
+        "type": "overallAccuracy",
+        "value": 80
+      }
+    },
+    {
+      "id": "accuracy-90",
+      "title": "Scharfschütze",
+      "detail": "Halte insgesamt 90 % Trefferquote",
+      "icon": "scope",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "overallAccuracy",
+        "value": 90
+      }
+    },
+    {
+      "id": "accuracy-95",
+      "title": "Tödlich genau",
+      "detail": "Halte insgesamt 95 % Trefferquote",
+      "icon": "target",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "overallAccuracy",
+        "value": 95
+      }
+    },
+    {
+      "id": "first-perfect",
+      "title": "Makellos",
+      "detail": "Schaffe ein Quiz ohne einen einzigen Fehler",
+      "icon": "checkmark.seal.fill",
+      "tint": "#23A566",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 1
+      }
+    },
+    {
+      "id": "perfect-5",
+      "title": "Punktgenau",
+      "detail": "Schaffe 5 Quizze ohne Fehler",
+      "icon": "checkmark.seal.fill",
+      "tint": "#23A566",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 5
+      }
+    },
+    {
+      "id": "perfect-10",
+      "title": "Perfektionist",
+      "detail": "Schaffe 10 Quizze ohne Fehler",
+      "icon": "crown.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 10
+      }
+    },
+    {
+      "id": "perfect-25",
+      "title": "Präzisionsschütze",
+      "detail": "Schaffe 25 Quizze ohne Fehler",
+      "icon": "target",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 25
+      }
+    },
+    {
+      "id": "perfect-50",
+      "title": "Ass-Sammler",
+      "detail": "Schaffe 50 Quizze ohne Fehler",
+      "icon": "crown.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 50
+      }
+    },
+    {
+      "id": "perfect-100",
+      "title": "Lebende Legende",
+      "detail": "Schaffe 100 Quizze ohne Fehler",
+      "icon": "star.circle.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "perfectQuizzes",
+        "value": 100
+      }
+    },
+    {
+      "id": "pstreak-3",
+      "title": "Heiße Serie",
+      "detail": "3 fehlerfreie Quizze in Folge",
+      "icon": "flame.fill",
+      "tint": "#F2789F",
+      "criterion": {
+        "type": "perfectStreak",
+        "value": 3
+      }
+    },
+    {
+      "id": "pstreak-5",
+      "title": "Makellose Serie",
+      "detail": "5 fehlerfreie Quizze in Folge",
+      "icon": "flame.fill",
+      "tint": "#FF6B3D",
+      "criterion": {
+        "type": "perfectStreak",
+        "value": 5
+      }
+    },
+    {
+      "id": "pstreak-10",
+      "title": "Unantastbar",
+      "detail": "10 fehlerfreie Quizze in Folge",
+      "icon": "flame.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "perfectStreak",
+        "value": 10
+      }
+    },
+    {
+      "id": "streak-3",
+      "title": "Im Lauf",
+      "detail": "Übe an 3 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#F2789F",
+      "criterion": {
+        "type": "streak",
+        "value": 3
+      }
+    },
+    {
+      "id": "streak-7",
+      "title": "Starke Woche",
+      "detail": "Übe an 7 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#F25C54",
+      "criterion": {
+        "type": "streak",
+        "value": 7
+      }
+    },
+    {
+      "id": "streak-14",
+      "title": "Zwei Wochen Fokus",
+      "detail": "Übe an 14 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#FF6B3D",
+      "criterion": {
+        "type": "streak",
+        "value": 14
+      }
+    },
+    {
+      "id": "streak-21",
+      "title": "Drei-Wochen-Flamme",
+      "detail": "Übe an 21 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#F25C54",
+      "criterion": {
+        "type": "streak",
+        "value": 21
+      }
+    },
+    {
+      "id": "streak-30",
+      "title": "Eiserne Gewohnheit",
+      "detail": "Übe an 30 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "streak",
+        "value": 30
+      }
+    },
+    {
+      "id": "streak-50",
+      "title": "Inferno",
+      "detail": "Übe an 50 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#B5202A",
+      "criterion": {
+        "type": "streak",
+        "value": 50
+      }
+    },
+    {
+      "id": "streak-100",
+      "title": "Unzerbrechlich",
+      "detail": "Übe an 100 Tagen in Folge",
+      "icon": "flame.fill",
+      "tint": "#B5202A",
+      "criterion": {
+        "type": "streak",
+        "value": 100
+      }
+    },
+    {
+      "id": "streak-365",
+      "title": "Jahr aus Feuer",
+      "detail": "Übe an 365 Tagen in Folge",
+      "icon": "flame.circle.fill",
+      "tint": "#B5202A",
+      "criterion": {
+        "type": "streak",
+        "value": 365
+      }
+    },
+    {
+      "id": "days-5",
+      "title": "Stammgast",
+      "detail": "Übe an 5 verschiedenen Tagen",
+      "icon": "calendar",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 5
+      }
+    },
+    {
+      "id": "days-15",
+      "title": "Gewohnheitstier",
+      "detail": "Übe an 15 verschiedenen Tagen",
+      "icon": "calendar.day.timeline.left",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 15
+      }
+    },
+    {
+      "id": "days-30",
+      "title": "Fest entschlossen",
+      "detail": "Übe an 30 verschiedenen Tagen",
+      "icon": "calendar.badge.checkmark",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 30
+      }
+    },
+    {
+      "id": "days-60",
+      "title": "Fleißig",
+      "detail": "Übe an 60 verschiedenen Tagen",
+      "icon": "calendar.badge.checkmark",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 60
+      }
+    },
+    {
+      "id": "days-100",
+      "title": "Mit Leib und Seele",
+      "detail": "Übe an 100 verschiedenen Tagen",
+      "icon": "calendar.circle.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 100
+      }
+    },
+    {
+      "id": "days-200",
+      "title": "Urgestein",
+      "detail": "Übe an 200 verschiedenen Tagen",
+      "icon": "calendar.circle.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "daysPracticed",
+        "value": 200
+      }
+    },
+    {
+      "id": "day-25",
+      "title": "Kurze Einheit",
+      "detail": "Beantworte 25 Fragen an einem Tag",
+      "icon": "bolt.circle.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "dayAnswers",
+        "value": 25
+      }
+    },
+    {
+      "id": "day-50",
+      "title": "Malocher",
+      "detail": "Beantworte 50 Fragen an einem Tag",
+      "icon": "bolt.horizontal.fill",
+      "tint": "#FF6B3D",
+      "criterion": {
+        "type": "dayAnswers",
+        "value": 50
+      }
+    },
+    {
+      "id": "day-100",
+      "title": "Übererfüllt",
+      "detail": "Beantworte 100 Fragen an einem Tag",
+      "icon": "flame.circle.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "dayAnswers",
+        "value": 100
+      }
+    },
+    {
+      "id": "day-200",
+      "title": "Eiserner Wille",
+      "detail": "Beantworte 200 Fragen an einem Tag",
+      "icon": "flame.fill",
+      "tint": "#B5202A",
+      "criterion": {
+        "type": "dayAnswers",
+        "value": 200
+      }
+    },
+    {
+      "id": "subject-master",
+      "title": "Fachmeister",
+      "detail": "Erreiche 90 % in einem Fach",
+      "icon": "star.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "subjectMastery",
+        "value": 90
+      }
+    },
+    {
+      "id": "subject-perfect",
+      "title": "Themen-Titan",
+      "detail": "Erreiche 100 % in einem Fach",
+      "icon": "star.circle.fill",
+      "tint": "#F2C12E",
+      "criterion": {
+        "type": "subjectMastery",
+        "value": 100
+      }
+    },
+    {
+      "id": "subjects-1",
+      "title": "Spezialist",
+      "detail": "Beherrsche 1 Fach mit 90 %+",
+      "icon": "star.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "subjectsMastered",
+        "value": 1
+      }
+    },
+    {
+      "id": "subjects-3",
+      "title": "Dreifach stark",
+      "detail": "Beherrsche 3 Fächer mit 90 %+",
+      "icon": "star.square.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "subjectsMastered",
+        "value": 3
+      }
+    },
+    {
+      "id": "all-subjects",
+      "title": "Rundum dabei",
+      "detail": "Übe jedes Fach",
+      "icon": "circle.grid.2x2.fill",
+      "tint": "#2FB8C5",
+      "criterion": {
+        "type": "allSubjects"
+      }
+    },
+    {
+      "id": "subjects-all",
+      "title": "Meister aller Fächer",
+      "detail": "Beherrsche alle Fächer mit 90 %+",
+      "icon": "crown.fill",
+      "tint": "#F2C12E",
+      "criterion": {
+        "type": "allSubjectsMastered"
+      }
+    },
+    {
+      "id": "mock-pass",
+      "title": "Prüfungsreif",
+      "detail": "Bestehe eine Probeprüfung",
+      "icon": "graduationcap.fill",
+      "tint": "#23A566",
+      "criterion": {
+        "type": "mockPassed"
+      }
+    },
+    {
+      "id": "mock-90",
+      "title": "Klassenbester",
+      "detail": "Erreiche 90 % in einer Probeprüfung",
+      "icon": "graduationcap.circle.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "mockScore",
+        "value": 90
+      }
+    },
+    {
+      "id": "mock-100",
+      "title": "Bestnote",
+      "detail": "Schaffe eine Probeprüfung mit 100 %",
+      "icon": "seal.fill",
+      "tint": "#23A566",
+      "criterion": {
+        "type": "mockScore",
+        "value": 100
+      }
+    },
+    {
+      "id": "collect-5",
+      "title": "Sammler",
+      "detail": "Speichere 5 Fragen",
+      "icon": "bookmark.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "collected",
+        "value": 5
+      }
+    },
+    {
+      "id": "collect-10",
+      "title": "Hamsterer",
+      "detail": "Speichere 10 Fragen",
+      "icon": "bookmark.square.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "collected",
+        "value": 10
+      }
+    },
+    {
+      "id": "collect-25",
+      "title": "Kurator",
+      "detail": "Speichere 25 Fragen",
+      "icon": "bookmark.circle.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "collected",
+        "value": 25
+      }
+    },
+    {
+      "id": "collect-50",
+      "title": "Archivar",
+      "detail": "Speichere 50 Fragen",
+      "icon": "books.vertical.circle.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "collected",
+        "value": 50
+      }
+    },
+    {
+      "id": "collect-100",
+      "title": "Bibliothekar",
+      "detail": "Speichere 100 Fragen",
+      "icon": "books.vertical.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "collected",
+        "value": 100
+      }
+    },
+    {
+      "id": "early-bird",
+      "title": "Frühaufsteher",
+      "detail": "Übe vor 7 Uhr",
+      "icon": "sunrise.fill",
+      "tint": "#F2C12E",
+      "criterion": {
+        "type": "earlyBird"
+      }
+    },
+    {
+      "id": "early-5",
+      "title": "Morgenpatrouille",
+      "detail": "Übe 5-mal vor 7 Uhr",
+      "icon": "sunrise.fill",
+      "tint": "#F2C12E",
+      "criterion": {
+        "type": "earlyBird",
+        "value": 5
+      }
+    },
+    {
+      "id": "early-10",
+      "title": "Der frühe Hahn",
+      "detail": "Übe 10-mal vor 7 Uhr",
+      "icon": "sun.horizon.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "earlyBird",
+        "value": 10
+      }
+    },
+    {
+      "id": "night-owl",
+      "title": "Nachteule",
+      "detail": "Übe nach 22 Uhr",
+      "icon": "moon.stars.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "nightOwl"
+      }
+    },
+    {
+      "id": "night-5",
+      "title": "Nachtschwärmer",
+      "detail": "Übe 5-mal nach 22 Uhr",
+      "icon": "moon.stars.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "nightOwl",
+        "value": 5
+      }
+    },
+    {
+      "id": "night-10",
+      "title": "Nachtschicht",
+      "detail": "Übe 10-mal nach 22 Uhr",
+      "icon": "moon.zzz.fill",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "nightOwl",
+        "value": 10
+      }
+    },
+    {
+      "id": "weekend-1",
+      "title": "Wochenendkrieger",
+      "detail": "Übe an einem Wochenende",
+      "icon": "calendar.badge.clock",
+      "tint": "#2FB8C5",
+      "criterion": {
+        "type": "weekendWarrior"
+      }
+    },
+    {
+      "id": "weekend-8",
+      "title": "Wochenend-Stammgast",
+      "detail": "Übe 8-mal am Wochenende",
+      "icon": "calendar.badge.plus",
+      "tint": "#2FB8C5",
+      "criterion": {
+        "type": "weekendWarrior",
+        "value": 8
+      }
+    },
+    {
+      "id": "weekend-20",
+      "title": "Wochenend-Held",
+      "detail": "Übe 20-mal am Wochenende",
+      "icon": "calendar.badge.clock",
+      "tint": "#2FB8C5",
+      "criterion": {
+        "type": "weekendWarrior",
+        "value": 20
+      }
+    },
+    {
+      "id": "comeback",
+      "title": "Rückkehrer",
+      "detail": "Komm nach 7 Tagen Pause zurück",
+      "icon": "arrow.uturn.left.circle.fill",
+      "tint": "#F25C54",
+      "criterion": {
+        "type": "comeback"
+      }
+    },
+    {
+      "id": "comeback-3",
+      "title": "Hartnäckig",
+      "detail": "Komm aus 3 Pausen zurück",
+      "icon": "arrow.uturn.left.circle.fill",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "comeback",
+        "value": 3
+      }
+    },
+    {
+      "id": "speedster",
+      "title": "Tempoteufel",
+      "detail": "Beende ein Quiz mit 10+ Fragen im Eiltempo",
+      "icon": "hare.fill",
+      "tint": "#FF6B3D",
+      "criterion": {
+        "type": "speedster"
+      }
+    },
+    {
+      "id": "speed-5",
+      "title": "Schnellschuss",
+      "detail": "Beende 5 Quizze im Eiltempo",
+      "icon": "hare.fill",
+      "tint": "#FF6B3D",
+      "criterion": {
+        "type": "speedster",
+        "value": 5
+      }
+    },
+    {
+      "id": "speed-10",
+      "title": "Blitzrunde",
+      "detail": "Beende 10 Quizze im Eiltempo",
+      "icon": "bolt.fill",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "speedster",
+        "value": 10
+      }
+    },
+    {
+      "id": "explorer",
+      "title": "Entdecker",
+      "detail": "Probiere 5 verschiedene Quiz-Modi aus",
+      "icon": "map.fill",
+      "tint": "#2FB8C5",
+      "criterion": {
+        "type": "modesExplored",
+        "value": 5
+      }
+    },
+    {
+      "id": "time-60",
+      "title": "Stunde der Kraft",
+      "detail": "Übe insgesamt 60 Minuten",
+      "icon": "clock.fill",
+      "tint": "#4F8EF7",
+      "criterion": {
+        "type": "minutesPracticed",
+        "value": 60
+      }
+    },
+    {
+      "id": "time-300",
+      "title": "Gut investiert",
+      "detail": "Übe insgesamt 5 Stunden",
+      "icon": "hourglass",
+      "tint": "#8E6FF7",
+      "criterion": {
+        "type": "minutesPracticed",
+        "value": 300
+      }
+    },
+    {
+      "id": "time-600",
+      "title": "Gelehrter",
+      "detail": "Übe insgesamt 10 Stunden",
+      "icon": "hourglass.bottomhalf.filled",
+      "tint": "#F2A33C",
+      "criterion": {
+        "type": "minutesPracticed",
+        "value": 600
+      }
+    },
+    {
+      "id": "time-1500",
+      "title": "Professor",
+      "detail": "Übe insgesamt 25 Stunden",
+      "icon": "hourglass.tophalf.filled",
+      "tint": "#E03B3B",
+      "criterion": {
+        "type": "minutesPracticed",
+        "value": 1500
+      }
+    }
+  ]
+}

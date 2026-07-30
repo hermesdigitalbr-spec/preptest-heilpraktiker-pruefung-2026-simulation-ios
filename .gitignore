@@ -1,0 +1,27 @@
+build/
+.shotbuild/
+DerivedData/
+*.xcodeproj/
+.build/
+*.ipa
+*.dSYM.zip
+.DS_Store
+fastlane/report.xml
+fastlane/test_output/
+*.mobileprovision
+
+# --- backup hygiene ---
+node_modules/
+.next/
+DerivedData/
+build/
+*.ipa
+*.mobileprovision
+*.p8
+*.p12
+.env
+.env.*
+.DS_Store
+xcuserdata/
+*.xcuserstate
+.build/

@@ -1,0 +1,7 @@
+REPLACE — Vollständige App-Store-Beschreibung.
+
+Schreibe hier den langen Store-Text für diese Nische. Nutzenorientiert bleiben
+und konkret auf die Prüfung eingehen. Zum Schluss der Standard-Rechtsblock:
+
+Nutzungsbedingungen: https://REPLACE-ME.github.io/legal/terms.html
+Datenschutzrichtlinie: https://REPLACE-ME.github.io/legal/privacy.html

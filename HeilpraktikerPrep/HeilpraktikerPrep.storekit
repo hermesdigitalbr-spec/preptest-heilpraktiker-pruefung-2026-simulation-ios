@@ -1,0 +1,82 @@
+{
+  "identifier": "F0E1D2C3-0000-4000-9000-0AB1C2D3E4F5",
+  "nonRenewingSubscriptions": [],
+  "products": [],
+  "settings": {
+    "_failTransactionsEnabled": false,
+    "_locale": "de_DE",
+    "_storefront": "DEU",
+    "_storeKitErrors": [
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Load Products"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Purchase"
+      }
+    ]
+  },
+  "subscriptionGroups": [
+    {
+      "id": "21684210",
+      "localizations": [],
+      "name": "Prep Kit Text Pro",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "6.99",
+          "familyShareable": false,
+          "groupNumber": 2,
+          "internalID": "21684211",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "Full access, billed weekly",
+              "displayName": "Weekly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "app.hermesdigital.hp.weekly",
+          "recurringSubscriptionPeriod": "P1W",
+          "referenceName": "Prep Kit Text Pro Weekly",
+          "subscriptionGroupID": "21684210",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "17.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "21684212",
+          "introductoryOffer": {
+            "internalID": "21684213",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D",
+            "numberOfPeriods": 1
+          },
+          "localizations": [
+            {
+              "description": "Full access with 3-day free trial",
+              "displayName": "Monthly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "app.hermesdigital.hp.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Prep Kit Text Pro Monthly",
+          "subscriptionGroupID": "21684210",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}

@@ -1,0 +1,545 @@
+default_platform(:ios)
+
+# ─── Constants ────────────────────────────────────────────────────────────────
+APP_IDENTIFIER = "app.hermesdigital.hp"
+APP_NAME       = "REPLACE — App Store name (≤30 chars)"
+TEAM_ID        = "RQFN2YXCJ5"
+SCHEME         = "HeilpraktikerPrep"
+PROJECT        = "HeilpraktikerPrep.xcodeproj"
+IPA_PATH       = "build/HeilpraktikerPrep.ipa"
+
+ASC_KEY_ID    = "X3F8BNHJNP"
+ASC_ISSUER_ID = "c0f7d33a-f5f3-4597-b38c-040ba8467b90"
+ASC_KEY_PATH  = File.expand_path("~/.fastlane/credentials/AuthKey_X3F8BNHJNP.p8")
+ASC_BASE      = "https://api.appstoreconnect.apple.com"
+
+# ─── Helpers ──────────────────────────────────────────────────────────────────
+require "jwt"
+require "net/http"
+require "json"
+require "openssl"
+
+# fastlane's built-in API key object — used by produce/deliver/pilot.
+def asc_api_key
+  app_store_connect_api_key(
+    key_id:       ASC_KEY_ID,
+    issuer_id:    ASC_ISSUER_ID,
+    key_filepath: ASC_KEY_PATH,
+    duration:     1200,
+    in_house:     false
+  )
+end
+
+# Raw JWT + REST — kept for ensure_bundle_id which needs capabilities that
+# the spaceship layer doesn't expose cleanly.
+def asc_jwt_token
+  key = OpenSSL::PKey::EC.new(File.read(ASC_KEY_PATH))
+  now = Time.now.to_i
+  JWT.encode(
+    { iss: ASC_ISSUER_ID, iat: now, exp: now + 1200, aud: "appstoreconnect-v1" },
+    key, "ES256", { kid: ASC_KEY_ID, typ: "JWT" }
+  )
+end
+
+def asc_request(method, path, token, body = nil)
+  uri = URI("#{ASC_BASE}#{path}")
+  klass = { post: Net::HTTP::Post, patch: Net::HTTP::Patch,
+            delete: Net::HTTP::Delete, get: Net::HTTP::Get }[method] || Net::HTTP::Get
+  req = klass.new(uri)
+  req["Authorization"] = "Bearer #{token}"
+  req["Content-Type"]  = "application/json"
+  req.body = body.to_json if body
+  res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
+  parsed = res.body.to_s.empty? ? {} : JSON.parse(res.body)
+  unless res.code.to_i.between?(200, 299)
+    UI.user_error!("ASC #{method.upcase} #{path} → #{res.code}: #{parsed.dig("errors", 0, "detail") || res.body}")
+  end
+  parsed
+end
+
+# ─── Lanes ────────────────────────────────────────────────────────────────────
+platform :ios do
+
+  # ── STEP 1: Bundle ID + capabilities ──────────────────────────────────────
+  # Run once before creating the app listing.
+  # Idempotent — safe to re-run.
+  desc "Ensure Bundle ID exists with Sign in with Apple + IAP capabilities"
+  lane :ensure_bundle_id do
+    token = asc_jwt_token
+
+    # filter[identifier] is a PARTIAL match on Apple's side (it returns
+    # .debug/.debug.widget too) — so select the EXACT identifier client-side.
+    found      = asc_request(:get, "/v1/bundleIds?filter[identifier]=#{APP_IDENTIFIER}&limit=200", token)
+    bid_record = (found["data"] || []).find { |b| b.dig("attributes", "identifier") == APP_IDENTIFIER }
+
+    if bid_record.nil?
+      UI.message("Creating Bundle ID #{APP_IDENTIFIER}…")
+      created    = asc_request(:post, "/v1/bundleIds", token, {
+        data: {
+          type: "bundleIds",
+          attributes: {
+            name:       APP_NAME.gsub(/[^0-9A-Za-z ]/, ""),
+            identifier: APP_IDENTIFIER,
+            platform:   "UNIVERSAL",
+            seedId:     TEAM_ID
+          }
+        }
+      })
+      bid_record = created["data"]
+      UI.success("Bundle ID created (#{bid_record["id"]}).")
+    else
+      UI.success("Bundle ID #{APP_IDENTIFIER} already exists (#{bid_record["id"]}).")
+    end
+
+    bid      = bid_record["id"]
+    caps     = asc_request(:get, "/v1/bundleIds/#{bid}/bundleIdCapabilities", token)
+    existing = (caps["data"] || []).map { |c| c.dig("attributes", "capabilityType") }
+
+    [
+      ["Sign in with Apple", "APPLE_ID_AUTH",  [{ key: "APPLE_ID_AUTH_APP_CONSENT", options: [{ key: "PRIMARY_APP_CONSENT" }] }]],
+      ["In-App Purchase",    "IN_APP_PURCHASE", nil]
+    ].each do |label, type, settings|
+      if existing.include?(type)
+        UI.message("  #{label}: already enabled")
+      else
+        attrs = { capabilityType: type }
+        attrs[:settings] = settings if settings
+        asc_request(:post, "/v1/bundleIdCapabilities", token, {
+          data: {
+            type: "bundleIdCapabilities",
+            attributes: attrs,
+            relationships: { bundleId: { data: { type: "bundleIds", id: bid } } }
+          }
+        })
+        UI.success("  #{label}: enabled")
+      end
+    end
+
+    UI.success("#{APP_IDENTIFIER} is fully configured.")
+  end
+
+  # ── STEP 2: Create app listing ─────────────────────────────────────────────
+  # Run once. Creates the app on ASC so you can configure IAP products,
+  # screenshots and metadata before the first build.
+  desc "Create the app listing on App Store Connect (first-time only)"
+  # Apple's REST API does not expose a CREATE endpoint for apps.
+  # Creating the listing requires Apple ID credentials (2FA-compatible session).
+  # Run this lane from an interactive terminal where the 2FA prompt can appear,
+  # OR store credentials first with: fastlane fastlane-credentials add --username hermesdigitalbr@gmail.com
+  lane :create_app do
+    token = asc_jwt_token
+
+    # Check via REST first — idempotent, no credentials needed.
+    existing = asc_request(:get, "/v1/apps?filter[bundleId]=#{APP_IDENTIFIER}&limit=1", token)
+    if existing["data"]&.first
+      app_id = existing["data"].first["id"]
+      UI.success("App '#{APP_NAME}' already exists on ASC (id: #{app_id}). Nothing to do.")
+      next
+    end
+
+    # App doesn't exist yet — use produce (requires Apple ID session).
+    asc_api_key  # pre-loads the key so spaceship uses it for ITC
+    produce(
+      app_name:       APP_NAME,
+      language:       "de-DE",
+      sku:            "REPLACE-sku",
+      team_id:        TEAM_ID,
+      skip_devcenter: true  # Bundle ID already exists via ensure_bundle_id
+    )
+    UI.success("App '#{APP_NAME}' created on ASC.")
+  end
+
+  # ── STEP 3: Build ──────────────────────────────────────────────────────────
+  # Archives the app for App Store distribution.
+  # To bump the build number: edit CURRENT_PROJECT_VERSION in project.yml
+  # and run `xcodegen generate` before running this lane.
+  desc "Build and archive for App Store distribution"
+  lane :build do
+    gym(
+      project:          PROJECT,
+      scheme:           SCHEME,
+      configuration:    "Release",
+      export_method:    "app-store",
+      xcargs:           "-allowProvisioningUpdates",
+      export_xcargs:    "-allowProvisioningUpdates",
+      export_options: {
+        method:       "app-store",
+        teamID:       TEAM_ID,
+        signingStyle: "automatic"
+      },
+      output_directory: "build",
+      output_name:      "HeilpraktikerPrep.ipa",
+      clean:            true
+    )
+  end
+
+  # ── Signing prep (run once per app) ─────────────────────────────────────────
+  # The ASC API key can't manage developer-portal provisioning. Use the
+  # Xcode-stored Apple ID session (Spaceship::Portal) to create the app group +
+  # widget bundle id and enable App Groups on both targets, so automatic signing
+  # can mint App Store profiles with the right entitlements.
+  desc "Create app group + widget bundle id and enable App Groups (portal, Apple ID session)"
+  lane :setup_signing do
+    require "spaceship"
+    Spaceship::Portal.login("hermesdigitalbr@gmail.com")
+    Spaceship::Portal.client.team_id = TEAM_ID
+    group_id  = "group.app.hermesdigital.hp"
+    main_id   = "app.hermesdigital.hp"
+    widget_id = "app.hermesdigital.hp.widget"
+
+    group = Spaceship::Portal.app_group.find(group_id) ||
+            Spaceship::Portal.app_group.create!(group_id: group_id, name: "REPLACE App Group")
+    UI.success("App group: #{group.app_group_id}")
+
+    main = Spaceship::Portal.app.find(main_id) ||
+           Spaceship::Portal.app.create!(bundle_id: main_id, name: "REPLACE App Name")
+    main.update_service(Spaceship::Portal.app_service.app_group.on)
+    main.update_service(Spaceship::Portal.app_service.in_app_purchase.on)
+    main.associate_groups([group])
+    UI.success("Main #{main_id}: App Groups + IAP on")
+
+    widget = Spaceship::Portal.app.find(widget_id) ||
+             Spaceship::Portal.app.create!(bundle_id: widget_id, name: "REPLACE Widget")
+    widget.update_service(Spaceship::Portal.app_service.app_group.on)
+    widget.associate_groups([group])
+    UI.success("Widget #{widget_id}: App Groups on")
+  end
+
+  # ── Upload a built binary (API key works for the transporter upload) ────────
+  desc "Upload the built IPA to ASC (no metadata, no submit)"
+  lane :upload_build do
+    deliver(
+      api_key:                    asc_api_key,
+      ipa:                        IPA_PATH,
+      skip_metadata:              true,
+      skip_screenshots:           true,
+      submit_for_review:          false,
+      run_precheck_before_submit: false,
+      force:                      true
+    )
+    UI.success("Binary uploaded to ASC.")
+  end
+
+  # ── Upload the already-built IPA via TestFlight transporter (no version edit) ─
+  # Used when the current App Store version is already READY_FOR_SALE, so a new
+  # binary must ride into a brand-new version created separately (deliver would
+  # try to edit the live version and fail with "version number already used").
+  desc "Upload the built IPA binary only (TestFlight transporter, no metadata)"
+  lane :upload_binary do
+    upload_to_testflight(
+      api_key:                           asc_api_key,
+      ipa:                               IPA_PATH,
+      skip_waiting_for_build_processing: true,
+      distribute_external:               false,
+      skip_submission:                   true
+    )
+    UI.success("Binary uploaded to ASC (TestFlight).")
+  end
+
+  # ── Submit v1.0 for review (binary already uploaded + processed) ────────────
+  desc "Submit version 1.0 / build 1 for App Store review"
+  lane :submit_review do
+    deliver(
+      api_key:                    asc_api_key,
+      app_version:                "1.1",
+      build_number:               "7",
+      skip_binary_upload:         true,
+      skip_metadata:              true,
+      skip_screenshots:           true,
+      submit_for_review:          true,
+      automatic_release:          false,
+      run_precheck_before_submit: false,
+      force:                      true,
+      submission_information: {
+        add_id_info_uses_idfa:                       false,
+        export_compliance_uses_encryption:           false,
+        export_compliance_is_exempt:                 true,
+        content_rights_has_rights:                   true,
+        content_rights_contains_third_party_content: false
+      }
+    )
+    UI.success("Submitted v1.0 for review.")
+  end
+
+  # ── STEP 4 (optional): TestFlight ──────────────────────────────────────────
+  # Useful for internal review before submitting to the App Store.
+  desc "Build and upload to TestFlight for internal testing"
+  lane :beta do
+    build
+    upload_to_testflight(
+      api_key:                           asc_api_key,
+      ipa:                               IPA_PATH,
+      skip_waiting_for_build_processing: true,
+      distribute_external:               false
+    )
+    UI.success("Uploaded to TestFlight!")
+  end
+
+  # ── STEP 5a: Metadata + screenshots only ───────────────────────────────────
+  # Push text and screenshots to ASC without uploading a binary.
+  # Run this any time you want to update copy or screenshots independently.
+  desc "Push metadata and screenshots to ASC (no binary upload)"
+  lane :set_metadata do
+    deliver(
+      api_key:               asc_api_key,
+      metadata_path:         "fastlane/metadata",
+      screenshots_path:      "fastlane/screenshots",
+      skip_binary_upload:    true,
+      skip_screenshots:      false,
+      overwrite_screenshots: true,
+      submit_for_review:     false,
+      primary_category:      "EDUCATION",
+      secondary_category:    "MEDICAL",
+      force:                      true,
+      precheck_include_in_app_purchases: false,
+      app_review_information: {
+        first_name:    "Giovanna",
+        last_name:     "Tonello",
+        phone_number:  ENV["REVIEW_PHONE"] || "+5511947992383",
+        email_address: "hermesdigitalbr@gmail.com",
+        notes:         "No login or account required. All study features are accessible immediately after onboarding. This is exam-prep study content; not affiliated with any official exam body."
+      }
+    )
+    UI.success("Metadata and screenshots updated on ASC.")
+  end
+
+  # ── STEP 5a-text: Metadata ONLY (no screenshots, no binary) ─────────────────
+  # Push copy + categories + legal URLs before screenshots exist.
+  desc "Push text metadata + categories + legal URLs (no screenshots, no binary)"
+  lane :push_metadata_text do
+    deliver(
+      api_key:                           asc_api_key,
+      metadata_path:                     "fastlane/metadata",
+      skip_binary_upload:                true,
+      skip_screenshots:                  true,
+      submit_for_review:                 false,
+      primary_category:                  "EDUCATION",
+      secondary_category:                "MEDICAL",
+      force:                             true,
+      run_precheck_before_submit:        false,
+      precheck_include_in_app_purchases: false,
+      app_review_information: {
+        first_name:    "Giovanna",
+        last_name:     "Tonello",
+        phone_number:  ENV["REVIEW_PHONE"] || "+5511947992383",
+        email_address: "hermesdigitalbr@gmail.com",
+        notes:         "No login or account required. All study features are accessible immediately after onboarding. Exam-prep study content; not affiliated with any official exam body."
+      }
+    )
+    UI.success("Text metadata + categories + legal URLs pushed to ASC.")
+  end
+
+  # ── STEP 5b: Full release ──────────────────────────────────────────────────
+  # Builds the app, uploads to ASC, and submits for review.
+  # automatic_release: false → you release manually on ASC after approval.
+  desc "Build, upload, and submit for App Store review"
+  lane :release do
+    build
+    deliver(
+      api_key:               asc_api_key,
+      ipa:                   IPA_PATH,
+      metadata_path:         "fastlane/metadata",
+      screenshots_path:      "fastlane/screenshots",
+      skip_screenshots:      false,
+      overwrite_screenshots: true,
+      submit_for_review:     true,
+      automatic_release:     false,
+      phased_release:        false,
+      primary_category:      "EDUCATION",
+      secondary_category:    "MEDICAL",
+      force:                 true,
+      submission_information: {
+        add_id_info_uses_idfa:                       false,
+        export_compliance_uses_encryption:           false,
+        export_compliance_is_exempt:                 true,
+        content_rights_has_rights:                   true,
+        content_rights_contains_third_party_content: false
+      }
+    )
+    UI.success("'#{APP_NAME}' submitted for App Store review!")
+  end
+
+  # ── Inspect this app's bundle ids (platform, seedId) + app usage ─────────
+  desc "Inspect this app's bundle ids and any app using them"
+  lane :asc_bundles do
+    token = asc_jwt_token
+    bids = asc_request(:get, "/v1/bundleIds?limit=200", token)
+    (bids["data"] || []).each do |b|
+      ident = b.dig("attributes", "identifier")
+      next unless ident.to_s.include?("prepkittext")
+      UI.message("BUNDLE id=#{b['id']} identifier=#{ident} platform=#{b.dig('attributes','platform')} name=#{b.dig('attributes','name')}")
+    end
+    ["app.hermesdigital.hp", "app.hermesdigital.hp.debug"].each do |ident|
+      apps = asc_request(:get, "/v1/apps?filter[bundleId]=#{ident}&limit=5", token)
+      ids = (apps["data"] || []).map { |a| "#{a['id']}(#{a.dig('attributes','name')})" }
+      UI.message("APPS using #{ident}: #{ids.empty? ? 'none' : ids.join(', ')}")
+    end
+  end
+
+  # ── Create free-trial introductory offers for both subscriptions ───────────
+  desc "Add free-trial introductory offers to the subscriptions"
+  # NOTE: the subscriptions, prices, worldwide availability and the monthly
+  # 3-day free trial (all 175 territories) were already created via the ASC API
+  # on 2026-06-24. This single-offer lane is kept only as a template; ASC now
+  # requires a `territory` relationship per offer, so this form is superseded.
+  # Sub IDs: set to your ASC subscription IDs (weekly, monthly) + group id.
+  lane :create_trials do
+    token = asc_jwt_token
+    offers = [
+      { sub: "REPLACE-monthly-sub-id", duration: "THREE_DAYS", label: "Monthly 3-day trial" },
+    ]
+    offers.each do |o|
+      begin
+        res = asc_request(:post, "/v1/subscriptionIntroductoryOffers", token, {
+          data: {
+            type: "subscriptionIntroductoryOffers",
+            attributes: { offerMode: "FREE_TRIAL", duration: o[:duration], numberOfPeriods: 1 },
+            relationships: { subscription: { data: { type: "subscriptions", id: o[:sub] } } }
+          }
+        })
+        UI.success("#{o[:label]}: created (#{res.dig('data','id')})")
+      rescue => e
+        UI.error("#{o[:label]}: #{e.message}")
+      end
+    end
+  end
+
+  # ── List every app + its bundle id (read-only) ─────────────────────────────
+  desc "List all apps and bundle ids"
+  lane :asc_find do
+    token = asc_jwt_token
+    apps = asc_request(:get, "/v1/apps?limit=200", token)
+    (apps["data"] || []).each do |a|
+      UI.message("APP id=#{a['id']} name=#{a.dig('attributes','name')} bundle=#{a.dig('attributes','bundleId')} sku=#{a.dig('attributes','sku')}")
+    end
+  end
+
+  # ── Diagnostics: print version + build state ────────────────────────────────
+  desc "Print app version and build processing state"
+  lane :asc_status do
+    token = asc_jwt_token
+    apps = asc_request(:get, "/v1/apps?filter[bundleId]=#{APP_IDENTIFIER}", token)
+    app_id = apps.dig("data", 0, "id")
+    UI.message("APP_ID=#{app_id}")
+    vers = asc_request(:get, "/v1/apps/#{app_id}/appStoreVersions?limit=5", token)
+    (vers["data"] || []).each do |v|
+      UI.message("VERSION #{v.dig('attributes','versionString')} state=#{v.dig('attributes','appStoreState')} id=#{v['id']}")
+    end
+    builds = asc_request(:get, "/v1/builds?filter[app]=#{app_id}&limit=5&sort=-uploadedDate", token)
+    (builds["data"] || []).each do |b|
+      UI.message("BUILD #{b.dig('attributes','version')} processing=#{b.dig('attributes','processingState')} expired=#{b.dig('attributes','expired')}")
+    end
+    subs = asc_request(:get, "/v1/reviewSubmissions?filter[app]=#{app_id}&limit=5", token) rescue {"data"=>[]}
+    (subs["data"] || []).each do |s|
+      UI.message("REVIEW_SUBMISSION id=#{s['id']} state=#{s.dig('attributes','state')}")
+    end
+  end
+
+  # ── Relaunch v1.0 with build 3 (Universal) + purple screenshots ─────────────
+  # Run AFTER the approved 1.0 has been reverted to an editable state.
+  # Attaches build 3, pushes metadata + screenshots, does NOT submit.
+  desc "Attach build 3 + push purple screenshots/metadata to v1.0 (no submit)"
+  lane :relaunch_v1 do
+    deliver(
+      api_key:               asc_api_key,
+      app_version:           "1.0",
+      build_number:          "3",
+      metadata_path:         "fastlane/metadata",
+      screenshots_path:      "fastlane/screenshots",
+      skip_binary_upload:    true,
+      skip_metadata:         false,
+      skip_screenshots:      false,
+      overwrite_screenshots: true,
+      submit_for_review:     false,
+      force:                 true,
+      run_precheck_before_submit: false,
+      precheck_include_in_app_purchases: false
+    )
+    UI.success("Build 3 + screenshots roxos enviados ao v1.0 (sem submeter).")
+  end
+
+  # Attach a specific build (version string) to the v1.0 App Store version.
+  desc "Attach build 3 to v1.0"
+  lane :asc_set_build do
+    token = asc_jwt_token
+    vid = "58718b45-be59-438d-af7d-a7d13c23e58a"
+    apps = asc_request(:get, "/v1/apps?filter[bundleId]=#{APP_IDENTIFIER}", token)
+    app_id = apps.dig("data", 0, "id")
+    builds = asc_request(:get, "/v1/builds?filter[app]=#{app_id}&limit=10&sort=-version", token)
+    b3 = (builds["data"] || []).find { |b| b.dig("attributes", "version") == "3" }
+    UI.user_error!("build 3 não encontrado") unless b3
+    asc_request(:patch, "/v1/appStoreVersions/#{vid}/relationships/build", token,
+                { data: { type: "builds", id: b3["id"] } })
+    UI.success("Build 3 (#{b3['id']}) anexado ao v1.0.")
+  end
+
+  # Delete ALL screenshot sets for v1.0 (clean slate before re-upload).
+  desc "Delete all screenshot sets on v1.0"
+  lane :asc_clear_shots do
+    token = asc_jwt_token
+    vid = "58718b45-be59-438d-af7d-a7d13c23e58a"
+    locs = asc_request(:get, "/v1/appStoreVersions/#{vid}/appStoreVersionLocalizations?limit=10", token)
+    (locs["data"] || []).each do |loc|
+      lid = loc["id"]
+      sets = asc_request(:get, "/v1/appStoreVersionLocalizations/#{lid}/appScreenshotSets?limit=50", token)
+      (sets["data"] || []).each do |s|
+        asc_request(:delete, "/v1/appScreenshotSets/#{s['id']}", token)
+        UI.message("deleted set #{s.dig('attributes', 'screenshotDisplayType')}")
+      end
+    end
+    UI.success("Todos os screenshot sets apagados.")
+  end
+
+  # De-duplicate screenshots across ALL display types (keep first occurrence per fileName).
+  desc "De-dup every screenshot set on v1.0 and print final fileName lists"
+  lane :asc_dedup do
+    token = asc_jwt_token
+    vid = "58718b45-be59-438d-af7d-a7d13c23e58a"
+    locs = asc_request(:get, "/v1/appStoreVersions/#{vid}/appStoreVersionLocalizations?limit=10", token)
+    (locs["data"] || []).each do |loc|
+      lid = loc["id"]
+      sets = asc_request(:get, "/v1/appStoreVersionLocalizations/#{lid}/appScreenshotSets?limit=50", token)
+      (sets["data"] || []).each do |set|
+        dt = set.dig("attributes", "screenshotDisplayType")
+        shots = asc_request(:get, "/v1/appScreenshotSets/#{set['id']}/appScreenshots?limit=50", token)
+        list = shots["data"] || []
+        seen = {}
+        list.each do |sh|
+          fn = sh.dig("attributes", "fileName")
+          if seen[fn]
+            asc_request(:delete, "/v1/appScreenshots/#{sh['id']}", token)
+            UI.message("DELETED dup #{dt} #{fn}")
+          end
+          seen[fn] = true
+        end
+        UI.message("FINAL #{dt} = #{seen.keys.sort.join(', ')}")
+      end
+    end
+  end
+
+  # Verify screenshot sets per display type on v1.0
+  desc "Print screenshot counts per display type for v1.0"
+  lane :asc_shots do
+    token = asc_jwt_token
+    vid = "58718b45-be59-438d-af7d-a7d13c23e58a"
+    locs = asc_request(:get, "/v1/appStoreVersions/#{vid}/appStoreVersionLocalizations?limit=10", token)
+    (locs["data"] || []).each do |loc|
+      lid = loc["id"]; lang = loc.dig("attributes", "locale")
+      sets = asc_request(:get, "/v1/appStoreVersionLocalizations/#{lid}/appScreenshotSets?limit=50", token)
+      (sets["data"] || []).each do |s|
+        dt = s.dig("attributes", "screenshotDisplayType")
+        shots = asc_request(:get, "/v1/appScreenshotSets/#{s['id']}/appScreenshots?limit=50", token)
+        UI.message("SHOTS #{lang} #{dt} = #{(shots['data'] || []).length}")
+      end
+    end
+    sel = asc_request(:get, "/v1/appStoreVersions/#{vid}/build", token) rescue {}
+    bid = sel.dig("data", "id")
+    if bid
+      b = asc_request(:get, "/v1/builds/#{bid}", token) rescue {}
+      UI.message("ATTACHED_BUILD version=#{b.dig('data','attributes','version')} id=#{bid}")
+    else
+      UI.message("ATTACHED_BUILD none")
+    end
+  end
+
+end
