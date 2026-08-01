@@ -12,23 +12,7 @@ import UIKit
 enum RatePromptService {
     private static let lastPromptKey = "ratePrompt.lastDate.v1"
     private static let premiumPromptKey = "ratePrompt.premiumAsked.v1"
-    private static let launchAskedKey = "ratePrompt.launchAsked.v1"
     private static let cooldownDays = 14.0
-
-    /// Asks for a review the very first time the app is opened (first real
-    /// entry into Home after onboarding). Fires once, ever, regardless of the
-    /// shared cooldown — this is a separate, one-shot entry point from
-    /// `maybeRequestAfterQuiz`.
-    static func maybeRequestAtLaunch() {
-        let defaults = UserDefaults.standard
-        guard !defaults.bool(forKey: launchAskedKey) else { return }
-        defaults.set(true, forKey: launchAskedKey)
-        // Still respect the shared cooldown/lastPromptKey bookkeeping used by
-        // maybeRequestAfterQuiz, so a launch prompt doesn't get immediately
-        // followed by a quiz-completion prompt.
-        defaults.set(Date.now, forKey: lastPromptKey)
-        requestReview()
-    }
 
     /// A quiz must be this answered to count as a "proud moment" worth a prompt —
     /// skipping through a 50-question mock shouldn't burn an App Store slot.

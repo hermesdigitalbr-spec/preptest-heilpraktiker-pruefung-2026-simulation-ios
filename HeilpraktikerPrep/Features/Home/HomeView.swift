@@ -77,9 +77,9 @@ struct HomeView: View {
                 if reduceMotion { appeared = true }
                 else { withAnimation(AppMotion.smooth) { appeared = true } }
                 // First-ever entry into Home (right after onboarding
-                // completes) — ask for a review and play the welcome
-                // confetti, both one-shot via their own UserDefaults flags.
-                RatePromptService.maybeRequestAtLaunch()
+                // completes) — play the welcome confetti, one-shot via its
+                // own UserDefaults flag. No rating prompt here: asking before
+                // the user has engaged with the app violates Guideline 5.6.3.
                 if WelcomeConfetti.consumePending() {
                     playWelcomeConfetti = true
                 }
