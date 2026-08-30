@@ -18,8 +18,8 @@ enum ScreenshotMode {
     static func seed(_ session: AppSession) {
         // Premium everywhere EXCEPT the paywall — that shot must show the plans
         // and prices (used as the App Review screenshot for the subscriptions).
-        session.iap.debugEntitlement = screen == "paywall" ? .free : .premium
-        if screen == "paywall" {
+        session.iap.debugEntitlement = (screen?.hasPrefix("paywall") == true) ? .free : .premium
+        if screen?.hasPrefix("paywall") == true {
             // StoreKit products don't load under simctl, so inject display
             // prices to render a complete paywall (no "couldn't load" banner).
             session.iap.debugWeeklyPrice = "6,99 €"
@@ -116,6 +116,8 @@ enum ScreenshotMode {
             }
         case "paywall":
             PaywallView()
+        case "paywall_exit":
+            PaywallView(startOnExitOffer: true)
         case "sharecard":
             // Visual check of the share card at full size on a neutral backdrop.
             let s = session.strings.results

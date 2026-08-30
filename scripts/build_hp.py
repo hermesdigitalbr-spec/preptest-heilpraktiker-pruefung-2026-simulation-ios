@@ -49,10 +49,10 @@ pack.update({
     "mockExam": {"questionCount": 60, "minutes": 120, "passPercent": 75},
     "products": {"weekly": "app.hermesdigital.hp.weekly",
                  "monthly": "app.hermesdigital.hp.monthly"},
-    "legal": {"privacyUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/privacy.html",
-              "termsUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/terms.html",
+    "legal": {"privacyUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/privacy.html",
+              "termsUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/terms.html",
               "supportEmail": "support@hermesdigital.app",
-              "supportUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/support.html"},
+              "supportUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/support.html"},
     "appStoreUrl": None,
 })
 pack.pop("regions", None)

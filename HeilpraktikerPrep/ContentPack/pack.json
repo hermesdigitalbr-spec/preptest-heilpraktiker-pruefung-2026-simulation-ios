@@ -71,10 +71,10 @@
   },
   "appStoreUrl": null,
   "legal": {
-    "privacyUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/privacy.html",
-    "termsUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/terms.html",
+    "privacyUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/privacy.html",
+    "termsUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/terms.html",
     "supportEmail": "support@hermesdigital.app",
-    "supportUrl": "https://hermesdigitalbr-spec.github.io/heilpraktiker-pruefung-2026-simulation-legal/support.html"
+    "supportUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/support.html"
   },
   "achievements": [
     {

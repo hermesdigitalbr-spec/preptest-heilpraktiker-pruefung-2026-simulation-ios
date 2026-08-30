@@ -231,7 +231,7 @@
     "timelineInstall": "App installieren",
     "timelineToday": "Heute – Gratiszugang startet",
     "timelineMember": "Tag 3 – Du wirst Mitglied",
-    "trialCta": "Für 0,00 € testen",
+    "trialCta": "Kostenlos testen",
     "continueCta": "Weiter",
     "monthlySubtitleFormat": "3 Tage gratis, danach %@/Monat. Jederzeit kündbar.",
     "monthlyNoTrialSubtitleFormat": "%@/Monat. Jederzeit kündbar.",
@@ -244,7 +244,7 @@
     "monthlyRenewLine": "Verlängert sich monatlich. Mit einem Tippen kündbar.",
     "exitOfferTitle": "Noch unsicher?",
     "exitOfferSubtitle": "Teste den vollen Plan 3 Tage gratis im Wochen-Angebot – jederzeit kündbar, ohne Risiko.",
-    "exitOfferCta": "Wochenabo für 0,00 € testen",
+    "exitOfferCta": "Wochenabo kostenlos testen",
     "exitOfferNoThanks": "Nein, danke",
     "exitOfferSubtitleFormat": "3 Tage gratis, danach %@/Woche. Jederzeit kündbar."
   },

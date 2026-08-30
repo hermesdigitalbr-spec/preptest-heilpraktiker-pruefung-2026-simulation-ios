@@ -19,12 +19,17 @@ struct PaywallView: View {
         case generic, dailyCapHit, quickCapHit, studyLocked
     }
 
-    var source: Source = .generic
+    let source: Source
     @State private var selectedPlan: Plan = .monthly
     /// The X on the main screen never dismisses directly — it always swaps
     /// to the exit-intent offer screen first (App Store compliant: the
     /// offer screen itself has an immediate, unconditional exit).
-    @State private var showExitOffer = false
+    @State private var showExitOffer: Bool
+
+    init(source: Source = .generic, startOnExitOffer: Bool = false) {
+        self.source = source
+        _showExitOffer = State(initialValue: startOnExitOffer)
+    }
 
     private var strings: UIStrings.Paywall { session.strings.paywall }
     private var iap: IAPService { session.iap }
@@ -294,20 +299,58 @@ struct PaywallView: View {
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.button))
     }
 
+    /// Real StoreKit price of the selected plan (debug fallback in previews).
+    private var selectedPrice: String? {
+        if let product = selectedProduct { return product.displayPrice }
+        return selectedPlan == .monthly ? iap.debugMonthlyPrice : iap.debugWeeklyPrice
+    }
+
+    /// Guideline 3.1.2(c): the billed price, big and bold, directly above the
+    /// CTA — the most prominent price on the screen.
+    private var billedPriceLine: some View {
+        Group {
+            if let price = selectedPrice {
+                Text(price + " " + (selectedPlan == .monthly ? strings.perMonth : strings.perWeek))
+                    .font(AppFont.display(26))
+                    .fontWeight(.bold)
+                    .foregroundStyle(AppColor.textPrimary)
+            }
+        }
+    }
+
+    /// 13pt disclosure under the CTA: trial length + automatic billing.
+    private var disclosureLine: String? {
+        guard let price = selectedPrice else { return nil }
+        if monthlyTrial {
+            return String(format: strings.monthlySubtitleFormat, price)
+        } else if selectedPlan == .monthly {
+            return String(format: strings.monthlyNoTrialSubtitleFormat, price)
+        } else {
+            return String(format: strings.weeklySubtitleFormat, price)
+        }
+    }
+
     private var footer: some View {
         VStack(spacing: AppSpacing.sm) {
             if iap.lastError != nil && iap.debugMonthlyPrice == nil {
                 errorBanner
             }
-            // Guideline 3.1.2(c) is satisfied by the price already shown,
-            // prominently, on the selected plan card above — no separate
-            // "3-day free trial, then $X.XX" disclosure line here.
+
+            billedPriceLine
 
             PrimaryCTAButton(title: ctaTitle, isEnabled: (selectedProduct != nil || iap.debugMonthlyPrice != nil) && !iap.isPurchasing) {
                 guard let product = selectedProduct else { return }
                 Task {
                     if await iap.purchase(product) { dismiss() }
                 }
+            }
+
+            if let disclosure = disclosureLine {
+                Text(disclosure)
+                    .font(AppFont.caption(13))
+                    .foregroundStyle(AppColor.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(strings.securedNote)
@@ -327,6 +370,8 @@ struct PaywallView: View {
             }
             .font(AppFont.caption(12))
             .foregroundStyle(AppColor.textDim)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
         }
         .padding(.horizontal, AppSpacing.screenMargin)
         .padding(.vertical, AppSpacing.sm)
@@ -410,14 +455,34 @@ struct PaywallView: View {
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.card))
     }
 
+    private var exitOfferWeeklyPrice: String? {
+        iap.weeklyProduct?.displayPrice ?? iap.debugWeeklyPrice
+    }
+
     private var exitOfferFooter: some View {
         VStack(spacing: AppSpacing.sm) {
+            // Guideline 3.1.2(c): billed price, big and bold, above the CTA.
+            if let price = exitOfferWeeklyPrice {
+                Text(price + " " + strings.perWeek)
+                    .font(AppFont.display(26))
+                    .fontWeight(.bold)
+                    .foregroundStyle(AppColor.textPrimary)
+            }
+
             PrimaryCTAButton(title: strings.exitOfferCta,
                               isEnabled: (iap.weeklyProduct != nil || iap.debugWeeklyPrice != nil) && !iap.isPurchasing) {
                 guard let product = iap.weeklyProduct else { return }
                 Task {
                     if await iap.purchase(product) { dismiss() }
                 }
+            }
+
+            if let price = exitOfferWeeklyPrice {
+                Text(String(format: strings.exitOfferSubtitleFormat, price))
+                    .font(AppFont.caption(13))
+                    .foregroundStyle(AppColor.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Button(strings.exitOfferNoThanks) {
@@ -429,6 +494,22 @@ struct PaywallView: View {
             Text(strings.securedNote)
                 .font(AppFont.caption(12))
                 .foregroundStyle(AppColor.textDim)
+
+            HStack(spacing: AppSpacing.lg) {
+                Button(session.strings.settings.termsOfUse) {
+                    open(session.pack.legal.termsUrl)
+                }
+                Button(session.strings.settings.privacyPolicy) {
+                    open(session.pack.legal.privacyUrl)
+                }
+                Button(strings.restore) {
+                    Task { await iap.restore() }
+                }
+            }
+            .font(AppFont.caption(12))
+            .foregroundStyle(AppColor.textDim)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
         }
         .padding(.horizontal, AppSpacing.screenMargin)
         .padding(.vertical, AppSpacing.sm)
