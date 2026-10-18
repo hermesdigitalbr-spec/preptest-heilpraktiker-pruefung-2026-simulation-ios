@@ -113,13 +113,31 @@ final class IAPService {
         productIds = products
         updatesTask = Task { await listenForTransactions() }
         Task {
-            await loadProducts()
+            await loadProductsWithRetry()
             await refreshEntitlements()
         }
     }
 
     /// Clears the last surfaced error (e.g. when the user dismisses the banner).
     func clearError() { lastError = nil }
+
+    /// True when every product the paywall sells came back from StoreKit.
+    var hasAllProducts: Bool {
+        weeklyProduct != nil && monthlyProduct != nil
+            && (productIds.quarterly == nil || quarterlyProduct != nil)
+    }
+
+    /// Loads the products, retrying through transient empty/partial responses.
+    /// Call this wherever a dead paywall would be visible to the user.
+    /// Guideline 2.1(b): App Review saw "products could not be found" when a
+    /// single empty response was never retried (YKS Sep 2026; Jagdschein,
+    /// Einbürgerungstest, Steuerberater Oct 2026).
+    func loadProductsWithRetry() async {
+        await ProductLoadRetry.run(delay: { await ProductLoadRetry.sleep(seconds: $0) }) {
+            await self.loadProducts()
+            return self.hasAllProducts
+        }
+    }
 
     func loadProducts() async {
         lastError = nil
@@ -139,7 +157,7 @@ final class IAPService {
             // match (misconfigured ContentPack, or ASC products not yet
             // available) — it does NOT throw. Surface it so the paywall shows
             // its error+Retry banner instead of a silent dead end.
-            if weeklyProduct == nil, monthlyProduct == nil {
+            if !hasAllProducts {
                 lastError = "No subscription products were returned by the App Store."
             }
         } catch {

@@ -112,7 +112,7 @@ struct OnboardingPaywallView: View {
             }
         }
         .task {
-            if iap.monthlyProduct == nil { await iap.loadProducts() }
+            if !iap.hasAllProducts { await iap.loadProductsWithRetry() }
             try? await Task.sleep(for: .seconds(3))
             withAnimation(AppMotion.smooth) { canDecline = true }
         }
@@ -204,6 +204,10 @@ struct OnboardingPaywallView: View {
                     .foregroundStyle(PaywallDark.dim)
                     .multilineTextAlignment(.center)
                     .animation(nil, value: selected)
+            }
+
+            if iap.lastError != nil, !iap.hasAllProducts {
+                loadErrorBanner
             }
 
             // The button buys the monthly plan; the cards below are their own
@@ -525,10 +529,29 @@ struct OnboardingPaywallView: View {
     /// rather than leaving the button inert.
     private func buy(_ product: @escaping () -> Product?) {
         Task {
-            if product() == nil { await iap.loadProducts() }
+            if product() == nil { await iap.loadProductsWithRetry() }
+            // Never an inert button: if StoreKit still has nothing, the
+            // load-error banner (with Retry) is already showing.
             guard let target = product() else { return }
             if await iap.purchase(target) { dismiss() }
         }
+    }
+
+    /// Shown only when StoreKit came back empty after the retries: says what
+    /// happened and offers a manual retry, so the paywall is never a dead end.
+    private var loadErrorBanner: some View {
+        VStack(spacing: AppSpacing.xs) {
+            Text(strings.loadErrorTitle)
+                .font(AppFont.body(13))
+                .foregroundStyle(PaywallDark.dim)
+                .multilineTextAlignment(.center)
+            Button(strings.retry) {
+                Task { await iap.loadProductsWithRetry() }
+            }
+            .font(AppFont.bodyMedium(13))
+            .disabled(iap.isPurchasing)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private func open(_ urlString: String) {
