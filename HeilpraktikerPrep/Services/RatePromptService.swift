@@ -3,20 +3,21 @@ import StoreKit
 import UIKit
 
 /// Asks for an App Store review at chosen moments:
-/// - after every *completed* Quick quiz (quitting mid-quiz never prompts);
+/// - after every *completed* daily set, Quick quiz or mock exam (quitting
+///   mid-quiz never prompts);
 /// - once, for a premium user, right after their first completed quiz as
 ///   premium (highest-intent moment for someone who never saw the prompt land).
-/// Our side throttles to once per 14 days; Apple caps at 3 shown per year and
+/// Our side throttles to once per 3 days; Apple caps at 3 shown per year and
 /// gives no callback about whether the user actually rated.
 @MainActor
 enum RatePromptService {
     private static let lastPromptKey = "ratePrompt.lastDate.v1"
     private static let premiumPromptKey = "ratePrompt.premiumAsked.v1"
-    private static let cooldownDays = 14.0
+    private static let cooldownDays = 3.0
 
     /// A quiz must be this answered to count as a "proud moment" worth a prompt —
     /// skipping through a 50-question mock shouldn't burn an App Store slot.
-    private static let minCompletionRatio = 0.8
+    private static let minCompletionRatio = 0.5
 
     static func maybeRequestAfterQuiz(mode: QuizMode, finishedNaturally: Bool,
                                       answered: Int, total: Int, isPro: Bool) {
@@ -32,8 +33,7 @@ enum RatePromptService {
             return
         }
 
-        // Quick 10 and a completed Mock Exam are the two proudest moments.
-        guard mode == .quick10 || mode == .mock else { return }
+        // Any completed session counts (operator, 2026-10: ask more often).
         if let last = defaults.object(forKey: lastPromptKey) as? Date,
            Date.now.timeIntervalSince(last) < cooldownDays * 86_400 {
             return

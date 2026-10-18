@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "Primi passi",
+    "detail": "Completa il tuo primo quiz"
+  },
+  "quizzes-10": {
+    "title": "Si fa sul serio",
+    "detail": "Completa 10 quiz"
+  },
+  "quizzes-25": {
+    "title": "Quarto di secolo",
+    "detail": "Fai 25 quiz"
+  },
+  "quizzes-50": {
+    "title": "Veterano dei quiz",
+    "detail": "Completa 50 quiz"
+  },
+  "quizzes-100": {
+    "title": "Centurione",
+    "detail": "Completa 100 quiz"
+  },
+  "quizzes-250": {
+    "title": "Macchina da quiz",
+    "detail": "Fai 250 quiz"
+  },
+  "quizzes-500": {
+    "title": "Maestro dei quiz",
+    "detail": "Fai 500 quiz"
+  },
+  "answered-100": {
+    "title": "Riscaldamento",
+    "detail": "Rispondi a 100 domande"
+  },
+  "answered-250": {
+    "title": "Si scalda",
+    "detail": "Rispondi a 250 domande"
+  },
+  "answered-500": {
+    "title": "Tritadomande",
+    "detail": "Rispondi a 500 domande"
+  },
+  "answered-1000": {
+    "title": "Inarrestabile",
+    "detail": "Rispondi a 1.000 domande"
+  },
+  "answered-2500": {
+    "title": "Mente da maratona",
+    "detail": "Rispondi a 2.500 domande"
+  },
+  "answered-5000": {
+    "title": "Leggenda delle domande",
+    "detail": "Rispondi a 5.000 domande"
+  },
+  "answered-10000": {
+    "title": "Club dei diecimila",
+    "detail": "Rispondi a 10.000 domande"
+  },
+  "correct-100": {
+    "title": "Nel segno",
+    "detail": "Dai 100 risposte corrette"
+  },
+  "correct-500": {
+    "title": "Tiratore scelto",
+    "detail": "Dai 500 risposte corrette"
+  },
+  "correct-1000": {
+    "title": "Occhio di falco",
+    "detail": "Dai 1.000 risposte corrette"
+  },
+  "correct-2500": {
+    "title": "Centro perfetto",
+    "detail": "Dai 2.500 risposte corrette"
+  },
+  "correct-5000": {
+    "title": "Leggenda della precisione",
+    "detail": "Dai 5.000 risposte corrette"
+  },
+  "accuracy-80": {
+    "title": "Buona mira",
+    "detail": "Mantieni l'80% di risposte corrette"
+  },
+  "accuracy-90": {
+    "title": "Cecchino",
+    "detail": "Mantieni il 90% di risposte corrette"
+  },
+  "accuracy-95": {
+    "title": "Colpo infallibile",
+    "detail": "Mantieni il 95% di risposte corrette"
+  },
+  "first-perfect": {
+    "title": "Impeccabile",
+    "detail": "Supera un quiz senza errori"
+  },
+  "perfect-5": {
+    "title": "Preciso",
+    "detail": "Supera 5 quiz senza errori"
+  },
+  "perfect-10": {
+    "title": "Perfezionista",
+    "detail": "Supera 10 quiz senza errori"
+  },
+  "perfect-25": {
+    "title": "Mira infallibile",
+    "detail": "Supera 25 quiz senza errori"
+  },
+  "perfect-50": {
+    "title": "Collezionista di assi",
+    "detail": "Supera 50 quiz senza errori"
+  },
+  "perfect-100": {
+    "title": "Leggenda vivente",
+    "detail": "Supera 100 quiz senza errori"
+  },
+  "pstreak-3": {
+    "title": "Serie rovente",
+    "detail": "3 quiz perfetti di fila"
+  },
+  "pstreak-5": {
+    "title": "Percorso perfetto",
+    "detail": "5 quiz perfetti di fila"
+  },
+  "pstreak-10": {
+    "title": "Intoccabile",
+    "detail": "10 quiz perfetti di fila"
+  },
+  "streak-3": {
+    "title": "In corsa",
+    "detail": "Esercitati per 3 giorni di fila"
+  },
+  "streak-7": {
+    "title": "Settimana di ferro",
+    "detail": "Esercitati per 7 giorni di fila"
+  },
+  "streak-14": {
+    "title": "Due settimane di focus",
+    "detail": "Esercitati per 14 giorni di fila"
+  },
+  "streak-21": {
+    "title": "Fiamma di tre settimane",
+    "detail": "Esercitati per 21 giorni di fila"
+  },
+  "streak-30": {
+    "title": "Abitudine d'acciaio",
+    "detail": "Esercitati per 30 giorni di fila"
+  },
+  "streak-50": {
+    "title": "Inferno",
+    "detail": "Esercitati per 50 giorni di fila"
+  },
+  "streak-100": {
+    "title": "Indistruttibile",
+    "detail": "Esercitati per 100 giorni di fila"
+  },
+  "streak-365": {
+    "title": "Anno di fuoco",
+    "detail": "Esercitati per 365 giorni di fila"
+  },
+  "days-5": {
+    "title": "Habitué",
+    "detail": "Esercitati in 5 giorni diversi"
+  },
+  "days-15": {
+    "title": "Buona abitudine",
+    "detail": "Esercitati in 15 giorni diversi"
+  },
+  "days-30": {
+    "title": "Costante",
+    "detail": "Esercitati in 30 giorni diversi"
+  },
+  "days-60": {
+    "title": "Diligente",
+    "detail": "Esercitati in 60 giorni diversi"
+  },
+  "days-100": {
+    "title": "Devoto",
+    "detail": "Esercitati in 100 giorni diversi"
+  },
+  "days-200": {
+    "title": "Per sempre",
+    "detail": "Esercitati in 200 giorni diversi"
+  },
+  "day-25": {
+    "title": "Sessione lampo",
+    "detail": "Rispondi a 25 domande in un giorno"
+  },
+  "day-50": {
+    "title": "Stakanovista",
+    "detail": "Rispondi a 50 domande in un giorno"
+  },
+  "day-100": {
+    "title": "Fuoriclasse",
+    "detail": "Rispondi a 100 domande in un giorno"
+  },
+  "day-200": {
+    "title": "Volontà di ferro",
+    "detail": "Rispondi a 200 domande in un giorno"
+  },
+  "subject-master": {
+    "title": "Maestro della materia",
+    "detail": "Raggiungi il 90% in una materia qualsiasi"
+  },
+  "subject-perfect": {
+    "title": "Titano dell'argomento",
+    "detail": "Raggiungi il 100% in una materia qualsiasi"
+  },
+  "subjects-1": {
+    "title": "Specialista",
+    "detail": "Padroneggia 1 materia al 90% o più"
+  },
+  "subjects-3": {
+    "title": "Triplo talento",
+    "detail": "Padroneggia 3 materie al 90% o più"
+  },
+  "all-subjects": {
+    "title": "Preparato a tutto tondo",
+    "detail": "Esercitati in ogni materia"
+  },
+  "subjects-all": {
+    "title": "Maestro di tutto",
+    "detail": "Padroneggia ogni materia al 90% o più"
+  },
+  "mock-pass": {
+    "title": "Pronto per l'esame",
+    "detail": "Supera una simulazione d'esame"
+  },
+  "mock-90": {
+    "title": "Primo della classe",
+    "detail": "Ottieni il 90% in una simulazione d'esame"
+  },
+  "mock-100": {
+    "title": "Punteggio perfetto",
+    "detail": "Supera una simulazione d'esame con il 100%"
+  },
+  "collect-5": {
+    "title": "Collezionista",
+    "detail": "Salva 5 domande in Salvate"
+  },
+  "collect-10": {
+    "title": "Custode",
+    "detail": "Salva 10 domande in Salvate"
+  },
+  "collect-25": {
+    "title": "Curatore",
+    "detail": "Salva 25 domande in Salvate"
+  },
+  "collect-50": {
+    "title": "Archivista",
+    "detail": "Salva 50 domande in Salvate"
+  },
+  "collect-100": {
+    "title": "Bibliotecario",
+    "detail": "Salva 100 domande in Salvate"
+  },
+  "early-bird": {
+    "title": "Mattiniero",
+    "detail": "Esercitati prima delle 7 del mattino"
+  },
+  "early-5": {
+    "title": "Pattuglia dell'alba",
+    "detail": "Esercitati 5 volte prima delle 7 del mattino"
+  },
+  "early-10": {
+    "title": "Gallo mattutino",
+    "detail": "Esercitati 10 volte prima delle 7 del mattino"
+  },
+  "night-owl": {
+    "title": "Nottambulo",
+    "detail": "Esercitati dopo le 22"
+  },
+  "night-5": {
+    "title": "Gufo notturno",
+    "detail": "Esercitati 5 volte dopo le 22"
+  },
+  "night-10": {
+    "title": "Lume di mezzanotte",
+    "detail": "Esercitati 10 volte dopo le 22"
+  },
+  "weekend-1": {
+    "title": "Guerriero del weekend",
+    "detail": "Esercitati durante un weekend"
+  },
+  "weekend-8": {
+    "title": "Habitué del weekend",
+    "detail": "Esercitati 8 volte nei weekend"
+  },
+  "weekend-20": {
+    "title": "Fedele del weekend",
+    "detail": "Esercitati 20 volte nei weekend"
+  },
+  "comeback": {
+    "title": "Ritorno trionfale",
+    "detail": "Torna dopo una pausa di 7 giorni"
+  },
+  "comeback-3": {
+    "title": "Tenace",
+    "detail": "Torna dopo 3 pause"
+  },
+  "speedster": {
+    "title": "Demone della velocità",
+    "detail": "Completa in fretta un quiz da 10+ domande"
+  },
+  "speed-5": {
+    "title": "Mano veloce",
+    "detail": "Completa 5 quiz in fretta"
+  },
+  "speed-10": {
+    "title": "Round fulmineo",
+    "detail": "Completa 10 quiz in fretta"
+  },
+  "explorer": {
+    "title": "Esploratore",
+    "detail": "Prova 5 modalità di quiz diverse"
+  },
+  "time-60": {
+    "title": "Ora di potenza",
+    "detail": "Esercitati per 60 minuti in totale"
+  },
+  "time-300": {
+    "title": "Tempo investito",
+    "detail": "Esercitati per 5 ore in totale"
+  },
+  "time-600": {
+    "title": "Studioso",
+    "detail": "Esercitati per 10 ore in totale"
+  },
+  "time-1500": {
+    "title": "Professore",
+    "detail": "Esercitati per 25 ore in totale"
+  }
+}

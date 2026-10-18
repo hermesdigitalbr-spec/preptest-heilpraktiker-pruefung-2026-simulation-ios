@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "邁出第一步",
+    "detail": "完成第一次測驗"
+  },
+  "quizzes-10": {
+    "title": "認真起來了",
+    "detail": "完成 10 次測驗"
+  },
+  "quizzes-25": {
+    "title": "四分之一世紀",
+    "detail": "完成 25 次測驗"
+  },
+  "quizzes-50": {
+    "title": "測驗老手",
+    "detail": "完成 50 次測驗"
+  },
+  "quizzes-100": {
+    "title": "百戰百勝",
+    "detail": "完成 100 次測驗"
+  },
+  "quizzes-250": {
+    "title": "測驗機器",
+    "detail": "完成 250 次測驗"
+  },
+  "quizzes-500": {
+    "title": "測驗大師",
+    "detail": "完成 500 次測驗"
+  },
+  "answered-100": {
+    "title": "熱身中",
+    "detail": "回答 100 道題目"
+  },
+  "answered-250": {
+    "title": "漸入佳境",
+    "detail": "回答 250 道題目"
+  },
+  "answered-500": {
+    "title": "題目粉碎機",
+    "detail": "回答 500 道題目"
+  },
+  "answered-1000": {
+    "title": "勢不可擋",
+    "detail": "回答 1,000 道題目"
+  },
+  "answered-2500": {
+    "title": "馬拉松腦袋",
+    "detail": "回答 2,500 道題目"
+  },
+  "answered-5000": {
+    "title": "題海傳奇",
+    "detail": "回答 5,000 道題目"
+  },
+  "answered-10000": {
+    "title": "萬題俱樂部",
+    "detail": "回答 10,000 道題目"
+  },
+  "correct-100": {
+    "title": "正中目標",
+    "detail": "答對 100 題"
+  },
+  "correct-500": {
+    "title": "神射手",
+    "detail": "答對 500 題"
+  },
+  "correct-1000": {
+    "title": "百步穿楊",
+    "detail": "答對 1,000 題"
+  },
+  "correct-2500": {
+    "title": "正中紅心",
+    "detail": "答對 2,500 題"
+  },
+  "correct-5000": {
+    "title": "精準傳奇",
+    "detail": "答對 5,000 題"
+  },
+  "accuracy-80": {
+    "title": "神槍手",
+    "detail": "整體正確率維持 80%"
+  },
+  "accuracy-90": {
+    "title": "狙擊手",
+    "detail": "整體正確率維持 90%"
+  },
+  "accuracy-95": {
+    "title": "一擊必中",
+    "detail": "整體正確率維持 95%"
+  },
+  "first-perfect": {
+    "title": "完美無瑕",
+    "detail": "測驗零失誤拿下滿分"
+  },
+  "perfect-5": {
+    "title": "精準到位",
+    "detail": "5 次測驗拿下滿分"
+  },
+  "perfect-10": {
+    "title": "完美主義者",
+    "detail": "10 次測驗拿下滿分"
+  },
+  "perfect-25": {
+    "title": "百發百中",
+    "detail": "25 次測驗拿下滿分"
+  },
+  "perfect-50": {
+    "title": "滿分收藏家",
+    "detail": "50 次測驗拿下滿分"
+  },
+  "perfect-100": {
+    "title": "活著的傳說",
+    "detail": "100 次測驗拿下滿分"
+  },
+  "pstreak-3": {
+    "title": "連勝火力",
+    "detail": "連續 3 次測驗零失誤"
+  },
+  "pstreak-5": {
+    "title": "無懈可擊",
+    "detail": "連續 5 次測驗零失誤"
+  },
+  "pstreak-10": {
+    "title": "勢如破竹",
+    "detail": "連續 10 次測驗零失誤"
+  },
+  "streak-3": {
+    "title": "漸入佳境",
+    "detail": "連續 3 天練習"
+  },
+  "streak-7": {
+    "title": "堅持一週",
+    "detail": "連續 7 天練習"
+  },
+  "streak-14": {
+    "title": "兩週專注",
+    "detail": "連續 14 天練習"
+  },
+  "streak-21": {
+    "title": "三週火焰",
+    "detail": "連續 21 天練習"
+  },
+  "streak-30": {
+    "title": "鋼鐵習慣",
+    "detail": "連續 30 天練習"
+  },
+  "streak-50": {
+    "title": "烈焰狂燃",
+    "detail": "連續 50 天練習"
+  },
+  "streak-100": {
+    "title": "牢不可破",
+    "detail": "連續 100 天練習"
+  },
+  "streak-365": {
+    "title": "火熱一整年",
+    "detail": "連續 365 天練習"
+  },
+  "days-5": {
+    "title": "固定班底",
+    "detail": "累計練習 5 天"
+  },
+  "days-15": {
+    "title": "養成習慣",
+    "detail": "累計練習 15 天"
+  },
+  "days-30": {
+    "title": "堅持不懈",
+    "detail": "累計練習 30 天"
+  },
+  "days-60": {
+    "title": "勤奮不輟",
+    "detail": "累計練習 60 天"
+  },
+  "days-100": {
+    "title": "全心投入",
+    "detail": "累計練習 100 天"
+  },
+  "days-200": {
+    "title": "終身學習者",
+    "detail": "累計練習 200 天"
+  },
+  "day-25": {
+    "title": "小試身手",
+    "detail": "單日回答 25 道題目"
+  },
+  "day-50": {
+    "title": "刷題狂人",
+    "detail": "單日回答 50 道題目"
+  },
+  "day-100": {
+    "title": "超額達成",
+    "detail": "單日回答 100 道題目"
+  },
+  "day-200": {
+    "title": "鋼鐵意志",
+    "detail": "單日回答 200 道題目"
+  },
+  "subject-master": {
+    "title": "科目大師",
+    "detail": "任一科目達到 90%"
+  },
+  "subject-perfect": {
+    "title": "主題巨人",
+    "detail": "任一科目達到 100%"
+  },
+  "subjects-1": {
+    "title": "專精達人",
+    "detail": "1 個科目達到 90% 以上"
+  },
+  "subjects-3": {
+    "title": "三冠王",
+    "detail": "3 個科目達到 90% 以上"
+  },
+  "all-subjects": {
+    "title": "全能通才",
+    "detail": "練習過每個科目"
+  },
+  "subjects-all": {
+    "title": "全科大師",
+    "detail": "所有科目都達到 90% 以上"
+  },
+  "mock-pass": {
+    "title": "考試準備就緒",
+    "detail": "通過一次模擬考"
+  },
+  "mock-90": {
+    "title": "名列前茅",
+    "detail": "模擬考拿到 90%"
+  },
+  "mock-100": {
+    "title": "滿分傳說",
+    "detail": "模擬考拿下 100% 滿分"
+  },
+  "collect-5": {
+    "title": "收藏家",
+    "detail": "將 5 道題目加入收藏"
+  },
+  "collect-10": {
+    "title": "存題達人",
+    "detail": "將 10 道題目加入收藏"
+  },
+  "collect-25": {
+    "title": "策展人",
+    "detail": "將 25 道題目加入收藏"
+  },
+  "collect-50": {
+    "title": "檔案管理員",
+    "detail": "將 50 道題目加入收藏"
+  },
+  "collect-100": {
+    "title": "圖書館長",
+    "detail": "將 100 道題目加入收藏"
+  },
+  "early-bird": {
+    "title": "早起鳥",
+    "detail": "早上 7 點前練習"
+  },
+  "early-5": {
+    "title": "黎明巡邏隊",
+    "detail": "早上 7 點前練習 5 次"
+  },
+  "early-10": {
+    "title": "晨雞報曉",
+    "detail": "早上 7 點前練習 10 次"
+  },
+  "night-owl": {
+    "title": "夜貓子",
+    "detail": "晚上 10 點後練習"
+  },
+  "night-5": {
+    "title": "月光學習者",
+    "detail": "晚上 10 點後練習 5 次"
+  },
+  "night-10": {
+    "title": "挑燈夜戰",
+    "detail": "晚上 10 點後練習 10 次"
+  },
+  "weekend-1": {
+    "title": "週末戰士",
+    "detail": "在週末練習"
+  },
+  "weekend-8": {
+    "title": "週末常客",
+    "detail": "週末練習 8 次"
+  },
+  "weekend-20": {
+    "title": "週末鐵粉",
+    "detail": "週末練習 20 次"
+  },
+  "comeback": {
+    "title": "強勢回歸",
+    "detail": "中斷 7 天後重新回來"
+  },
+  "comeback-3": {
+    "title": "不屈不撓",
+    "detail": "中斷後重新回歸 3 次"
+  },
+  "speedster": {
+    "title": "極速狂飆",
+    "detail": "快速完成一次 10 題以上的測驗"
+  },
+  "speed-5": {
+    "title": "快手出擊",
+    "detail": "快速完成 5 次測驗"
+  },
+  "speed-10": {
+    "title": "閃電回合",
+    "detail": "快速完成 10 次測驗"
+  },
+  "explorer": {
+    "title": "探險家",
+    "detail": "嘗試 5 種不同的測驗模式"
+  },
+  "time-60": {
+    "title": "高效一小時",
+    "detail": "累計練習 60 分鐘"
+  },
+  "time-300": {
+    "title": "時間投資",
+    "detail": "累計練習 5 小時"
+  },
+  "time-600": {
+    "title": "學者",
+    "detail": "累計練習 10 小時"
+  },
+  "time-1500": {
+    "title": "教授",
+    "detail": "累計練習 25 小時"
+  }
+}

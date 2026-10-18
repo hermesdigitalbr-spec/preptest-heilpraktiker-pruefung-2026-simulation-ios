@@ -48,11 +48,14 @@ struct AchievementBadge: View {
     var body: some View {
         VStack(spacing: AppSpacing.sm) {
             medal
+            // Two lines always reserved, centred — every card in the grid ends
+            // up the same height whether the title wraps or not.
             Text(status.def.title)
                 .font(AppFont.bodyMedium(compact ? 13 : 15))
                 .foregroundStyle(unlocked ? AppColor.textPrimary : AppColor.textSecondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .multilineTextAlignment(.center)
+                .lineLimit(2, reservesSpace: true)
+                .frame(maxWidth: .infinity)
 
             if !compact {
                 // Pin the detail to a consistent two-line height so every
@@ -61,9 +64,10 @@ struct AchievementBadge: View {
                     .font(AppFont.caption(12))
                     .foregroundStyle(AppColor.textDim)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    // Room for the longest detail in the pack, so nothing is
+                    // ever cut and every card still measures the same.
+                    .lineLimit(3, reservesSpace: true)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 32, alignment: .top)
                 // Always reserve the progress-bar slot — invisible when not
                 // shown — so unlocked badges match locked ones in height.
                 progressSlot
@@ -78,8 +82,8 @@ struct AchievementBadge: View {
         .opacity(unlocked || !compact ? 1 : 0.85)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(unlocked
-            ? "\(status.def.title), unlocked. \(status.def.detail)"
-            : "\(status.def.title), locked. \(status.def.detail)")
+            ? String(format: session.strings.common.a11yUnlockedFormat, status.def.title, status.def.detail)
+            : String(format: session.strings.common.a11yLockedFormat, status.def.title, status.def.detail))
         .accessibilityValue(unlocked
             ? ""
             : String(format: session.strings.stats.achievementProgressFormat,

@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "Erste Schritte",
+    "detail": "Schließe dein erstes Quiz ab"
+  },
+  "quizzes-10": {
+    "title": "Wird ernst",
+    "detail": "Schließe 10 Quizze ab"
+  },
+  "quizzes-25": {
+    "title": "Vierteljahrhundert",
+    "detail": "Schließe 25 Quizze ab"
+  },
+  "quizzes-50": {
+    "title": "Quiz-Veteran",
+    "detail": "Schließe 50 Quizze ab"
+  },
+  "quizzes-100": {
+    "title": "Zenturio",
+    "detail": "Schließe 100 Quizze ab"
+  },
+  "quizzes-250": {
+    "title": "Quiz-Maschine",
+    "detail": "Schließe 250 Quizze ab"
+  },
+  "quizzes-500": {
+    "title": "Quiz-Meister",
+    "detail": "Schließe 500 Quizze ab"
+  },
+  "answered-100": {
+    "title": "Warm-up",
+    "detail": "Beantworte 100 Fragen"
+  },
+  "answered-250": {
+    "title": "Wird wärmer",
+    "detail": "Beantworte 250 Fragen"
+  },
+  "answered-500": {
+    "title": "Fragen-Knacker",
+    "detail": "Beantworte 500 Fragen"
+  },
+  "answered-1000": {
+    "title": "Nicht zu stoppen",
+    "detail": "Beantworte 1.000 Fragen"
+  },
+  "answered-2500": {
+    "title": "Langstreckenläufer",
+    "detail": "Beantworte 2.500 Fragen"
+  },
+  "answered-5000": {
+    "title": "Fragen-Legende",
+    "detail": "Beantworte 5.000 Fragen"
+  },
+  "answered-10000": {
+    "title": "Club der Zehntausend",
+    "detail": "Beantworte 10.000 Fragen"
+  },
+  "correct-100": {
+    "title": "Treffer",
+    "detail": "Beantworte 100 Fragen richtig"
+  },
+  "correct-500": {
+    "title": "Zielsicher",
+    "detail": "Beantworte 500 Fragen richtig"
+  },
+  "correct-1000": {
+    "title": "Adlerauge",
+    "detail": "Beantworte 1.000 Fragen richtig"
+  },
+  "correct-2500": {
+    "title": "Volltreffer",
+    "detail": "Beantworte 2.500 Fragen richtig"
+  },
+  "correct-5000": {
+    "title": "Präzisionslegende",
+    "detail": "Beantworte 5.000 Fragen richtig"
+  },
+  "accuracy-80": {
+    "title": "Treffsicher",
+    "detail": "Halte eine Trefferquote von 80 %"
+  },
+  "accuracy-90": {
+    "title": "Präzisionsprofi",
+    "detail": "Halte eine Trefferquote von 90 %"
+  },
+  "accuracy-95": {
+    "title": "Meisterschütze",
+    "detail": "Halte eine Trefferquote von 95 %"
+  },
+  "first-perfect": {
+    "title": "Makellos",
+    "detail": "Schließe ein Quiz fehlerfrei ab"
+  },
+  "perfect-5": {
+    "title": "Präzise",
+    "detail": "Schließe 5 Quizze fehlerfrei ab"
+  },
+  "perfect-10": {
+    "title": "Perfektionist",
+    "detail": "Schließe 10 Quizze fehlerfrei ab"
+  },
+  "perfect-25": {
+    "title": "Zielgenau",
+    "detail": "Schließe 25 Quizze fehlerfrei ab"
+  },
+  "perfect-50": {
+    "title": "Ass-Sammler",
+    "detail": "Schließe 50 Quizze fehlerfrei ab"
+  },
+  "perfect-100": {
+    "title": "Lebende Legende",
+    "detail": "Schließe 100 Quizze fehlerfrei ab"
+  },
+  "pstreak-3": {
+    "title": "Heiße Serie",
+    "detail": "3 fehlerfreie Quizze in Folge"
+  },
+  "pstreak-5": {
+    "title": "Makelloser Lauf",
+    "detail": "5 fehlerfreie Quizze in Folge"
+  },
+  "pstreak-10": {
+    "title": "Unantastbar",
+    "detail": "10 fehlerfreie Quizze in Folge"
+  },
+  "streak-3": {
+    "title": "Im Flow",
+    "detail": "Übe 3 Tage in Folge"
+  },
+  "streak-7": {
+    "title": "Starke Woche",
+    "detail": "Übe 7 Tage in Folge"
+  },
+  "streak-14": {
+    "title": "Zwei-Wochen-Fokus",
+    "detail": "Übe 14 Tage in Folge"
+  },
+  "streak-21": {
+    "title": "Drei-Wochen-Flamme",
+    "detail": "Übe 21 Tage in Folge"
+  },
+  "streak-30": {
+    "title": "Eiserne Gewohnheit",
+    "detail": "Übe 30 Tage in Folge"
+  },
+  "streak-50": {
+    "title": "Inferno",
+    "detail": "Übe 50 Tage in Folge"
+  },
+  "streak-100": {
+    "title": "Unzerbrechlich",
+    "detail": "Übe 100 Tage in Folge"
+  },
+  "streak-365": {
+    "title": "Jahr des Feuers",
+    "detail": "Übe 365 Tage in Folge"
+  },
+  "days-5": {
+    "title": "Stammgast",
+    "detail": "Übe an 5 verschiedenen Tagen"
+  },
+  "days-15": {
+    "title": "Gewohnheitstier",
+    "detail": "Übe an 15 verschiedenen Tagen"
+  },
+  "days-30": {
+    "title": "Engagiert",
+    "detail": "Übe an 30 verschiedenen Tagen"
+  },
+  "days-60": {
+    "title": "Fleißig",
+    "detail": "Übe an 60 verschiedenen Tagen"
+  },
+  "days-100": {
+    "title": "Hingebungsvoll",
+    "detail": "Übe an 100 verschiedenen Tagen"
+  },
+  "days-200": {
+    "title": "Lernprofi fürs Leben",
+    "detail": "Übe an 200 verschiedenen Tagen"
+  },
+  "day-25": {
+    "title": "Kurze Session",
+    "detail": "Beantworte 25 Fragen an einem Tag"
+  },
+  "day-50": {
+    "title": "Arbeitstier",
+    "detail": "Beantworte 50 Fragen an einem Tag"
+  },
+  "day-100": {
+    "title": "Überflieger",
+    "detail": "Beantworte 100 Fragen an einem Tag"
+  },
+  "day-200": {
+    "title": "Eiserner Wille",
+    "detail": "Beantworte 200 Fragen an einem Tag"
+  },
+  "subject-master": {
+    "title": "Fachmeister",
+    "detail": "Erreiche 90 % in einem beliebigen Fach"
+  },
+  "subject-perfect": {
+    "title": "Themen-Titan",
+    "detail": "Erreiche 100 % in einem beliebigen Fach"
+  },
+  "subjects-1": {
+    "title": "Spezialist",
+    "detail": "Erreiche in 1 Fach mindestens 90 %"
+  },
+  "subjects-3": {
+    "title": "Dreifach-Talent",
+    "detail": "Erreiche in 3 Fächern mindestens 90 %"
+  },
+  "all-subjects": {
+    "title": "Rundum gut",
+    "detail": "Übe jedes Fach"
+  },
+  "subjects-all": {
+    "title": "Meister aller Klassen",
+    "detail": "Erreiche in jedem Fach mindestens 90 %"
+  },
+  "mock-pass": {
+    "title": "Prüfungsreif",
+    "detail": "Bestehe eine Probeprüfung"
+  },
+  "mock-90": {
+    "title": "Klassenbester",
+    "detail": "Erreiche 90 % in einer Probeprüfung"
+  },
+  "mock-100": {
+    "title": "Volle Punktzahl",
+    "detail": "Schließe eine Probeprüfung mit 100 % ab"
+  },
+  "collect-5": {
+    "title": "Sammler",
+    "detail": "Speichere 5 Fragen"
+  },
+  "collect-10": {
+    "title": "Aufbewahrer",
+    "detail": "Speichere 10 Fragen"
+  },
+  "collect-25": {
+    "title": "Kurator",
+    "detail": "Speichere 25 Fragen"
+  },
+  "collect-50": {
+    "title": "Archivar",
+    "detail": "Speichere 50 Fragen"
+  },
+  "collect-100": {
+    "title": "Bibliothekar",
+    "detail": "Speichere 100 Fragen"
+  },
+  "early-bird": {
+    "title": "Frühaufsteher",
+    "detail": "Übe vor 7 Uhr morgens"
+  },
+  "early-5": {
+    "title": "Morgendämmerung",
+    "detail": "Übe 5 Mal vor 7 Uhr morgens"
+  },
+  "early-10": {
+    "title": "Früher Vogel",
+    "detail": "Übe 10 Mal vor 7 Uhr morgens"
+  },
+  "night-owl": {
+    "title": "Nachteule",
+    "detail": "Übe nach 22 Uhr"
+  },
+  "night-5": {
+    "title": "Nachtschwärmer",
+    "detail": "Übe 5 Mal nach 22 Uhr"
+  },
+  "night-10": {
+    "title": "Mitternachtslerner",
+    "detail": "Übe 10 Mal nach 22 Uhr"
+  },
+  "weekend-1": {
+    "title": "Wochenendlerner",
+    "detail": "Übe an einem Wochenende"
+  },
+  "weekend-8": {
+    "title": "Wochenend-Stammgast",
+    "detail": "Übe 8 Mal an Wochenenden"
+  },
+  "weekend-20": {
+    "title": "Wochenend-Fan",
+    "detail": "Übe 20 Mal an Wochenenden"
+  },
+  "comeback": {
+    "title": "Comeback",
+    "detail": "Kehre nach 7 Tagen Pause zurück"
+  },
+  "comeback-3": {
+    "title": "Hartnäckig",
+    "detail": "Kehre nach 3 Pausen zurück"
+  },
+  "speedster": {
+    "title": "Tempo-Teufel",
+    "detail": "Beende ein Quiz mit 10+ Fragen schnell"
+  },
+  "speed-5": {
+    "title": "Flinker Kopf",
+    "detail": "Beende 5 Quizze schnell"
+  },
+  "speed-10": {
+    "title": "Blitzrunde",
+    "detail": "Beende 10 Quizze schnell"
+  },
+  "explorer": {
+    "title": "Entdecker",
+    "detail": "Probiere 5 verschiedene Quizmodi aus"
+  },
+  "time-60": {
+    "title": "Erste Stunde",
+    "detail": "Übe insgesamt 60 Minuten"
+  },
+  "time-300": {
+    "title": "Investierte Zeit",
+    "detail": "Übe insgesamt 5 Stunden"
+  },
+  "time-600": {
+    "title": "Gelehrter",
+    "detail": "Übe insgesamt 10 Stunden"
+  },
+  "time-1500": {
+    "title": "Professor",
+    "detail": "Übe insgesamt 25 Stunden"
+  }
+}

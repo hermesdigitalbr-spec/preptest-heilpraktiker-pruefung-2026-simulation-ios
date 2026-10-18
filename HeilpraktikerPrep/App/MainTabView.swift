@@ -9,29 +9,44 @@ struct MainTabView: View {
         _selection = State(initialValue: initialTab)
     }
 
+    /// Phosphor (regular) outline icons from the asset catalog — a single
+    /// thin-line family, never swapped for a filled variant when selected.
+    private func tab(_ title: String, _ asset: String) -> some View {
+        Label {
+            Text(title)
+        } icon: {
+            // Pre-rasterised at 22pt: tab items ignore frame modifiers, so the
+            // size has to live in the asset itself.
+            Image(asset)
+                .renderingMode(.template)
+        }
+    }
+
     var body: some View {
         TabView(selection: $selection) {
             HomeView()
-                .tabItem { Label(session.strings.tabs.home, systemImage: "house.fill") }
+                .tabItem { tab(session.strings.tabs.home, "tabHome") }
                 .tag(0)
 
             StudyView()
-                .tabItem { Label(session.strings.tabs.study, systemImage: "book.fill") }
+                .tabItem { tab(session.strings.tabs.study, "tabStudy") }
                 .tag(1)
 
             ReviewView()
-                .tabItem { Label(session.strings.tabs.review, systemImage: "clock.arrow.circlepath") }
+                .tabItem { tab(session.strings.tabs.review, "tabReview") }
                 .tag(2)
 
             StatsView()
-                .tabItem { Label(session.strings.tabs.stats, systemImage: "chart.bar.fill") }
+                .tabItem { tab(session.strings.tabs.stats, "tabStats") }
                 .tag(3)
 
             SettingsView()
-                .tabItem { Label(session.strings.tabs.settings, systemImage: "gearshape.fill") }
+                .tabItem { tab(session.strings.tabs.settings, "tabSettings") }
                 .tag(4)
         }
         .tint(AppColor.accent)
+        // Outline glyphs on every tab, selected included — no auto-fill.
+        .environment(\.symbolVariants, .none)
         .onChange(of: session.pendingDailyLaunch) { _, pending in
             if pending { selection = 0 } // jump to Home; HomeView consumes the flag
         }

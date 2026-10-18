@@ -57,8 +57,8 @@
     }
   ],
   "mockExam": {
-    "questionCount": 60,
-    "minutes": 120,
+    "questionCount": 28,
+    "minutes": 55,
     "passPercent": 75
   },
   "dailyQuestionsCount": 10,
@@ -67,9 +67,10 @@
   "freeDailyQuizzes": 3,
   "products": {
     "weekly": "app.hermesdigital.hp.weekly",
-    "monthly": "app.hermesdigital.hp.monthly"
+    "monthly": "app.hermesdigital.hp.monthly",
+    "quarterly": "app.hermesdigital.hp.quarterly"
   },
-  "appStoreUrl": null,
+  "appStoreUrl": "https://apps.apple.com/app/id6796318955",
   "legal": {
     "privacyUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/privacy.html",
     "termsUrl": "https://hermesdigitalbr-spec.github.io/hp-legal/terms.html",
@@ -90,7 +91,7 @@
     },
     {
       "id": "quizzes-10",
-      "title": "Jetzt wird's ernst",
+      "title": "Wird ernst",
       "detail": "Schließe 10 Quizze ab",
       "icon": "books.vertical.fill",
       "tint": "#4F8EF7",
@@ -102,7 +103,7 @@
     {
       "id": "quizzes-25",
       "title": "Vierteljahrhundert",
-      "detail": "Übe 25 Quizze",
+      "detail": "Schließe 25 Quizze ab",
       "icon": "rectangle.stack.fill",
       "tint": "#8E6FF7",
       "criterion": {
@@ -135,7 +136,7 @@
     {
       "id": "quizzes-250",
       "title": "Quiz-Maschine",
-      "detail": "Übe 250 Quizze",
+      "detail": "Schließe 250 Quizze ab",
       "icon": "gearshape.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -146,7 +147,7 @@
     {
       "id": "quizzes-500",
       "title": "Quiz-Meister",
-      "detail": "Übe 500 Quizze",
+      "detail": "Schließe 500 Quizze ab",
       "icon": "flag.checkered",
       "tint": "#E03B3B",
       "criterion": {
@@ -156,7 +157,7 @@
     },
     {
       "id": "answered-100",
-      "title": "Aufgewärmt",
+      "title": "Warm-up",
       "detail": "Beantworte 100 Fragen",
       "icon": "square.stack.3d.up.fill",
       "tint": "#4F8EF7",
@@ -167,7 +168,7 @@
     },
     {
       "id": "answered-250",
-      "title": "Es wird heiß",
+      "title": "Wird wärmer",
       "detail": "Beantworte 250 Fragen",
       "icon": "square.stack.3d.up.fill",
       "tint": "#8E6FF7",
@@ -178,7 +179,7 @@
     },
     {
       "id": "answered-500",
-      "title": "Fragenknacker",
+      "title": "Fragen-Knacker",
       "detail": "Beantworte 500 Fragen",
       "icon": "square.stack.3d.up.fill",
       "tint": "#8E6FF7",
@@ -189,7 +190,7 @@
     },
     {
       "id": "answered-1000",
-      "title": "Nicht zu bremsen",
+      "title": "Nicht zu stoppen",
       "detail": "Beantworte 1.000 Fragen",
       "icon": "bolt.fill",
       "tint": "#F2A33C",
@@ -200,7 +201,7 @@
     },
     {
       "id": "answered-2500",
-      "title": "Marathonkopf",
+      "title": "Langstreckenläufer",
       "detail": "Beantworte 2.500 Fragen",
       "icon": "brain.head.profile",
       "tint": "#8E6FF7",
@@ -233,7 +234,7 @@
     },
     {
       "id": "correct-100",
-      "title": "Volltreffer",
+      "title": "Treffer",
       "detail": "Beantworte 100 Fragen richtig",
       "icon": "checkmark.circle.fill",
       "tint": "#4F8EF7",
@@ -244,7 +245,7 @@
     },
     {
       "id": "correct-500",
-      "title": "Meisterschütze",
+      "title": "Zielsicher",
       "detail": "Beantworte 500 Fragen richtig",
       "icon": "checkmark.shield.fill",
       "tint": "#8E6FF7",
@@ -266,7 +267,7 @@
     },
     {
       "id": "correct-2500",
-      "title": "Ins Schwarze",
+      "title": "Volltreffer",
       "detail": "Beantworte 2.500 Fragen richtig",
       "icon": "trophy.circle.fill",
       "tint": "#F2A33C",
@@ -277,7 +278,7 @@
     },
     {
       "id": "correct-5000",
-      "title": "Legende der Präzision",
+      "title": "Präzisionslegende",
       "detail": "Beantworte 5.000 Fragen richtig",
       "icon": "medal.fill",
       "tint": "#E03B3B",
@@ -288,8 +289,8 @@
     },
     {
       "id": "accuracy-80",
-      "title": "Guter Schütze",
-      "detail": "Halte insgesamt 80 % Trefferquote",
+      "title": "Treffsicher",
+      "detail": "Halte eine Trefferquote von 80 %",
       "icon": "dot.scope",
       "tint": "#23A566",
       "criterion": {
@@ -299,8 +300,8 @@
     },
     {
       "id": "accuracy-90",
-      "title": "Scharfschütze",
-      "detail": "Halte insgesamt 90 % Trefferquote",
+      "title": "Präzisionsprofi",
+      "detail": "Halte eine Trefferquote von 90 %",
       "icon": "scope",
       "tint": "#F2A33C",
       "criterion": {
@@ -310,8 +311,8 @@
     },
     {
       "id": "accuracy-95",
-      "title": "Tödlich genau",
-      "detail": "Halte insgesamt 95 % Trefferquote",
+      "title": "Meisterschütze",
+      "detail": "Halte eine Trefferquote von 95 %",
       "icon": "target",
       "tint": "#E03B3B",
       "criterion": {
@@ -322,7 +323,7 @@
     {
       "id": "first-perfect",
       "title": "Makellos",
-      "detail": "Schaffe ein Quiz ohne einen einzigen Fehler",
+      "detail": "Schließe ein Quiz fehlerfrei ab",
       "icon": "checkmark.seal.fill",
       "tint": "#23A566",
       "criterion": {
@@ -332,8 +333,8 @@
     },
     {
       "id": "perfect-5",
-      "title": "Punktgenau",
-      "detail": "Schaffe 5 Quizze ohne Fehler",
+      "title": "Präzise",
+      "detail": "Schließe 5 Quizze fehlerfrei ab",
       "icon": "checkmark.seal.fill",
       "tint": "#23A566",
       "criterion": {
@@ -344,7 +345,7 @@
     {
       "id": "perfect-10",
       "title": "Perfektionist",
-      "detail": "Schaffe 10 Quizze ohne Fehler",
+      "detail": "Schließe 10 Quizze fehlerfrei ab",
       "icon": "crown.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -354,8 +355,8 @@
     },
     {
       "id": "perfect-25",
-      "title": "Präzisionsschütze",
-      "detail": "Schaffe 25 Quizze ohne Fehler",
+      "title": "Zielgenau",
+      "detail": "Schließe 25 Quizze fehlerfrei ab",
       "icon": "target",
       "tint": "#E03B3B",
       "criterion": {
@@ -366,7 +367,7 @@
     {
       "id": "perfect-50",
       "title": "Ass-Sammler",
-      "detail": "Schaffe 50 Quizze ohne Fehler",
+      "detail": "Schließe 50 Quizze fehlerfrei ab",
       "icon": "crown.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -377,7 +378,7 @@
     {
       "id": "perfect-100",
       "title": "Lebende Legende",
-      "detail": "Schaffe 100 Quizze ohne Fehler",
+      "detail": "Schließe 100 Quizze fehlerfrei ab",
       "icon": "star.circle.fill",
       "tint": "#E03B3B",
       "criterion": {
@@ -398,7 +399,7 @@
     },
     {
       "id": "pstreak-5",
-      "title": "Makellose Serie",
+      "title": "Makelloser Lauf",
       "detail": "5 fehlerfreie Quizze in Folge",
       "icon": "flame.fill",
       "tint": "#FF6B3D",
@@ -420,8 +421,8 @@
     },
     {
       "id": "streak-3",
-      "title": "Im Lauf",
-      "detail": "Übe an 3 Tagen in Folge",
+      "title": "Im Flow",
+      "detail": "Übe 3 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#F2789F",
       "criterion": {
@@ -432,7 +433,7 @@
     {
       "id": "streak-7",
       "title": "Starke Woche",
-      "detail": "Übe an 7 Tagen in Folge",
+      "detail": "Übe 7 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#F25C54",
       "criterion": {
@@ -442,8 +443,8 @@
     },
     {
       "id": "streak-14",
-      "title": "Zwei Wochen Fokus",
-      "detail": "Übe an 14 Tagen in Folge",
+      "title": "Zwei-Wochen-Fokus",
+      "detail": "Übe 14 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#FF6B3D",
       "criterion": {
@@ -454,7 +455,7 @@
     {
       "id": "streak-21",
       "title": "Drei-Wochen-Flamme",
-      "detail": "Übe an 21 Tagen in Folge",
+      "detail": "Übe 21 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#F25C54",
       "criterion": {
@@ -465,7 +466,7 @@
     {
       "id": "streak-30",
       "title": "Eiserne Gewohnheit",
-      "detail": "Übe an 30 Tagen in Folge",
+      "detail": "Übe 30 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#E03B3B",
       "criterion": {
@@ -476,7 +477,7 @@
     {
       "id": "streak-50",
       "title": "Inferno",
-      "detail": "Übe an 50 Tagen in Folge",
+      "detail": "Übe 50 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#B5202A",
       "criterion": {
@@ -487,7 +488,7 @@
     {
       "id": "streak-100",
       "title": "Unzerbrechlich",
-      "detail": "Übe an 100 Tagen in Folge",
+      "detail": "Übe 100 Tage in Folge",
       "icon": "flame.fill",
       "tint": "#B5202A",
       "criterion": {
@@ -497,8 +498,8 @@
     },
     {
       "id": "streak-365",
-      "title": "Jahr aus Feuer",
-      "detail": "Übe an 365 Tagen in Folge",
+      "title": "Jahr des Feuers",
+      "detail": "Übe 365 Tage in Folge",
       "icon": "flame.circle.fill",
       "tint": "#B5202A",
       "criterion": {
@@ -530,7 +531,7 @@
     },
     {
       "id": "days-30",
-      "title": "Fest entschlossen",
+      "title": "Engagiert",
       "detail": "Übe an 30 verschiedenen Tagen",
       "icon": "calendar.badge.checkmark",
       "tint": "#8E6FF7",
@@ -552,7 +553,7 @@
     },
     {
       "id": "days-100",
-      "title": "Mit Leib und Seele",
+      "title": "Hingebungsvoll",
       "detail": "Übe an 100 verschiedenen Tagen",
       "icon": "calendar.circle.fill",
       "tint": "#F2A33C",
@@ -563,7 +564,7 @@
     },
     {
       "id": "days-200",
-      "title": "Urgestein",
+      "title": "Lernprofi fürs Leben",
       "detail": "Übe an 200 verschiedenen Tagen",
       "icon": "calendar.circle.fill",
       "tint": "#E03B3B",
@@ -574,7 +575,7 @@
     },
     {
       "id": "day-25",
-      "title": "Kurze Einheit",
+      "title": "Kurze Session",
       "detail": "Beantworte 25 Fragen an einem Tag",
       "icon": "bolt.circle.fill",
       "tint": "#4F8EF7",
@@ -585,7 +586,7 @@
     },
     {
       "id": "day-50",
-      "title": "Malocher",
+      "title": "Arbeitstier",
       "detail": "Beantworte 50 Fragen an einem Tag",
       "icon": "bolt.horizontal.fill",
       "tint": "#FF6B3D",
@@ -596,7 +597,7 @@
     },
     {
       "id": "day-100",
-      "title": "Übererfüllt",
+      "title": "Überflieger",
       "detail": "Beantworte 100 Fragen an einem Tag",
       "icon": "flame.circle.fill",
       "tint": "#E03B3B",
@@ -619,7 +620,7 @@
     {
       "id": "subject-master",
       "title": "Fachmeister",
-      "detail": "Erreiche 90 % in einem Fach",
+      "detail": "Erreiche 90 % in einem beliebigen Fach",
       "icon": "star.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -630,7 +631,7 @@
     {
       "id": "subject-perfect",
       "title": "Themen-Titan",
-      "detail": "Erreiche 100 % in einem Fach",
+      "detail": "Erreiche 100 % in einem beliebigen Fach",
       "icon": "star.circle.fill",
       "tint": "#F2C12E",
       "criterion": {
@@ -641,7 +642,7 @@
     {
       "id": "subjects-1",
       "title": "Spezialist",
-      "detail": "Beherrsche 1 Fach mit 90 %+",
+      "detail": "Erreiche in 1 Fach mindestens 90 %",
       "icon": "star.fill",
       "tint": "#4F8EF7",
       "criterion": {
@@ -651,8 +652,8 @@
     },
     {
       "id": "subjects-3",
-      "title": "Dreifach stark",
-      "detail": "Beherrsche 3 Fächer mit 90 %+",
+      "title": "Dreifach-Talent",
+      "detail": "Erreiche in 3 Fächern mindestens 90 %",
       "icon": "star.square.fill",
       "tint": "#8E6FF7",
       "criterion": {
@@ -662,7 +663,7 @@
     },
     {
       "id": "all-subjects",
-      "title": "Rundum dabei",
+      "title": "Rundum gut",
       "detail": "Übe jedes Fach",
       "icon": "circle.grid.2x2.fill",
       "tint": "#2FB8C5",
@@ -672,8 +673,8 @@
     },
     {
       "id": "subjects-all",
-      "title": "Meister aller Fächer",
-      "detail": "Beherrsche alle Fächer mit 90 %+",
+      "title": "Meister aller Klassen",
+      "detail": "Erreiche in jedem Fach mindestens 90 %",
       "icon": "crown.fill",
       "tint": "#F2C12E",
       "criterion": {
@@ -703,8 +704,8 @@
     },
     {
       "id": "mock-100",
-      "title": "Bestnote",
-      "detail": "Schaffe eine Probeprüfung mit 100 %",
+      "title": "Volle Punktzahl",
+      "detail": "Schließe eine Probeprüfung mit 100 % ab",
       "icon": "seal.fill",
       "tint": "#23A566",
       "criterion": {
@@ -725,7 +726,7 @@
     },
     {
       "id": "collect-10",
-      "title": "Hamsterer",
+      "title": "Aufbewahrer",
       "detail": "Speichere 10 Fragen",
       "icon": "bookmark.square.fill",
       "tint": "#8E6FF7",
@@ -770,7 +771,7 @@
     {
       "id": "early-bird",
       "title": "Frühaufsteher",
-      "detail": "Übe vor 7 Uhr",
+      "detail": "Übe vor 7 Uhr morgens",
       "icon": "sunrise.fill",
       "tint": "#F2C12E",
       "criterion": {
@@ -779,8 +780,8 @@
     },
     {
       "id": "early-5",
-      "title": "Morgenpatrouille",
-      "detail": "Übe 5-mal vor 7 Uhr",
+      "title": "Morgendämmerung",
+      "detail": "Übe 5 Mal vor 7 Uhr morgens",
       "icon": "sunrise.fill",
       "tint": "#F2C12E",
       "criterion": {
@@ -790,8 +791,8 @@
     },
     {
       "id": "early-10",
-      "title": "Der frühe Hahn",
-      "detail": "Übe 10-mal vor 7 Uhr",
+      "title": "Früher Vogel",
+      "detail": "Übe 10 Mal vor 7 Uhr morgens",
       "icon": "sun.horizon.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -812,7 +813,7 @@
     {
       "id": "night-5",
       "title": "Nachtschwärmer",
-      "detail": "Übe 5-mal nach 22 Uhr",
+      "detail": "Übe 5 Mal nach 22 Uhr",
       "icon": "moon.stars.fill",
       "tint": "#8E6FF7",
       "criterion": {
@@ -822,8 +823,8 @@
     },
     {
       "id": "night-10",
-      "title": "Nachtschicht",
-      "detail": "Übe 10-mal nach 22 Uhr",
+      "title": "Mitternachtslerner",
+      "detail": "Übe 10 Mal nach 22 Uhr",
       "icon": "moon.zzz.fill",
       "tint": "#8E6FF7",
       "criterion": {
@@ -833,7 +834,7 @@
     },
     {
       "id": "weekend-1",
-      "title": "Wochenendkrieger",
+      "title": "Wochenendlerner",
       "detail": "Übe an einem Wochenende",
       "icon": "calendar.badge.clock",
       "tint": "#2FB8C5",
@@ -844,7 +845,7 @@
     {
       "id": "weekend-8",
       "title": "Wochenend-Stammgast",
-      "detail": "Übe 8-mal am Wochenende",
+      "detail": "Übe 8 Mal an Wochenenden",
       "icon": "calendar.badge.plus",
       "tint": "#2FB8C5",
       "criterion": {
@@ -854,8 +855,8 @@
     },
     {
       "id": "weekend-20",
-      "title": "Wochenend-Held",
-      "detail": "Übe 20-mal am Wochenende",
+      "title": "Wochenend-Fan",
+      "detail": "Übe 20 Mal an Wochenenden",
       "icon": "calendar.badge.clock",
       "tint": "#2FB8C5",
       "criterion": {
@@ -865,8 +866,8 @@
     },
     {
       "id": "comeback",
-      "title": "Rückkehrer",
-      "detail": "Komm nach 7 Tagen Pause zurück",
+      "title": "Comeback",
+      "detail": "Kehre nach 7 Tagen Pause zurück",
       "icon": "arrow.uturn.left.circle.fill",
       "tint": "#F25C54",
       "criterion": {
@@ -876,7 +877,7 @@
     {
       "id": "comeback-3",
       "title": "Hartnäckig",
-      "detail": "Komm aus 3 Pausen zurück",
+      "detail": "Kehre nach 3 Pausen zurück",
       "icon": "arrow.uturn.left.circle.fill",
       "tint": "#F2A33C",
       "criterion": {
@@ -886,8 +887,8 @@
     },
     {
       "id": "speedster",
-      "title": "Tempoteufel",
-      "detail": "Beende ein Quiz mit 10+ Fragen im Eiltempo",
+      "title": "Tempo-Teufel",
+      "detail": "Beende ein Quiz mit 10+ Fragen schnell",
       "icon": "hare.fill",
       "tint": "#FF6B3D",
       "criterion": {
@@ -896,8 +897,8 @@
     },
     {
       "id": "speed-5",
-      "title": "Schnellschuss",
-      "detail": "Beende 5 Quizze im Eiltempo",
+      "title": "Flinker Kopf",
+      "detail": "Beende 5 Quizze schnell",
       "icon": "hare.fill",
       "tint": "#FF6B3D",
       "criterion": {
@@ -908,7 +909,7 @@
     {
       "id": "speed-10",
       "title": "Blitzrunde",
-      "detail": "Beende 10 Quizze im Eiltempo",
+      "detail": "Beende 10 Quizze schnell",
       "icon": "bolt.fill",
       "tint": "#E03B3B",
       "criterion": {
@@ -919,7 +920,7 @@
     {
       "id": "explorer",
       "title": "Entdecker",
-      "detail": "Probiere 5 verschiedene Quiz-Modi aus",
+      "detail": "Probiere 5 verschiedene Quizmodi aus",
       "icon": "map.fill",
       "tint": "#2FB8C5",
       "criterion": {
@@ -929,7 +930,7 @@
     },
     {
       "id": "time-60",
-      "title": "Stunde der Kraft",
+      "title": "Erste Stunde",
       "detail": "Übe insgesamt 60 Minuten",
       "icon": "clock.fill",
       "tint": "#4F8EF7",
@@ -940,7 +941,7 @@
     },
     {
       "id": "time-300",
-      "title": "Gut investiert",
+      "title": "Investierte Zeit",
       "detail": "Übe insgesamt 5 Stunden",
       "icon": "hourglass",
       "tint": "#8E6FF7",
@@ -971,5 +972,33 @@
         "value": 1500
       }
     }
-  ]
+  ],
+  "niche": {
+    "examOutcome": "pass",
+    "questionFormat": "multipleChoice",
+    "heroImage": "heroGroup",
+    "studentPhotoCount": 24,
+    "motivations": [
+      {
+        "id": "practice",
+        "label": "Eigene Praxis",
+        "detail": "Als Heilpraktiker selbstständig arbeiten"
+      },
+      {
+        "id": "career",
+        "label": "Beruflicher Neustart",
+        "detail": "Einen neuen Beruf im Gesundheitswesen beginnen"
+      },
+      {
+        "id": "patients",
+        "label": "Menschen helfen",
+        "detail": "Patientinnen und Patienten sicher begleiten"
+      },
+      {
+        "id": "knowledge",
+        "label": "Medizinisches Wissen",
+        "detail": "Fundiertes Wissen in Medizin und Recht aufbauen"
+      }
+    ]
+  }
 }

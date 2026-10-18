@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "Primeros Pasos",
+    "detail": "Termina tu primer quiz"
+  },
+  "quizzes-10": {
+    "title": "Poniéndote Serio",
+    "detail": "Completa 10 quizzes"
+  },
+  "quizzes-25": {
+    "title": "Cuarto de Siglo",
+    "detail": "Practica 25 quizzes"
+  },
+  "quizzes-50": {
+    "title": "Veterano de los Quizzes",
+    "detail": "Completa 50 quizzes"
+  },
+  "quizzes-100": {
+    "title": "Centurión",
+    "detail": "Completa 100 quizzes"
+  },
+  "quizzes-250": {
+    "title": "Máquina de Quiz",
+    "detail": "Practica 250 quizzes"
+  },
+  "quizzes-500": {
+    "title": "Maestro de los Quizzes",
+    "detail": "Practica 500 quizzes"
+  },
+  "answered-100": {
+    "title": "Entrando en Calor",
+    "detail": "Responde 100 preguntas"
+  },
+  "answered-250": {
+    "title": "Cada Vez Más Caliente",
+    "detail": "Responde 250 preguntas"
+  },
+  "answered-500": {
+    "title": "Aplastador de Preguntas",
+    "detail": "Responde 500 preguntas"
+  },
+  "answered-1000": {
+    "title": "Imparable",
+    "detail": "Responde 1.000 preguntas"
+  },
+  "answered-2500": {
+    "title": "Mente Maratonista",
+    "detail": "Responde 2.500 preguntas"
+  },
+  "answered-5000": {
+    "title": "Leyenda de las Preguntas",
+    "detail": "Responde 5.000 preguntas"
+  },
+  "answered-10000": {
+    "title": "Club de los Diez Mil",
+    "detail": "Responde 10.000 preguntas"
+  },
+  "correct-100": {
+    "title": "En el Blanco",
+    "detail": "Acierta 100 respuestas"
+  },
+  "correct-500": {
+    "title": "Tirador Certero",
+    "detail": "Acierta 500 respuestas"
+  },
+  "correct-1000": {
+    "title": "Ojo Certero",
+    "detail": "Acierta 1.000 respuestas"
+  },
+  "correct-2500": {
+    "title": "Diana Perfecta",
+    "detail": "Acierta 2.500 respuestas"
+  },
+  "correct-5000": {
+    "title": "Leyenda de la Precisión",
+    "detail": "Acierta 5.000 respuestas"
+  },
+  "accuracy-80": {
+    "title": "Buena Puntería",
+    "detail": "Mantén 80% de aciertos en general"
+  },
+  "accuracy-90": {
+    "title": "Tirador de Élite",
+    "detail": "Mantén 90% de aciertos en general"
+  },
+  "accuracy-95": {
+    "title": "Precisión Mortal",
+    "detail": "Mantén 95% de aciertos en general"
+  },
+  "first-perfect": {
+    "title": "Impecable",
+    "detail": "Acierta un quiz sin ningún error"
+  },
+  "perfect-5": {
+    "title": "Preciso",
+    "detail": "Acierta 5 quizzes sin errores"
+  },
+  "perfect-10": {
+    "title": "Perfeccionista",
+    "detail": "Acierta 10 quizzes sin errores"
+  },
+  "perfect-25": {
+    "title": "Tirador de Precisión",
+    "detail": "Acierta 25 quizzes sin errores"
+  },
+  "perfect-50": {
+    "title": "Coleccionista de Ases",
+    "detail": "Acierta 50 quizzes sin errores"
+  },
+  "perfect-100": {
+    "title": "Leyenda Viviente",
+    "detail": "Acierta 100 quizzes sin errores"
+  },
+  "pstreak-3": {
+    "title": "Racha Caliente",
+    "detail": "3 quizzes impecables seguidos"
+  },
+  "pstreak-5": {
+    "title": "Racha Impecable",
+    "detail": "5 quizzes impecables seguidos"
+  },
+  "pstreak-10": {
+    "title": "Intocable",
+    "detail": "10 quizzes impecables seguidos"
+  },
+  "streak-3": {
+    "title": "Con Impulso",
+    "detail": "Practica 3 días seguidos"
+  },
+  "streak-7": {
+    "title": "Semana Fuerte",
+    "detail": "Practica 7 días seguidos"
+  },
+  "streak-14": {
+    "title": "Enfoque de Quincena",
+    "detail": "Practica 14 días seguidos"
+  },
+  "streak-21": {
+    "title": "Llama de Tres Semanas",
+    "detail": "Practica 21 días seguidos"
+  },
+  "streak-30": {
+    "title": "Hábito de Hierro",
+    "detail": "Practica 30 días seguidos"
+  },
+  "streak-50": {
+    "title": "Infierno",
+    "detail": "Practica 50 días seguidos"
+  },
+  "streak-100": {
+    "title": "Inquebrantable",
+    "detail": "Practica 100 días seguidos"
+  },
+  "streak-365": {
+    "title": "Año de Fuego",
+    "detail": "Practica 365 días seguidos"
+  },
+  "days-5": {
+    "title": "Frecuente",
+    "detail": "Practica en 5 días diferentes"
+  },
+  "days-15": {
+    "title": "Creando el Hábito",
+    "detail": "Practica en 15 días diferentes"
+  },
+  "days-30": {
+    "title": "Comprometido",
+    "detail": "Practica en 30 días diferentes"
+  },
+  "days-60": {
+    "title": "Diligente",
+    "detail": "Practica en 60 días diferentes"
+  },
+  "days-100": {
+    "title": "Devoto",
+    "detail": "Practica en 100 días diferentes"
+  },
+  "days-200": {
+    "title": "Veterano de Toda la Vida",
+    "detail": "Practica en 200 días diferentes"
+  },
+  "day-25": {
+    "title": "Sesión Rápida",
+    "detail": "Responde 25 preguntas en un día"
+  },
+  "day-50": {
+    "title": "Luchador",
+    "detail": "Responde 50 preguntas en un día"
+  },
+  "day-100": {
+    "title": "Superación",
+    "detail": "Responde 100 preguntas en un día"
+  },
+  "day-200": {
+    "title": "Fuerza de Voluntad de Hierro",
+    "detail": "Responde 200 preguntas en un día"
+  },
+  "subject-master": {
+    "title": "Maestro de la Materia",
+    "detail": "Alcanza 90% en cualquier materia"
+  },
+  "subject-perfect": {
+    "title": "Titán del Tema",
+    "detail": "Alcanza 100% en cualquier materia"
+  },
+  "subjects-1": {
+    "title": "Especialista",
+    "detail": "Domina 1 materia con 90%+"
+  },
+  "subjects-3": {
+    "title": "Triple Amenaza",
+    "detail": "Domina 3 materias con 90%+"
+  },
+  "all-subjects": {
+    "title": "Completo",
+    "detail": "Practica todas las materias"
+  },
+  "subjects-all": {
+    "title": "Maestro de Todo",
+    "detail": "Domina todas las materias con 90%+"
+  },
+  "mock-pass": {
+    "title": "Listo para el Examen",
+    "detail": "Aprueba un Simulacro"
+  },
+  "mock-90": {
+    "title": "Primero de la Clase",
+    "detail": "Saca 90% en un Simulacro"
+  },
+  "mock-100": {
+    "title": "Nota Máxima",
+    "detail": "Acierta un Simulacro con 100%"
+  },
+  "collect-5": {
+    "title": "Coleccionista",
+    "detail": "Guarda 5 preguntas en Guardadas"
+  },
+  "collect-10": {
+    "title": "Guardián",
+    "detail": "Guarda 10 preguntas en Guardadas"
+  },
+  "collect-25": {
+    "title": "Curador",
+    "detail": "Guarda 25 preguntas en Guardadas"
+  },
+  "collect-50": {
+    "title": "Archivista",
+    "detail": "Guarda 50 preguntas en Guardadas"
+  },
+  "collect-100": {
+    "title": "Bibliotecario",
+    "detail": "Guarda 100 preguntas en Guardadas"
+  },
+  "early-bird": {
+    "title": "Madrugador",
+    "detail": "Practica antes de las 7 a. m."
+  },
+  "early-5": {
+    "title": "Patrulla del Amanecer",
+    "detail": "Practica antes de las 7 a. m. 5 veces"
+  },
+  "early-10": {
+    "title": "Gallo Madrugador",
+    "detail": "Practica antes de las 7 a. m. 10 veces"
+  },
+  "night-owl": {
+    "title": "Búho Nocturno",
+    "detail": "Practica después de las 10 p. m."
+  },
+  "night-5": {
+    "title": "Andariego Nocturno",
+    "detail": "Practica después de las 10 p. m. 5 veces"
+  },
+  "night-10": {
+    "title": "Aceite de Medianoche",
+    "detail": "Practica después de las 10 p. m. 10 veces"
+  },
+  "weekend-1": {
+    "title": "Guerrero de Fin de Semana",
+    "detail": "Practica en un fin de semana"
+  },
+  "weekend-8": {
+    "title": "Asiduo de Fin de Semana",
+    "detail": "Practica 8 veces en fines de semana"
+  },
+  "weekend-20": {
+    "title": "Devoto de Fin de Semana",
+    "detail": "Practica 20 veces en fines de semana"
+  },
+  "comeback": {
+    "title": "Vuelta Triunfal",
+    "detail": "Vuelve después de 7 días de pausa"
+  },
+  "comeback-3": {
+    "title": "Persistente",
+    "detail": "Vuelve de 3 pausas"
+  },
+  "speedster": {
+    "title": "Demonio de la Velocidad",
+    "detail": "Termina un quiz de 10+ preguntas rápido"
+  },
+  "speed-5": {
+    "title": "Saque Rápido",
+    "detail": "Termina 5 quizzes rápido"
+  },
+  "speed-10": {
+    "title": "Ronda Relámpago",
+    "detail": "Termina 10 quizzes rápido"
+  },
+  "explorer": {
+    "title": "Explorador",
+    "detail": "Prueba 5 modos de quiz diferentes"
+  },
+  "time-60": {
+    "title": "Hora de Poder",
+    "detail": "Practica 60 minutos en total"
+  },
+  "time-300": {
+    "title": "Tiempo Invertido",
+    "detail": "Practica 5 horas en total"
+  },
+  "time-600": {
+    "title": "Estudioso",
+    "detail": "Practica 10 horas en total"
+  },
+  "time-1500": {
+    "title": "Profesor",
+    "detail": "Practica 25 horas en total"
+  }
+}

@@ -20,9 +20,86 @@ struct SeededGenerator: RandomNumberGenerator {
 
 enum QuestionSelector {
     /// Random sample without replacement.
-    static func quick(from pool: [Question], count: Int, seed: UInt64) -> [Question] {
+    ///
+    /// When `quicksDoneCount < 3` and the pool has image questions, injects at
+    /// least one (preferring unseen ones) so first-time users meet the
+    /// illustrated questions right away, never two images in a row and never
+    /// at slot 0. A pool with no images behaves exactly like a plain sample.
+    static func quick(
+        from pool: [Question],
+        count: Int,
+        seed: UInt64,
+        quicksDoneCount: Int = .max,
+        seenImageQuestionIds: Set<String> = []
+    ) -> [Question] {
         var rng = SeededGenerator(seed: seed)
-        return Array(pool.shuffled(using: &rng).prefix(count))
+        let imagePool = pool.filter(hasImage)
+        guard quicksDoneCount < 3, !imagePool.isEmpty, count > 1 else {
+            let sample = Array(pool.shuffled(using: &rng).prefix(count))
+            return sample.contains(where: hasImage) ? deconflictImages(in: sample, using: &rng) : sample
+        }
+        let textPool = pool.filter { !hasImage($0) }
+        let candidates = imagePool.filter { !seenImageQuestionIds.contains($0.id) }
+        let forced = (candidates.shuffled(using: &rng).first ?? imagePool.shuffled(using: &rng).first)!
+        var filler = textPool + imagePool.filter { $0.id != forced.id }
+        filler.shuffle(using: &rng)
+        return deconflictImages(in: [forced] + Array(filler.prefix(count - 1)), using: &rng)
+    }
+
+    static func hasImage(_ question: Question) -> Bool {
+        question.imageName != nil || question.imageURL != nil
+    }
+
+    /// Rearranges so no two image-bearing questions are adjacent and none sits
+    /// at slot 0. Builds [T, I, T, I, …, T…] — one text before each image.
+    private static func deconflictImages(in selected: [Question],
+                                         using rng: inout SeededGenerator) -> [Question] {
+        var images = selected.filter(hasImage).shuffled(using: &rng)
+        var texts = selected.filter { !hasImage($0) }.shuffled(using: &rng)
+
+        guard images.count >= 2 else {
+            var shuffled = selected.shuffled(using: &rng)
+            if let first = shuffled.first, hasImage(first), shuffled.count > 1 {
+                shuffled.swapAt(0, Int.random(in: 1..<shuffled.count, using: &rng))
+            }
+            return shuffled
+        }
+
+        var result: [Question] = []
+        while !images.isEmpty {
+            if !texts.isEmpty { result.append(texts.removeFirst()) }
+            result.append(images.removeFirst())
+        }
+        result.append(contentsOf: texts)
+        return result
+    }
+
+    /// Ensures ≥1 image question in `selected` when `attemptsDone < 3`, for
+    /// every quiz mode. No-op when the pool has no image questions.
+    static func injectImageIfNeeded(
+        into selected: [Question],
+        pool: [Question],
+        attemptsDone: Int,
+        seenImageIds: Set<String>,
+        seed: UInt64? = nil
+    ) -> [Question] {
+        guard attemptsDone < 3, selected.count > 1 else { return selected }
+        var rng = SeededGenerator(seed: seed ?? .random(in: .min ... .max))
+
+        if selected.contains(where: hasImage) {
+            return deconflictImages(in: selected, using: &rng)
+        }
+        let imagePool = pool.filter(hasImage)
+        guard !imagePool.isEmpty else { return selected }
+
+        let selectedIds = Set(selected.map(\.id))
+        let candidates = imagePool.filter { !seenImageIds.contains($0.id) && !selectedIds.contains($0.id) }
+        guard let forced = candidates.shuffled(using: &rng).first ?? imagePool.shuffled(using: &rng).first else {
+            return selected
+        }
+        var result = selected
+        result[result.count - 1] = forced
+        return deconflictImages(in: result, using: &rng)
     }
 
     /// Daily set: prefers unanswered questions and biases toward the user's

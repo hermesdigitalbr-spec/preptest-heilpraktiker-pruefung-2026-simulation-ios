@@ -4,13 +4,18 @@ import UserNotifications
 
 enum OnboardingStep: Hashable {
     case intro
-    case value1, value2
-    case level, goal, taken, concern
-    case pain
-    case minutes, days, time
     case state
-    case examDate, streakGoal, subjects, notif
-    case personalizing, planReady
+    case examDate
+    case name
+    case motivation
+    case firstTime
+    case affirmation
+    case level
+    case rightPlace
+    case reviews
+    case minutes
+    case personalizing
+    case planReady
 }
 
 /// Draft answers + step machine for the onboarding funnel. Nothing touches the
@@ -22,16 +27,19 @@ final class OnboardingModel {
     private(set) var index = 0
 
     // Draft answers
+    var name = ""
     var level: UserProfile.Level?
-    var goal: UserProfile.Goal?
-    var takenBefore: Int?
-    var concern: Int?
+    var motivation: String?
+    /// 0 = first attempt, 1 = has taken the exam before.
+    var firstTime: Int?
     var minutes: Int?
     var studyDays: Set<Int> = [2, 3, 4, 5, 6]
     var preferredHour: Double = 18
     var stateId: String?
     var examDate: Date?
-    var streakGoal: Int?
+    /// True once the notification prompt has been shown, whatever the answer.
+    var askedForPush = false
+
     /// Days until the chosen exam date (nil when no date picked).
     var daysUntilExam: Int? {
         guard let examDate else { return nil }
@@ -42,30 +50,36 @@ final class OnboardingModel {
             to: calendar.startOfDay(for: examDate)).day ?? 0
         return days > 0 ? days : nil
     }
-    var weakSubjects: Set<String> = []
 
-    /// Funnel order (playbook): hook → instant personalization (state + exam
-    /// date = the urgency anchor) → qualification (ability → history →
-    /// motivation → fear) → pain mirror → method → weak topics (bridges from
-    /// "we bring back what you miss") → commitment block (minutes/days/time/
-    /// streak/reminder, kept contiguous) → plan → paywall.
+    /// Trimmed first name, nil when the step was skipped or left blank.
+    var displayName: String? {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+
+    /// Urgency band for the chosen exam date.
+    var pace: StudyPace? { daysUntilExam.map(StudyPace.forDays) }
+
+    /// Funnel order (protótipo aprovado 2026-09-11): abertura → estado → data
+    /// da prova (a âncora de urgência) → nome → motivação → histórico →
+    /// afirmação → nível → prova social (lugar certo + avaliações) →
+    /// compromisso diário (minutos + permissão de notificação) → plano →
+    /// paywall.
     init(hasRegions: Bool) {
-        var flow: [OnboardingStep] = [
-            .intro,
-            .value1, .value2,
-        ]
-        if hasRegions {
-            flow.append(.state)
-        }
+        var flow: [OnboardingStep] = [.intro]
+        if hasRegions { flow.append(.state) }
         flow.append(contentsOf: [
             .examDate,
-            .level, .taken, .goal, .concern,
-            .pain,
-            .subjects,
-            .minutes, .days, .time,
-            .streakGoal,
-            .notif,
-            .personalizing, .planReady,
+            .name,
+            .motivation,
+            .firstTime,
+            .affirmation,
+            .level,
+            .rightPlace,
+            .reviews,
+            .minutes,
+            .personalizing,
+            .planReady,
         ])
         steps = flow
     }
@@ -78,19 +92,18 @@ final class OnboardingModel {
         return pow(linear, 0.55)
     }
 
-    /// Skip is offered only on question steps — never on marketing/system pages.
-    var isSkippable: Bool {
+    /// The intro and the finished plan carry no chrome; the building screen
+    /// keeps the progress bar (but not the back arrow) so the funnel still
+    /// reads as moving forward.
+    var showsChrome: Bool {
         switch current {
-        case .level, .goal, .taken, .concern, .minutes, .days, .time,
-             .state, .examDate, .streakGoal, .subjects:
-            true
-        default:
-            false
+        case .intro, .planReady: false
+        default: true
         }
     }
 
     var canGoBack: Bool {
-        index > 0 && current != .personalizing
+        index > 0 && current != .personalizing && current != .planReady
     }
 
     func advance() {
@@ -106,24 +119,23 @@ final class OnboardingModel {
     /// Persists everything into the live profile and schedules the reminder.
     func complete(into session: AppSession) {
         var profile = session.profile
+        profile.name = displayName
         profile.level = level
-        profile.goal = goal
+        profile.motivation = motivation
         profile.dailyMinutes = minutes
         profile.studyDays = studyDays
         profile.preferredHour = Int(preferredHour)
         profile.stateId = stateId
-        profile.streakGoal = streakGoal
-        profile.weakSubjectIds = weakSubjects
         if let examDate {
             profile.examDate = examDate
             profile.examDateSetAt = .now
         }
         profile.hasCompletedOnboarding = true
+        profile.onboardingCompletedAt = .now
 
-        // Single funnel completion point — runs whether the paywall
-        // converted, was exited via the exit-intent offer, or the free path
-        // was taken. The Home screen reads this on first appearance to play
-        // the one-time welcome confetti.
+        // Single funnel completion point — runs whether the paywall converted,
+        // was exited via the exit-intent offer, or the free path was taken.
+        // Home reads this on first appearance to play the welcome confetti.
         UserDefaults.standard.set(true, forKey: WelcomeConfetti.pendingKey)
 
         let plan = PlanGenerator.makePlan(
@@ -135,20 +147,25 @@ final class OnboardingModel {
         profile.planQuestionsPerDay = plan.questionsPerDay
 
         session.profile = profile
-
         session.settings.reminderHour = Int(preferredHour)
-        // If the user already granted permission (e.g. via exam date countdown step),
-        // schedule the daily reminder silently — no dialog needed.
+
+        // Permission was requested on the minutes step; if it was granted,
+        // schedule the daily reminder (and the exam countdown) silently.
+        let strings = session.strings.settings
+        let hour = Int(preferredHour)
+        let date = examDate
         Task {
             let center = UNUserNotificationCenter.current()
             let status = await center.notificationSettings().authorizationStatus
-            if status == .authorized || status == .provisional || status == .ephemeral {
-                session.settings.notificationsEnabled = true
-                _ = await NotificationService.enableDailyReminder(
-                    hour: Int(preferredHour),
-                    minute: 0,
-                    title: session.strings.settings.reminderNotificationTitle,
-                    body: session.strings.settings.reminderNotificationBody)
+            guard status == .authorized || status == .provisional || status == .ephemeral else { return }
+            session.settings.notificationsEnabled = true
+            _ = await NotificationService.enableDailyReminder(
+                hour: hour, minute: 0,
+                title: strings.reminderNotificationTitle,
+                body: strings.reminderNotificationBody,
+                openSettingsIfDenied: false)
+            if let date {
+                await NotificationService.scheduleExamCountdowns(examDate: date, strings: strings)
             }
         }
     }

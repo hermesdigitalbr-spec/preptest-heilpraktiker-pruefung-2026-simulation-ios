@@ -113,4 +113,47 @@ struct QuizSessionTests {
         mock.advance()
         #expect(mock.currentIndex == 1) // mock allows skipping
     }
+
+    // MARK: - remapExplanationLetters
+
+    // mapped[displayed] = original. Here canonical A(0) is shown at slot 2 (C),
+    // canonical D(3) at slot 0 (A).
+    private let map = [3, 1, 0, 2]
+
+    @Test func remapsPortugueseAlternativaReference() {
+        #expect(QuizSession.remapExplanationLetters("Correta: alternativa A.", mapped: map)
+                == "Correta: alternativa C.")
+    }
+
+    @Test func remapsParenthesizedAndChineseReferences() {
+        #expect(QuizSession.remapExplanationLetters("(D) está correta", mapped: map)
+                == "(A) está correta")
+        #expect(QuizSession.remapExplanationLetters("故選D", mapped: map) == "故選A")
+        #expect(QuizSession.remapExplanationLetters("故選Ｄ", mapped: map) == "故選Ａ")
+    }
+
+    @Test func leavesOrdinaryProseUntouched() {
+        let text = "A alternativa correta cita a Lei B."
+        #expect(QuizSession.remapExplanationLetters(text, mapped: map) == text)
+    }
+
+    @Test func overlappingPatternsRemapOnce() {
+        #expect(QuizSession.remapExplanationLetters("故選項 D 錯誤", mapped: map) == "故選項 A 錯誤")
+    }
+
+    @Test func parenthesizedNotationOutsideRangeIsNotRemapped() {
+        let text = "適應（A）與模式維護（L）"
+        #expect(QuizSession.remapExplanationLetters(text, mapped: map) == text)
+    }
+
+    @Test func shuffledSessionRewritesExplanation() {
+        let q = Question(id: "q9", subjectId: "signs", difficulty: 1, text: "t",
+                         choices: ["a", "b", "c", "d"], correctIndex: 2,
+                         explanation: "Resposta: alternativa C.")
+        let session = QuizSession(mode: .quick10, feedback: .learning,
+                                  questions: [q], shuffleSeed: 12345)
+        let shown = session.currentQuestion!
+        let letter = Array("ABCD")[shown.correctIndex]
+        #expect(shown.explanation == "Resposta: alternativa \(letter).")
+    }
 }

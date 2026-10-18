@@ -29,12 +29,14 @@ struct StatsView: View {
                         .font(AppFont.display(28))
                         .foregroundStyle(AppColor.textPrimary)
 
+                    if allAnswers.isEmpty { statsEmptyCard }
                     readinessCard
                     examCountdown
                     topCards
                     activityCard
                     achievementsSection
                     subjectAnalysis
+                    dailyStudyLogSection
                 }
                 .padding(AppSpacing.screenMargin)
                 .readableWidth(AppLayout.readableContent, alignment: .leading)
@@ -43,13 +45,99 @@ struct StatsView: View {
             .navigationDestination(for: Subject.self) { subject in
                 SubjectDetailView(subject: subject)
             }
-            .navigationDestination(for: StatsRoute.self) { _ in
-                AchievementsView()
+            .navigationDestination(for: StatsRoute.self) { route in
+                switch route {
+                case .achievements: AchievementsView()
+                case .studyLog: StudyLogView()
+                }
             }
         }
     }
 
-    enum StatsRoute: Hashable { case achievements }
+    enum StatsRoute: Hashable { case achievements, studyLog }
+
+    // MARK: - Empty state
+
+    /// Nothing answered yet: every card below is zeros and dashes, which reads
+    /// as a broken screen. This says what the screen is waiting for, and takes
+    /// the user there — photo fading into a dark card, in the reference's key.
+    private var statsEmptyCard: some View {
+        let strings = session.strings.stats
+        let gradient = LinearGradient(colors: [Color(hexString: "#6C5CE7"),
+                                               Color(hexString: "#2D8CF0"),
+                                               Color(hexString: "#1EB980")],
+                                      startPoint: .topLeading, endPoint: .bottomTrailing)
+        return VStack(spacing: AppSpacing.xs) {
+            // White outlines only, whole (nothing cropped), fading into the card.
+            Image("statsEmptyArt")
+                .resizable()
+                .scaledToFit()
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.top, AppSpacing.lg)
+                .mask(
+                    LinearGradient(stops: [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.8),
+                        .init(color: .clear, location: 1),
+                    ], startPoint: .top, endPoint: .bottom))
+                .accessibilityHidden(true)
+
+            VStack(spacing: AppSpacing.sm) {
+                Text(strings.emptyTitle)
+                    .font(AppFont.display(21))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(strings.emptyBody)
+                    .font(AppFont.body(15))
+                    .foregroundStyle(.white.opacity(0.85))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                // Glass button: reads as part of the card, not a foreign white slab.
+                Button {
+                    Haptics.tap(.medium)
+                    session.pendingDailyLaunch = true
+                } label: {
+                    Text(strings.emptyCta)
+                        .font(AppFont.display(17))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(.white.opacity(0.18), in: Capsule())
+                        .overlay(Capsule().stroke(.white.opacity(0.7), lineWidth: 1.5))
+                }
+                .buttonStyle(.pressable)
+                .padding(.top, AppSpacing.sm)
+            }
+            .padding(.horizontal, AppSpacing.lg)
+            .padding(.bottom, AppSpacing.lg)
+        }
+        .background(gradient)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.hero))
+        .shadow(color: Color(hexString: "#2D8CF0").opacity(0.35), radius: 16, y: 10)
+    }
+
+    // MARK: - Daily study log
+
+    /// Registro discreto, no fim da página, que comprova a rotina exigida pela
+    /// garantia dos Termos (tempo, questões e simulados por dia).
+    @ViewBuilder
+    private var dailyStudyLogSection: some View {
+        if !session.progress.state.attempts.isEmpty {
+            NavigationLink(value: StatsRoute.studyLog) {
+                HStack {
+                    Text(session.strings.stats.dailyLogTitle)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption2.weight(.semibold))
+                }
+                .font(AppFont.caption(12))
+                .foregroundStyle(AppColor.textDim)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+    }
 
     // MARK: - Achievements section
 
@@ -91,6 +179,8 @@ struct StatsView: View {
                     .padding(.horizontal, 2)
                     .padding(.bottom, 4)
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
             }
         }
     }
@@ -148,34 +238,43 @@ struct StatsView: View {
 
     /// The app's core promise — "am I ready to pass" — as the visual hero: a
     /// ring filled to the pass probability, color-coded, with a verbal rating.
+    private static let ringTextWidth: CGFloat = 130
+
     @ViewBuilder
     private var readinessCard: some View {
         if !allAnswers.isEmpty {
             let prob = session.passProbability
             Card {
                 if let prob {
-                    RingGauge(progress: Double(prob) / 100, lineWidth: 18,
-                              tint: passProbabilityColor(prob),
-                              track: passProbabilityColor(prob).opacity(0.16)) {
-                        VStack(spacing: 2) {
-                            Text(session.strings.stats.passProbabilityTitle)
-                                .font(AppFont.caption(13))
-                                .foregroundStyle(AppColor.textSecondary)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Text("\(prob)%")
-                                .font(AppFont.display(34))
-                                .foregroundStyle(passProbabilityColor(prob))
-                                .monospacedDigit()
-                            Text(passRating(prob))
-                                .font(AppFont.bodyMedium(13))
-                                .foregroundStyle(passProbabilityColor(prob))
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
+                    VStack(spacing: AppSpacing.md) {
+                        RingGauge(progress: Double(prob) / 100, lineWidth: 18,
+                                  tint: passProbabilityColor(prob),
+                                  track: passProbabilityColor(prob).opacity(0.16)) {
+                            VStack(spacing: 2) {
+                                Text(session.strings.stats.passProbabilityTitle)
+                                    .font(AppFont.caption(13))
+                                    .foregroundStyle(AppColor.textSecondary)
+                                    .multilineTextAlignment(.center)
+                                Text("\(prob)%")
+                                    .font(AppFont.display(48))
+                                    .foregroundStyle(passProbabilityColor(prob))
+                                    .monospacedDigit()
+                                    .minimumScaleFactor(0.7)
+                                    .lineLimit(1)
+                            }
+                            // Keep the copy inside the ring's hole so long labels
+                            // wrap instead of touching the stroke.
+                            .frame(maxWidth: Self.ringTextWidth)
+                            .fixedSize(horizontal: false, vertical: true)
                         }
-                        .frame(maxWidth: 150)
+                        .frame(maxWidth: 220)
+                        // The verbal rating sits under the ring, which frees
+                        // the hole for a bigger number.
+                        Text(passRating(prob))
+                            .font(AppFont.bodyMedium(15))
+                            .foregroundStyle(passProbabilityColor(prob))
+                            .multilineTextAlignment(.center)
                     }
-                    .frame(maxWidth: 220)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, AppSpacing.sm)
                 } else {
@@ -460,8 +559,8 @@ struct StatsView: View {
                 .chartXAxis {
                     AxisMarks(values: .stride(by: .day, count: range == .week ? 1 : (range == .month ? 7 : 15))) { _ in
                         AxisValueLabel(format: range == .week
-                                       ? .dateTime.weekday(.abbreviated)
-                                       : .dateTime.day().month(.abbreviated))
+                                       ? .dateTime.weekday(.abbreviated).locale(session.pack.contentLocale)
+                                       : .dateTime.day().month(.abbreviated).locale(session.pack.contentLocale))
                             .font(AppFont.caption(12))
                             .foregroundStyle(AppColor.textDim)
                     }
@@ -482,7 +581,8 @@ struct StatsView: View {
     /// Floating tooltip for the selected day: date + questions answered.
     private func selectionBubble(_ point: DayPoint) -> some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(point.day.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()))
+            Text(point.day.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()
+                .locale(session.pack.contentLocale)))
                 .font(AppFont.caption(11))
                 .foregroundStyle(AppColor.textSecondary)
             Text(String(format: session.strings.stats.answeredFormat, point.answered))
@@ -515,12 +615,17 @@ struct StatsView: View {
 
     // MARK: - Subject analysis (one rich card per subject)
 
+    /// Hidden until there is something to analyse — with no answers every card
+    /// is a dash over an empty bar, which reads as a broken screen.
+    @ViewBuilder
     private var subjectAnalysis: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionLabel(text: session.strings.stats.subjectAnalysis)
-            VStack(spacing: AppSpacing.cardGap) {
-                ForEach(session.pack.subjects) { subject in
-                    subjectCard(subject)
+        if !allAnswers.isEmpty {
+            VStack(alignment: .leading, spacing: AppSpacing.md) {
+                SectionLabel(text: session.strings.stats.subjectAnalysis)
+                VStack(spacing: AppSpacing.cardGap) {
+                    ForEach(session.pack.subjects) { subject in
+                        subjectCard(subject)
+                    }
                 }
             }
         }

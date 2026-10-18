@@ -8,10 +8,11 @@ struct IdentifiableImage: Identifiable {
 }
 
 /// Full-screen image viewer — white backdrop, UIScrollView-based zoom,
-/// drag-to-dismiss, double-tap to toggle, X button top-left (CDL pattern).
+/// drag-to-dismiss, double-tap to toggle, X button top-right inside the safe area.
 struct FullScreenImageView: View {
     let uiImage: UIImage
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppSession.self) private var session
     @State private var dismissOffset: CGSize = .zero
     @State private var isDragging = false
 
@@ -43,20 +44,27 @@ struct FullScreenImageView: View {
                         }
                 )
 
-            // X button — top-left, matches CDL pattern
+            // X button — top-right, kept inside the safe area (clear of the
+            // status bar / Dynamic Island) and nudged down, with a 44pt tap
+            // target and a white backing so it's always visible and easy to hit.
             VStack {
                 HStack {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundStyle(Color.black.opacity(0.7))
-                    }
-                    .padding(16)
                     Spacer()
+                    Button { dismiss() } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundStyle(Color.black.opacity(0.75))
+                            .frame(width: 44, height: 44)
+                            .background(.white.opacity(0.92), in: Circle())
+                            .overlay(Circle().stroke(Color.black.opacity(0.08), lineWidth: 1))
+                            .shadow(color: .black.opacity(0.18), radius: 5, y: 1)
+                    }
+                    .padding(.trailing, 16)
+                    .padding(.top, 8)
+                    .accessibilityLabel(session.strings.common.a11yClose)
                 }
                 Spacer()
             }
-            .ignoresSafeArea()
         }
     }
 }

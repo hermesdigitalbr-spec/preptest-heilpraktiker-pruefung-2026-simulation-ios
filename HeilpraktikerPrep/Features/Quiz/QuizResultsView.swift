@@ -12,61 +12,45 @@ struct QuizResultsView: View {
     @State private var showPaywall = false
     @State private var newlyUnlocked: [AchievementStatus] = []
     @State private var shareItems: [Any]?
+    /// The rendered card, shown to the user before the system share sheet.
+    @State private var previewImage: UIImage?
+    /// The score is revealed by counting up from zero — the ring fills and the
+    /// number ticks along with it, so the result reads as being worked out.
+    @State private var revealedScore = 0
+    @State private var revealDone = false
+    /// After the score lands, the rest of the page enters one block at a
+    /// time; each block shows once `stage` reaches its number.
+    @State private var stage = 0
+    /// The summary comes first; the full breakdown opens from its button.
+    @State private var showDetail = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Button {
-                    onClose()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(AppColor.textSecondary)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, AppSpacing.screenMargin)
-            .padding(.vertical, AppSpacing.sm)
-            .readableWidth()
-
-            ScrollView {
-                VStack(spacing: AppSpacing.sectionGap) {
-                    headline
-                    statsRow
-                    if controller.session.answers.count > 0 { shareSection }
-                    subjectBreakdown
-                    answerCardGrid
-                    questionsSection
-                    subscribeBanner
-                }
-                .padding(AppSpacing.screenMargin)
-                .readableWidth()
+        Group {
+            if showDetail {
+                detail
+                    .transition(.move(edge: .trailing))
+            } else {
+                QuizResultsSummary(
+                    revealedScore: revealedScore,
+                    revealDone: revealDone,
+                    tint: scoreTint,
+                    correct: controller.session.correctCount,
+                    total: controller.session.questions.count,
+                    headline: headlineText,
+                    badges: ResultBadge.pick(newlyUnlocked: newlyUnlocked, all: app.achievementStatuses),
+                    onContinue: openDetail)
+                .transition(.move(edge: .leading))
             }
         }
         .background(AppColor.background.ignoresSafeArea())
-        .sheet(item: $selectedQuestion) { question in
-            ReviewDetailSheet(question: question)
-                .presentationDetents([.large])
-        }
-        .fullScreenCover(isPresented: $showPaywall) {
-            PaywallView()
-        }
-        .sheet(isPresented: Binding(get: { shareItems != nil },
-                                    set: { if !$0 { shareItems = nil } })) {
-            if let shareItems {
-                ShareSheet(items: shareItems)
-            }
-        }
-        .sheet(isPresented: Binding(get: { !newlyUnlocked.isEmpty },
-                                    set: { if !$0 { newlyUnlocked = [] } })) {
-            AchievementUnlockSheet(statuses: newlyUnlocked)
-                .presentationDetents(newlyUnlocked.count > 3 ? [.medium, .large] : [.medium])
-                .presentationDragIndicator(newlyUnlocked.count > 3 ? .visible : .hidden)
-        }
+        .modifier(ResultsSheets(selectedQuestion: $selectedQuestion,
+                                showPaywall: $showPaywall,
+                                previewImage: $previewImage,
+                                shareItems: $shareItems,
+                                previewTitle: app.strings.results.sharePreviewTitle,
+                                previewCta: app.strings.results.shareButton,
+                                onShareFromPreview: shareFromPreview))
         .onAppear {
-            if score >= 50 {
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
-            }
             // Celebrate any badge this quiz just earned, once.
             let unlocks = app.uncelebratedUnlocks
             if !unlocks.isEmpty {
@@ -77,16 +61,58 @@ struct QuizResultsView: View {
             app.publishWidgetSnapshot()
             app.refreshLapseReminder()
         }
+        .task { await revealScore() }
         .task {
             // Let the results screen — and any achievement-unlock sheet — settle
             // before asking for a review.
-            try? await Task.sleep(for: .seconds(2.2))
+            try? await Task.sleep(for: .seconds(3.4))
             RatePromptService.maybeRequestAfterQuiz(
                 mode: controller.mode,
                 finishedNaturally: controller.session.isFinished,
                 answered: controller.session.answers.count,
                 total: controller.session.questions.count,
                 isPro: app.iap.isPro)
+        }
+    }
+
+    private func openDetail() {
+        withAnimation(AppMotion.smooth) { showDetail = true }
+        Task { await revealDetailBlocks() }
+    }
+
+    /// Score, stats and the rest of the breakdown.
+    private var detail: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Button {
+                    onClose()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(AppColor.textSecondary)
+                }
+                .opacity(revealDone ? 1 : 0)
+                .disabled(!revealDone)
+                .animation(AppMotion.smooth, value: revealDone)
+                Spacer()
+            }
+            .padding(.horizontal, AppSpacing.screenMargin)
+            .padding(.vertical, AppSpacing.sm)
+            .readableWidth()
+
+            ScrollView {
+                VStack(spacing: AppSpacing.sectionGap) {
+                    headline
+                    statsRow.revealed(at: 2, stage: stage)
+                    if controller.session.answers.count > 0 { shareSection.revealed(at: 3, stage: stage) }
+                    subjectBreakdown.revealed(at: 4, stage: stage)
+                    answerCardGrid.revealed(at: 5, stage: stage)
+                    questionsSection.revealed(at: 6, stage: stage)
+                    subscribeBanner.revealed(at: 7, stage: stage)
+                }
+                .padding(AppSpacing.screenMargin)
+                .readableWidth()
+            }
         }
     }
 
@@ -116,7 +142,9 @@ struct QuizResultsView: View {
             tagline: app.pack.tagline,
             correctLabel: s.correct,
             streakLabel: s.streakLabel,
-            timeLabel: s.timeLabel, scoreLabel: s.scoreLabel,
+            timeLabel: s.timeLabel,
+            scoreLabel: s.scoreLabel,
+            storeBadge: s.shareStoreBadge,
             iconGlyph: app.pack.examShortName.lowercased(with: .current))
     }
 
@@ -139,13 +167,18 @@ struct QuizResultsView: View {
         .buttonStyle(.plain)
     }
 
+    /// First shows the card as it will go out; the system sheet only opens
+    /// from the preview's own button.
     private func presentShare() {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        var items: [Any] = [shareText]
-        if let image = ShareCardRenderer.image(for: shareCardData) {
-            items.insert(image, at: 0)   // image first so previews use it
-        }
-        shareItems = items
+        Haptics.tap(.light)
+        previewImage = ShareCardRenderer.image(for: shareCardData)
+        if previewImage == nil { shareItems = [shareText] }
+    }
+
+    private func shareFromPreview() {
+        guard let image = previewImage else { return }
+        previewImage = nil
+        shareItems = [image, shareText]
     }
 
     // MARK: - Sections
@@ -158,26 +191,70 @@ struct QuizResultsView: View {
         return app.strings.results.headlineKeepTrying
     }
 
+    /// Counts from 0 to the score in ~1.4s with an ease-out (fast start, slow
+    /// landing), ticking the Taptic Engine along the way; the verdict headline
+    /// and the colour only land once the number does.
+    private func revealScore() async {
+        let steps = max(score, 1)
+        let total = 1.4
+        Haptics.prepare()
+        for step in 1...steps {
+            let t = Double(step) / Double(steps)
+            let eased = 1 - pow(1 - t, 3)
+            let previous = Double(step - 1) / Double(steps)
+            let previousEased = 1 - pow(1 - previous, 3)
+            try? await Task.sleep(for: .seconds(max(0.008, (eased - previousEased) * total)))
+            revealedScore = step
+            if step % 5 == 0 { Haptics.tap(.rigid) }
+        }
+        withAnimation(AppMotion.bouncy) { revealDone = true }
+        if score >= 50 { Haptics.success() } else { Haptics.warning() }
+        if !newlyUnlocked.isEmpty {
+            try? await Task.sleep(for: .milliseconds(350))
+            Haptics.tap(.medium)
+        }
+    }
+
+    /// On the details screen the blocks enter one at a time.
+    private func revealDetailBlocks() async {
+        for next in 1...7 {
+            try? await Task.sleep(for: .milliseconds(next == 1 ? 200 : 140))
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.85)) { stage = next }
+        }
+    }
+
+    private var scoreTint: Color {
+        guard revealDone else { return AppColor.accent }
+        return score >= 50 ? AppColor.success : AppColor.error
+    }
+
     private var headline: some View {
         VStack(spacing: AppSpacing.lg) {
-            Text(headlineText)
+            Text(revealDone ? headlineText : app.strings.results.calculating)
                 .font(AppFont.display(28))
-                .foregroundStyle(AppColor.textPrimary)
+                .foregroundStyle(revealDone ? AppColor.textPrimary : AppColor.textDim)
+                .contentTransition(.opacity)
+                .animation(AppMotion.smooth, value: revealDone)
 
-            RingGauge(progress: Double(score) / 100,
+            RingGauge(progress: Double(revealedScore) / 100,
                       lineWidth: 16,
-                      tint: score >= 50 ? AppColor.success : AppColor.error,
+                      tint: scoreTint,
                       track: AppColor.surfaceHigh) {
                 VStack(spacing: 2) {
-                    Text("\(score)%")
+                    Text("\(revealedScore)%")
                         .font(AppFont.display(48))
-                        .foregroundStyle(score >= 50 ? AppColor.success : AppColor.error)
+                        .foregroundStyle(scoreTint)
+                        .monospacedDigit()
+                        .contentTransition(.numericText(value: Double(revealedScore)))
                     Text(app.strings.results.scoreLabel)
                         .font(AppFont.caption(13))
                         .foregroundStyle(AppColor.textDim)
                 }
             }
             .frame(maxWidth: 190)
+            .scaleEffect(revealDone ? 1 : 0.96)
+            .animation(.linear(duration: 0.05), value: revealedScore)
+            .animation(AppMotion.bouncy, value: revealDone)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, AppSpacing.sm)
@@ -431,5 +508,50 @@ struct QuizResultsView: View {
                 .foregroundStyle(color)
                 .multilineTextAlignment(.leading)
         }
+    }
+}
+
+/// Staggered entrance for the result page: hidden and 16pt low until
+/// `stage` reaches `at`.
+private extension View {
+    func revealed(at index: Int, stage: Int) -> some View {
+        opacity(stage >= index ? 1 : 0)
+            .offset(y: stage >= index ? 0 : 16)
+    }
+}
+
+/// Question detail, paywall and share sheets, shared by both results screens.
+private struct ResultsSheets: ViewModifier {
+    @Binding var selectedQuestion: Question?
+    @Binding var showPaywall: Bool
+    @Binding var previewImage: UIImage?
+    @Binding var shareItems: [Any]?
+    let previewTitle: String
+    let previewCta: String
+    let onShareFromPreview: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .sheet(item: $selectedQuestion) { question in
+                ReviewDetailSheet(question: question)
+                    .presentationDetents([.large])
+            }
+            .fullScreenCover(isPresented: $showPaywall) {
+                PaywallView()
+            }
+            .sheet(isPresented: Binding(get: { previewImage != nil },
+                                        set: { if !$0 { previewImage = nil } })) {
+                if let previewImage {
+                    SharePreviewSheet(image: previewImage, title: previewTitle,
+                                      cta: previewCta, onShare: onShareFromPreview)
+                        .presentationDetents([.large])
+                }
+            }
+            .sheet(isPresented: Binding(get: { shareItems != nil },
+                                        set: { if !$0 { shareItems = nil } })) {
+                if let shareItems {
+                    ShareSheet(items: shareItems)
+                }
+            }
     }
 }

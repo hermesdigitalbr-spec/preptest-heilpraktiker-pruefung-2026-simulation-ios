@@ -8,6 +8,13 @@ struct QuestionSelectorTests {
                  choices: ["a", "b", "c", "d"], correctIndex: 0, explanation: "e")
     }
 
+    private func imageQuestion(_ id: String, subject: String) -> Question {
+        Question(id: id, subjectId: subject, difficulty: 1, text: "t",
+                 choices: ["a", "b", "c", "d"], correctIndex: 0, explanation: "e", imageName: id)
+    }
+
+    private func isImage(_ q: Question) -> Bool { q.imageName != nil || q.imageURL != nil }
+
     private var pool: [Question] {
         (1...20).map { question("signs-\($0)", subject: "signs") } +
         (1...20).map { question("laws-\($0)", subject: "laws") } +
@@ -101,5 +108,85 @@ struct QuestionSelectorTests {
     @Test func countLargerThanPoolReturnsWholePool() {
         let selected = QuestionSelector.quick(from: Array(pool.prefix(3)), count: 10, seed: 1)
         #expect(selected.count == 3)
+    }
+
+    // MARK: - First-3-quizzes image guarantee
+
+    private var textOnlySelection: [Question] {
+        (1...10).map { question("laws-\($0)", subject: "laws") }
+    }
+
+    private var imageBackedPool: [Question] {
+        textOnlySelection + (1...5).map { imageQuestion("signs-\($0)", subject: "signs") }
+    }
+
+    @Test func injectsImageInFirstThreeQuizzesAndNeverAtSlotZero() {
+        for attempt in 0..<3 {
+            for _ in 0..<80 {
+                let result = QuestionSelector.injectImageIfNeeded(
+                    into: textOnlySelection, pool: imageBackedPool,
+                    attemptsDone: attempt, seenImageIds: [])
+                let imageIdx = result.firstIndex(where: isImage)
+                #expect(imageIdx != nil)   // image is guaranteed present
+                #expect(imageIdx != 0)     // and never pinned to the first slot
+                #expect(result.count == textOnlySelection.count)
+            }
+        }
+    }
+
+    @Test func injectedImagePositionIsShuffledAcrossPlays() {
+        var positions = Set<Int>()
+        for _ in 0..<80 {
+            let result = QuestionSelector.injectImageIfNeeded(
+                into: textOnlySelection, pool: imageBackedPool,
+                attemptsDone: 0, seenImageIds: [])
+            if let idx = result.firstIndex(where: isImage) { positions.insert(idx) }
+        }
+        // Genuinely shuffled — lands in several different slots, not one fixed spot.
+        #expect(positions.count >= 3)
+    }
+
+    @Test func existingImageIsShuffledOffSlotZero() {
+        // Image deliberately placed FIRST in the base selection (as the
+        // weak-subject-ordered daily set can do).
+        let selected = [imageQuestion("signs-1", subject: "signs")]
+            + (1...9).map { question("laws-\($0)", subject: "laws") }
+        for _ in 0..<80 {
+            let result = QuestionSelector.injectImageIfNeeded(
+                into: selected, pool: selected, attemptsDone: 0, seenImageIds: [])
+            let imageIdx = result.firstIndex(where: isImage)
+            #expect(imageIdx != nil)
+            #expect(imageIdx != 0)   // must be moved off the first slot
+            #expect(Set(result.map(\.id)) == Set(selected.map(\.id)))
+        }
+    }
+
+    @Test func doesNotInjectAfterThreeQuizzes() {
+        let result = QuestionSelector.injectImageIfNeeded(
+            into: textOnlySelection, pool: imageBackedPool,
+            attemptsDone: 3, seenImageIds: [])
+        #expect(result.map(\.id) == textOnlySelection.map(\.id))  // untouched
+        #expect(!result.contains(where: isImage))
+    }
+
+    @Test func injectionIsReproducibleWithFixedSeed() {
+        let a = QuestionSelector.injectImageIfNeeded(
+            into: textOnlySelection, pool: imageBackedPool,
+            attemptsDone: 0, seenImageIds: [], seed: 123)
+        let b = QuestionSelector.injectImageIfNeeded(
+            into: textOnlySelection, pool: imageBackedPool,
+            attemptsDone: 0, seenImageIds: [], seed: 123)
+        #expect(a.map(\.id) == b.map(\.id))
+    }
+
+    @Test func quickInjectsImageForNewUsersAndSkipsWhenNoImages() {
+        let result = QuestionSelector.quick(from: imageBackedPool, count: 5, seed: 9,
+                                            quicksDoneCount: 0, seenImageQuestionIds: [])
+        #expect(result.contains(where: isImage))
+        #expect(result.first.map(isImage) == false)
+        let textOnly = QuestionSelector.quick(from: textOnlySelection, count: 5, seed: 9,
+                                              quicksDoneCount: 0, seenImageQuestionIds: [])
+        #expect(!textOnly.contains(where: isImage))
+        #expect(textOnly.map(\.id) == QuestionSelector.quick(from: textOnlySelection, count: 5, seed: 9).map(\.id))
     }
 }

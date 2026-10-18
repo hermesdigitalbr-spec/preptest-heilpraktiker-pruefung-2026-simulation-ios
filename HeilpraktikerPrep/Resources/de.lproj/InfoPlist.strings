@@ -1,0 +1,2 @@
+/* Ensures system-provided UI follows the app language (de), not the device language. */
+"CFBundleDisplayName" = "HP Übungstest";

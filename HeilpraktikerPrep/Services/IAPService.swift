@@ -2,10 +2,6 @@ import Foundation
 import Observation
 import StoreKit
 
-// NOTE: The Weekly subscription must have a 3-day free introductory offer
-// configured in App Store Connect for the exit-intent paywall's weekly trial
-// to actually apply — this is an ASC subscription config step, not code.
-
 /// StoreKit 2 wrapper for the two subscriptions (weekly, monthly).
 /// Product IDs come from the ContentPack, so clones swap monetization
 /// without touching Swift.
@@ -14,6 +10,7 @@ import StoreKit
 final class IAPService {
     private(set) var weeklyProduct: Product?
     private(set) var monthlyProduct: Product?
+    private(set) var quarterlyProduct: Product?
     private(set) var entitledPro = false
     private(set) var isPurchasing = false
     private(set) var lastError: String?
@@ -23,11 +20,17 @@ final class IAPService {
     /// normal use and Release.
     var debugWeeklyPrice: String?
     var debugMonthlyPrice: String?
+    var debugQuarterlyPrice: String?
+    var debugPerDayMonthly: String?
+    var debugPerDayQuarterly: String?
+    var debugSavingsPercent: Int?
     /// Real StoreKit intro-offer eligibility (the user hasn't used the trial).
-    private(set) var realTrialEligible = true
-    /// Same as `realTrialEligible`, computed from the weekly subscription —
-    /// drives the exit-intent paywall's "Weekly + 3-day trial" offer.
-    private(set) var realWeeklyTrialEligible = true
+    /// Defaults to `false` until StoreKit confirms eligibility: the paywall
+    /// must never advertise "free trial" before we actually know an
+    /// introductory offer applies to this user/territory (Apple 1.1.6 —
+    /// showing a trial CTA that then charges full price is objectionable
+    /// content, not just a disclaimer issue).
+    private(set) var realTrialEligible = false
 
     #if DEBUG
     /// Debug-menu override: simulate each access state without touching
@@ -78,25 +81,29 @@ final class IAPService {
         return realTrialEligible
     }
 
-    /// Whether the weekly introductory free trial is still available to this
-    /// user. Used exclusively by the exit-intent paywall offer.
-    var isEligibleForWeeklyTrial: Bool {
-        #if DEBUG
-        switch debugEntitlement {
-        case .live: break
-        case .free: return true
-        case .premium, .trial, .trialExpired: return false
-        }
-        #endif
-        return realWeeklyTrialEligible
-    }
-
     /// True while a free trial is the active entitlement (for trial-only UI).
     var isTrialActive: Bool {
         #if DEBUG
         if case .trial = debugEntitlement { return true }
         #endif
         return false
+    }
+
+    /// True only when StoreKit reports a free-trial introductory offer on this
+    /// exact product AND the user can still redeem it. Every "grátis" on the
+    /// paywall keys off this: Guideline 3.1.2(c) rejected 1.0.2 for showing a
+    /// trial that the purchase sheet did not offer.
+    func offersFreeTrial(_ product: Product?) -> Bool {
+        guard isEligibleForTrial else { return false }
+        guard let product else {
+            #if DEBUG
+            // Screenshot harness: products don't load under simctl.
+            return debugEntitlement == .free
+            #else
+            return false
+            #endif
+        }
+        return product.subscription?.introductoryOffer?.paymentMode == .freeTrial
     }
 
     private let productIds: ProductIDs
@@ -117,14 +124,16 @@ final class IAPService {
     func loadProducts() async {
         lastError = nil
         do {
-            let products = try await Product.products(for: [productIds.weekly, productIds.monthly])
+            var wanted = [productIds.weekly, productIds.monthly]
+            if let q = productIds.quarterly { wanted.append(q) }
+            let products = try await Product.products(for: wanted)
             weeklyProduct = products.first { $0.id == productIds.weekly }
             monthlyProduct = products.first { $0.id == productIds.monthly }
+            if let q = productIds.quarterly {
+                quarterlyProduct = products.first { $0.id == q }
+            }
             if let subscription = monthlyProduct?.subscription {
                 realTrialEligible = await subscription.isEligibleForIntroOffer
-            }
-            if let subscription = weeklyProduct?.subscription {
-                realWeeklyTrialEligible = await subscription.isEligibleForIntroOffer
             }
             // StoreKit returns success with an empty set when no product IDs
             // match (misconfigured ContentPack, or ASC products not yet
@@ -180,7 +189,9 @@ final class IAPService {
         var owns = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result,
-               transaction.productID == productIds.weekly || transaction.productID == productIds.monthly {
+               transaction.productID == productIds.weekly
+                || transaction.productID == productIds.monthly
+                || transaction.productID == productIds.quarterly {
                 owns = true
             }
         }

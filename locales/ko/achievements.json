@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "첫걸음",
+    "detail": "첫 퀴즈를 끝까지 풀기"
+  },
+  "quizzes-10": {
+    "title": "진지해지는 중",
+    "detail": "퀴즈 10회 완료하기"
+  },
+  "quizzes-25": {
+    "title": "사반세기",
+    "detail": "퀴즈 25회 완료하기"
+  },
+  "quizzes-50": {
+    "title": "퀴즈 베테랑",
+    "detail": "퀴즈 50회 완료하기"
+  },
+  "quizzes-100": {
+    "title": "백전노장",
+    "detail": "퀴즈 100회 완료하기"
+  },
+  "quizzes-250": {
+    "title": "퀴즈 머신",
+    "detail": "퀴즈 250회 완료하기"
+  },
+  "quizzes-500": {
+    "title": "퀴즈 마스터",
+    "detail": "퀴즈 500회 완료하기"
+  },
+  "answered-100": {
+    "title": "워밍업",
+    "detail": "문제 100개 풀기"
+  },
+  "answered-250": {
+    "title": "슬슬 달아오른다",
+    "detail": "문제 250개 풀기"
+  },
+  "answered-500": {
+    "title": "문제 파괴자",
+    "detail": "문제 500개 풀기"
+  },
+  "answered-1000": {
+    "title": "멈출 수 없다",
+    "detail": "문제 1,000개 풀기"
+  },
+  "answered-2500": {
+    "title": "마라톤 두뇌",
+    "detail": "문제 2,500개 풀기"
+  },
+  "answered-5000": {
+    "title": "문제 레전드",
+    "detail": "문제 5,000개 풀기"
+  },
+  "answered-10000": {
+    "title": "1만 문제 클럽",
+    "detail": "문제 10,000개 풀기"
+  },
+  "correct-100": {
+    "title": "명중",
+    "detail": "100문제 정답 맞히기"
+  },
+  "correct-500": {
+    "title": "백발백중",
+    "detail": "500문제 정답 맞히기"
+  },
+  "correct-1000": {
+    "title": "정확한 눈",
+    "detail": "1,000문제 정답 맞히기"
+  },
+  "correct-2500": {
+    "title": "과녁 정중앙",
+    "detail": "2,500문제 정답 맞히기"
+  },
+  "correct-5000": {
+    "title": "정밀의 전설",
+    "detail": "5,000문제 정답 맞히기"
+  },
+  "accuracy-80": {
+    "title": "명사수",
+    "detail": "전체 정답률 80% 유지하기"
+  },
+  "accuracy-90": {
+    "title": "저격수",
+    "detail": "전체 정답률 90% 유지하기"
+  },
+  "accuracy-95": {
+    "title": "데드샷",
+    "detail": "전체 정답률 95% 유지하기"
+  },
+  "first-perfect": {
+    "title": "완벽무결",
+    "detail": "실수 없이 퀴즈 만점 받기"
+  },
+  "perfect-5": {
+    "title": "정확해요",
+    "detail": "퀴즈 5회 만점 받기"
+  },
+  "perfect-10": {
+    "title": "완벽주의자",
+    "detail": "퀴즈 10회 만점 받기"
+  },
+  "perfect-25": {
+    "title": "신궁",
+    "detail": "퀴즈 25회 만점 받기"
+  },
+  "perfect-50": {
+    "title": "만점 수집가",
+    "detail": "퀴즈 50회 만점 받기"
+  },
+  "perfect-100": {
+    "title": "살아있는 전설",
+    "detail": "퀴즈 100회 만점 받기"
+  },
+  "pstreak-3": {
+    "title": "불타는 연승",
+    "detail": "만점 퀴즈 3회 연속 달성"
+  },
+  "pstreak-5": {
+    "title": "흠 없는 질주",
+    "detail": "만점 퀴즈 5회 연속 달성"
+  },
+  "pstreak-10": {
+    "title": "무결점 파죽지세",
+    "detail": "만점 퀴즈 10회 연속 달성"
+  },
+  "streak-3": {
+    "title": "작심삼일 탈출",
+    "detail": "3일 연속 학습하기"
+  },
+  "streak-7": {
+    "title": "일주일의 힘",
+    "detail": "7일 연속 학습하기"
+  },
+  "streak-14": {
+    "title": "2주의 집중",
+    "detail": "14일 연속 학습하기"
+  },
+  "streak-21": {
+    "title": "3주의 불꽃",
+    "detail": "21일 연속 학습하기"
+  },
+  "streak-30": {
+    "title": "강철 습관",
+    "detail": "30일 연속 학습하기"
+  },
+  "streak-50": {
+    "title": "활활 불타는 중",
+    "detail": "50일 연속 학습하기"
+  },
+  "streak-100": {
+    "title": "꺾이지 않는 마음",
+    "detail": "100일 연속 학습하기"
+  },
+  "streak-365": {
+    "title": "불꽃의 1년",
+    "detail": "365일 연속 학습하기"
+  },
+  "days-5": {
+    "title": "성실한 학습자",
+    "detail": "서로 다른 5일 학습하기"
+  },
+  "days-15": {
+    "title": "습관 형성 중",
+    "detail": "서로 다른 15일 학습하기"
+  },
+  "days-30": {
+    "title": "꾸준함의 증거",
+    "detail": "서로 다른 30일 학습하기"
+  },
+  "days-60": {
+    "title": "부지런한 사람",
+    "detail": "서로 다른 60일 학습하기"
+  },
+  "days-100": {
+    "title": "헌신적인 학습자",
+    "detail": "서로 다른 100일 학습하기"
+  },
+  "days-200": {
+    "title": "평생 학습자",
+    "detail": "서로 다른 200일 학습하기"
+  },
+  "day-25": {
+    "title": "가벼운 한 판",
+    "detail": "하루에 25문제 풀기"
+  },
+  "day-50": {
+    "title": "열공 모드",
+    "detail": "하루에 50문제 풀기"
+  },
+  "day-100": {
+    "title": "욕심쟁이",
+    "detail": "하루에 100문제 풀기"
+  },
+  "day-200": {
+    "title": "강철 의지",
+    "detail": "하루에 200문제 풀기"
+  },
+  "subject-master": {
+    "title": "과목 마스터",
+    "detail": "아무 과목에서 90% 달성하기"
+  },
+  "subject-perfect": {
+    "title": "주제의 거인",
+    "detail": "아무 과목에서 100% 달성하기"
+  },
+  "subjects-1": {
+    "title": "전문가",
+    "detail": "1개 과목에서 90% 이상 달성"
+  },
+  "subjects-3": {
+    "title": "삼관왕",
+    "detail": "3개 과목에서 90% 이상 달성"
+  },
+  "all-subjects": {
+    "title": "골고루 완벽",
+    "detail": "모든 과목 학습하기"
+  },
+  "subjects-all": {
+    "title": "올라운드 마스터",
+    "detail": "모든 과목에서 90% 이상 달성하기"
+  },
+  "mock-pass": {
+    "title": "시험 준비 완료",
+    "detail": "모의고사 통과하기"
+  },
+  "mock-90": {
+    "title": "우등생",
+    "detail": "모의고사 90% 득점하기"
+  },
+  "mock-100": {
+    "title": "만점 달성",
+    "detail": "모의고사 100% 만점 받기"
+  },
+  "collect-5": {
+    "title": "수집가",
+    "detail": "5문제를 모음에 저장하기"
+  },
+  "collect-10": {
+    "title": "저장 마니아",
+    "detail": "10문제를 모음에 저장하기"
+  },
+  "collect-25": {
+    "title": "큐레이터",
+    "detail": "25문제를 모음에 저장하기"
+  },
+  "collect-50": {
+    "title": "기록 보관가",
+    "detail": "50문제를 모음에 저장하기"
+  },
+  "collect-100": {
+    "title": "사서",
+    "detail": "100문제를 모음에 저장하기"
+  },
+  "early-bird": {
+    "title": "얼리버드",
+    "detail": "오전 7시 이전에 학습하기"
+  },
+  "early-5": {
+    "title": "새벽 순찰대",
+    "detail": "오전 7시 이전에 5번 학습하기"
+  },
+  "early-10": {
+    "title": "새벽닭",
+    "detail": "오전 7시 이전에 10번 학습하기"
+  },
+  "night-owl": {
+    "title": "올빼미",
+    "detail": "오후 10시 이후에 학습하기"
+  },
+  "night-5": {
+    "title": "달빛 학습자",
+    "detail": "오후 10시 이후에 5번 학습하기"
+  },
+  "night-10": {
+    "title": "밤샘 공부",
+    "detail": "오후 10시 이후에 10번 학습하기"
+  },
+  "weekend-1": {
+    "title": "주말 전사",
+    "detail": "주말에 학습하기"
+  },
+  "weekend-8": {
+    "title": "주말 단골",
+    "detail": "주말에 8번 학습하기"
+  },
+  "weekend-20": {
+    "title": "주말 헌신파",
+    "detail": "주말에 20번 학습하기"
+  },
+  "comeback": {
+    "title": "컴백 키드",
+    "detail": "7일 쉬고 다시 돌아오기"
+  },
+  "comeback-3": {
+    "title": "끈기왕",
+    "detail": "3번 공백 후 복귀하기"
+  },
+  "speedster": {
+    "title": "스피드 광",
+    "detail": "10문제 이상 퀴즈를 빠르게 끝내기"
+  },
+  "speed-5": {
+    "title": "빠른 손",
+    "detail": "퀴즈 5회 빠르게 끝내기"
+  },
+  "speed-10": {
+    "title": "번개 라운드",
+    "detail": "퀴즈 10회 빠르게 끝내기"
+  },
+  "explorer": {
+    "title": "탐험가",
+    "detail": "서로 다른 퀴즈 모드 5가지 해보기"
+  },
+  "time-60": {
+    "title": "집중의 1시간",
+    "detail": "총 60분 학습하기"
+  },
+  "time-300": {
+    "title": "시간 투자",
+    "detail": "총 5시간 학습하기"
+  },
+  "time-600": {
+    "title": "학자",
+    "detail": "총 10시간 학습하기"
+  },
+  "time-1500": {
+    "title": "교수님",
+    "detail": "총 25시간 학습하기"
+  }
+}

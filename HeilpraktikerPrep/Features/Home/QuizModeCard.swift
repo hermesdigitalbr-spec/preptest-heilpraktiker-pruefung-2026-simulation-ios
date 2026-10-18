@@ -23,7 +23,7 @@ struct QuizModeCard: View {
             action()
         } label: {
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            HStack(spacing: AppSpacing.xs) {
+            HStack(alignment: .top, spacing: AppSpacing.xs) {
                 Image(systemName: sfSymbol)
                     .font(.system(size: hSize == .regular ? 26 : 22, weight: .semibold))
                     .foregroundStyle(tint)
@@ -61,9 +61,12 @@ struct QuizModeCard: View {
                 .foregroundStyle(AppColor.textDim)
                 .lineLimit(2, reservesSpace: true)
         }
-        .padding(AppSpacing.cardPadding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: hSize == .regular ? 156 : 132)
+        // Same breathing room above the icon as beside it.
+        .padding(.horizontal, AppSpacing.cardPadding)
+        .padding(.top, AppSpacing.cardPadding + 2)
+        .padding(.bottom, AppSpacing.cardPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(height: hSize == .regular ? 168 : 144)
         .background(AppColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.card))
         .shadow(color: AppShadow.cardColor, radius: AppShadow.cardRadius, y: AppShadow.cardY)

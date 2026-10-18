@@ -7,8 +7,20 @@ struct HeilpraktikerPrepApp: App {
 
     private static func makeSession() -> AppSession {
         let session = AppSession.bootstrap()
+        // Face detection for every people photo, off the main thread, so the
+        // paywall grid is already cropped around faces when it appears.
+        let niche = session.pack.nicheConfig
+        FaceRegionStore.shared.warmUp(students: OnboardingPhotos.all(count: niche.studentPhotoCount),
+                                      hero: niche.heroImage)
         #if DEBUG
         if ScreenshotMode.isActive { ScreenshotMode.seed(session) }
+        // Lets the funnel be walked end to end under `simctl`, where StoreKit
+        // returns no products and the paywall would otherwise render empty.
+        let info = ProcessInfo.processInfo
+        if info.arguments.contains("-onboardingDebugPrices")
+            || info.environment["ONBOARDING_DEBUG_PRICES"] != nil {
+            DebugPrices.apply(to: session.iap, language: session.pack.language)
+        }
         #endif
         return session
     }
@@ -37,6 +49,9 @@ struct HeilpraktikerPrepApp: App {
             }
             .animation(AppMotion.smooth, value: session.profile.hasCompletedOnboarding)
             .environment(session)
+            // The pack ships in one language; dates and numbers have to follow
+            // it, or a pt-BR interface renders "October" on an English phone.
+            .environment(\.locale, Locale(identifier: session.pack.language))
             .onAppear {
                 KeyboardDismissGesture.shared.install()
                 Self.applyTheme(session.settings.theme)

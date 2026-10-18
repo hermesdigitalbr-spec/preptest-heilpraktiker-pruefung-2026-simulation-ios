@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "First Steps",
+    "detail": "Finish your first quiz"
+  },
+  "quizzes-10": {
+    "title": "Getting Serious",
+    "detail": "Complete 10 quizzes"
+  },
+  "quizzes-25": {
+    "title": "Quarter Century",
+    "detail": "Practice 25 quizzes"
+  },
+  "quizzes-50": {
+    "title": "Quiz Veteran",
+    "detail": "Complete 50 quizzes"
+  },
+  "quizzes-100": {
+    "title": "Centurion",
+    "detail": "Complete 100 quizzes"
+  },
+  "quizzes-250": {
+    "title": "Quiz Machine",
+    "detail": "Practice 250 quizzes"
+  },
+  "quizzes-500": {
+    "title": "Quiz Master",
+    "detail": "Practice 500 quizzes"
+  },
+  "answered-100": {
+    "title": "Warming Up",
+    "detail": "Answer 100 questions"
+  },
+  "answered-250": {
+    "title": "Getting Warmer",
+    "detail": "Answer 250 questions"
+  },
+  "answered-500": {
+    "title": "Question Crusher",
+    "detail": "Answer 500 questions"
+  },
+  "answered-1000": {
+    "title": "Unstoppable",
+    "detail": "Answer 1,000 questions"
+  },
+  "answered-2500": {
+    "title": "Marathon Mind",
+    "detail": "Answer 2,500 questions"
+  },
+  "answered-5000": {
+    "title": "Question Legend",
+    "detail": "Answer 5,000 questions"
+  },
+  "answered-10000": {
+    "title": "Ten Thousand Club",
+    "detail": "Answer 10,000 questions"
+  },
+  "correct-100": {
+    "title": "On Target",
+    "detail": "Get 100 answers right"
+  },
+  "correct-500": {
+    "title": "Crackshot",
+    "detail": "Get 500 answers right"
+  },
+  "correct-1000": {
+    "title": "Dead Eye",
+    "detail": "Get 1,000 answers right"
+  },
+  "correct-2500": {
+    "title": "Bullseye",
+    "detail": "Get 2,500 answers right"
+  },
+  "correct-5000": {
+    "title": "Precision Legend",
+    "detail": "Get 5,000 answers right"
+  },
+  "accuracy-80": {
+    "title": "Marksman",
+    "detail": "Hold 80% overall accuracy"
+  },
+  "accuracy-90": {
+    "title": "Sniper",
+    "detail": "Hold 90% overall accuracy"
+  },
+  "accuracy-95": {
+    "title": "Deadshot",
+    "detail": "Hold 95% overall accuracy"
+  },
+  "first-perfect": {
+    "title": "Flawless",
+    "detail": "Ace a quiz with no mistakes"
+  },
+  "perfect-5": {
+    "title": "Precise",
+    "detail": "Ace 5 quizzes"
+  },
+  "perfect-10": {
+    "title": "Perfectionist",
+    "detail": "Ace 10 quizzes"
+  },
+  "perfect-25": {
+    "title": "Sharpshooter",
+    "detail": "Ace 25 quizzes"
+  },
+  "perfect-50": {
+    "title": "Ace Collector",
+    "detail": "Ace 50 quizzes"
+  },
+  "perfect-100": {
+    "title": "Living Legend",
+    "detail": "Ace 100 quizzes"
+  },
+  "pstreak-3": {
+    "title": "Hot Streak",
+    "detail": "3 flawless quizzes in a row"
+  },
+  "pstreak-5": {
+    "title": "Flawless Run",
+    "detail": "5 flawless quizzes in a row"
+  },
+  "pstreak-10": {
+    "title": "Untouchable",
+    "detail": "10 flawless quizzes in a row"
+  },
+  "streak-3": {
+    "title": "On a Roll",
+    "detail": "Practice 3 days in a row"
+  },
+  "streak-7": {
+    "title": "Week Strong",
+    "detail": "Practice 7 days in a row"
+  },
+  "streak-14": {
+    "title": "Fortnight Focus",
+    "detail": "Practice 14 days in a row"
+  },
+  "streak-21": {
+    "title": "Three-Week Flame",
+    "detail": "Practice 21 days in a row"
+  },
+  "streak-30": {
+    "title": "Iron Habit",
+    "detail": "Practice 30 days in a row"
+  },
+  "streak-50": {
+    "title": "Inferno",
+    "detail": "Practice 50 days in a row"
+  },
+  "streak-100": {
+    "title": "Unbreakable",
+    "detail": "Practice 100 days in a row"
+  },
+  "streak-365": {
+    "title": "Year of Fire",
+    "detail": "Practice 365 days in a row"
+  },
+  "days-5": {
+    "title": "Regular",
+    "detail": "Practice on 5 different days"
+  },
+  "days-15": {
+    "title": "Habit Forming",
+    "detail": "Practice on 15 different days"
+  },
+  "days-30": {
+    "title": "Committed",
+    "detail": "Practice on 30 different days"
+  },
+  "days-60": {
+    "title": "Diligent",
+    "detail": "Practice on 60 different days"
+  },
+  "days-100": {
+    "title": "Devoted",
+    "detail": "Practice on 100 different days"
+  },
+  "days-200": {
+    "title": "Lifer",
+    "detail": "Practice on 200 different days"
+  },
+  "day-25": {
+    "title": "Quick Session",
+    "detail": "Answer 25 questions in one day"
+  },
+  "day-50": {
+    "title": "Grinder",
+    "detail": "Answer 50 questions in one day"
+  },
+  "day-100": {
+    "title": "Overachiever",
+    "detail": "Answer 100 questions in one day"
+  },
+  "day-200": {
+    "title": "Iron Will",
+    "detail": "Answer 200 questions in one day"
+  },
+  "subject-master": {
+    "title": "Subject Master",
+    "detail": "Reach 90% in any subject"
+  },
+  "subject-perfect": {
+    "title": "Topic Titan",
+    "detail": "Reach 100% in any subject"
+  },
+  "subjects-1": {
+    "title": "Specialist",
+    "detail": "Master 1 subject at 90%+"
+  },
+  "subjects-3": {
+    "title": "Triple Threat",
+    "detail": "Master 3 subjects at 90%+"
+  },
+  "all-subjects": {
+    "title": "Well Rounded",
+    "detail": "Practice every subject"
+  },
+  "subjects-all": {
+    "title": "Master of All",
+    "detail": "Master every subject at 90%+"
+  },
+  "mock-pass": {
+    "title": "Exam Ready",
+    "detail": "Pass a Mock Exam"
+  },
+  "mock-90": {
+    "title": "Top of the Class",
+    "detail": "Score 90% on a Mock Exam"
+  },
+  "mock-100": {
+    "title": "Perfect Score",
+    "detail": "Ace a Mock Exam with 100%"
+  },
+  "collect-5": {
+    "title": "Collector",
+    "detail": "Save 5 questions to Collected"
+  },
+  "collect-10": {
+    "title": "Saver",
+    "detail": "Save 10 questions to Collected"
+  },
+  "collect-25": {
+    "title": "Curator",
+    "detail": "Save 25 questions to Collected"
+  },
+  "collect-50": {
+    "title": "Archivist",
+    "detail": "Save 50 questions to Collected"
+  },
+  "collect-100": {
+    "title": "Librarian",
+    "detail": "Save 100 questions to Collected"
+  },
+  "early-bird": {
+    "title": "Early Bird",
+    "detail": "Practice before 7 AM"
+  },
+  "early-5": {
+    "title": "Dawn Patrol",
+    "detail": "Practice before 7 AM 5 times"
+  },
+  "early-10": {
+    "title": "Rooster",
+    "detail": "Practice before 7 AM 10 times"
+  },
+  "night-owl": {
+    "title": "Night Owl",
+    "detail": "Practice after 10 PM"
+  },
+  "night-5": {
+    "title": "Moonlighter",
+    "detail": "Practice after 10 PM 5 times"
+  },
+  "night-10": {
+    "title": "Midnight Oil",
+    "detail": "Practice after 10 PM 10 times"
+  },
+  "weekend-1": {
+    "title": "Weekend Warrior",
+    "detail": "Practice on a weekend"
+  },
+  "weekend-8": {
+    "title": "Weekend Regular",
+    "detail": "Practice 8 times on weekends"
+  },
+  "weekend-20": {
+    "title": "Weekend Devotee",
+    "detail": "Practice 20 times on weekends"
+  },
+  "comeback": {
+    "title": "Comeback Kid",
+    "detail": "Return after a 7-day break"
+  },
+  "comeback-3": {
+    "title": "Persistent",
+    "detail": "Come back from 3 breaks"
+  },
+  "speedster": {
+    "title": "Speed Demon",
+    "detail": "Finish a 10+ question quiz fast"
+  },
+  "speed-5": {
+    "title": "Quick Draw",
+    "detail": "Finish 5 quizzes fast"
+  },
+  "speed-10": {
+    "title": "Lightning Round",
+    "detail": "Finish 10 quizzes fast"
+  },
+  "explorer": {
+    "title": "Explorer",
+    "detail": "Try 5 different quiz modes"
+  },
+  "time-60": {
+    "title": "Hour of Power",
+    "detail": "Practice for 60 minutes total"
+  },
+  "time-300": {
+    "title": "Time Invested",
+    "detail": "Practice for 5 hours total"
+  },
+  "time-600": {
+    "title": "Scholar",
+    "detail": "Practice for 10 hours total"
+  },
+  "time-1500": {
+    "title": "Professor",
+    "detail": "Practice for 25 hours total"
+  }
+}

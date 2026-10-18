@@ -12,18 +12,18 @@ enum ScreenshotMode {
     }
 
     static var isActive: Bool { screen != nil }
+    private static var isPaywall: Bool { screen == "paywall" || screen == "funnelPaywall" }
 
     /// Replaces user state with the showcase fixture. Idempotent: wipes
     /// progress first so repeated launches don't stack history.
     static func seed(_ session: AppSession) {
         // Premium everywhere EXCEPT the paywall — that shot must show the plans
         // and prices (used as the App Review screenshot for the subscriptions).
-        session.iap.debugEntitlement = (screen?.hasPrefix("paywall") == true) ? .free : .premium
-        if screen?.hasPrefix("paywall") == true {
+        session.iap.debugEntitlement = isPaywall ? .free : .premium
+        if isPaywall {
             // StoreKit products don't load under simctl, so inject display
             // prices to render a complete paywall (no "couldn't load" banner).
-            session.iap.debugWeeklyPrice = "6,99 €"
-            session.iap.debugMonthlyPrice = "17,99 €"
+            DebugPrices.apply(to: session.iap, language: session.pack.language)
         }
         // Keep the rate prompt out of the frame — both the 14-day cooldown and
         // the one-shot "first quiz as premium" prompt (which would otherwise
@@ -34,7 +34,7 @@ enum ScreenshotMode {
         var profile = UserProfile()
         profile.level = .skilled
         profile.goal = .passExam
-        profile.stateId = "CA"
+        profile.stateId = "SP"
         profile.examDate = Calendar.current.date(byAdding: .day, value: 24, to: .now)
         profile.examDateSetAt = Calendar.current.date(byAdding: .day, value: -8, to: .now)
         profile.dailyMinutes = 15
@@ -42,7 +42,7 @@ enum ScreenshotMode {
         profile.preferredHour = 19
         profile.streakGoal = 14
         profile.planQuestionsPerDay = 20
-        profile.weakSubjectIds = ["pharmacology", "cardiology"]
+        profile.weakSubjectIds = Set(session.pack.subjects.prefix(2).map(\.id))
         profile.hasCompletedOnboarding = true
         session.profile = profile
 
@@ -107,7 +107,7 @@ enum ScreenshotMode {
             let qs = Array((pool.isEmpty ? session.content.questions : pool).prefix(8))
             let controller = QuizController(
                 session: QuizSession(mode: .custom, feedback: .learning,
-                                     questions: qs, shuffleSeed: 7),
+                                     questions: qs, shuffleSeed: QuizController.shuffleSeed(session, fixed: 7)),
                 timeLimitSeconds: nil, progress: session.progress)
             QuizView(controller: answeredFirst(controller))
         case "results":
@@ -116,8 +116,17 @@ enum ScreenshotMode {
             }
         case "paywall":
             PaywallView()
-        case "paywall_exit":
-            PaywallView(startOnExitOffer: true)
+        case "funnelPaywall":
+            // The funnel's own paywall (no close button), held on slide 1.
+            OnboardingPaywallView()
+        case "reviews":
+            VStack(spacing: 0) {
+                OnboardingReviewsStep(model: OnboardingModel(hasRegions: true))
+                PrimaryCTAButton(title: session.strings.common.continueButton) {}
+                    .padding(.horizontal, OnboardingTokens.gutter)
+                    .padding(.bottom, AppSpacing.sm)
+            }
+            .background(OnboardingBackground())
         case "sharecard":
             // Visual check of the share card at full size on a neutral backdrop.
             let s = session.strings.results
@@ -129,7 +138,9 @@ enum ScreenshotMode {
                     score: 92, correctText: "23/25", streak: 7, timeText: "4:12",
                     challenge: String(format: s.shareChallengeFormat, 92),
                     brandName: session.pack.examName, tagline: session.pack.tagline,
-                    correctLabel: s.correct, streakLabel: s.streakLabel, timeLabel: s.timeLabel, scoreLabel: s.scoreLabel,
+                    correctLabel: s.correct, streakLabel: s.streakLabel, timeLabel: s.timeLabel,
+                    scoreLabel: session.strings.results.scoreLabel,
+                    storeBadge: session.strings.results.shareStoreBadge,
                     iconGlyph: session.pack.examShortName.lowercased(with: .current)),
                     cornerRadius: 24)
                     .frame(width: ShareCardView.canvasWidth, height: ShareCardView.canvasHeight)
@@ -141,7 +152,7 @@ enum ScreenshotMode {
                 let controller = QuizController(
                     session: QuizSession(mode: .custom, feedback: .learning,
                                          questions: Array(imgQs.prefix(10)),
-                                         shuffleSeed: .random(in: .min ... .max)),
+                                         shuffleSeed: QuizController.shuffleSeed(session)),
                     timeLimitSeconds: nil, progress: session.progress)
                 QuizView(controller: controller)
             }

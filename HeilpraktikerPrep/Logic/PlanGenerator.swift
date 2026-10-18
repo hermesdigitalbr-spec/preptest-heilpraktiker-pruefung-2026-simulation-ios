@@ -6,6 +6,18 @@ enum PlanGenerator {
     /// Assume the user actually practices on ~80% of remaining days.
     private static let adherence = 0.8
 
+    /// Daily-minute options offered in onboarding (≈1 question per minute).
+    static let minuteOptions = [15, 30, 60, 90]
+
+    /// Smallest minute option that covers the whole bank before the exam at
+    /// the same adherence assumption as `makePlan`. nil without a date.
+    static func recommendedMinutes(totalQuestions: Int, daysUntilExam: Int?) -> Int? {
+        guard let days = daysUntilExam, days > 0 else { return nil }
+        let effectiveDays = max(1.0, Double(days) * adherence)
+        let needed = Double(totalQuestions) / effectiveDays
+        return minuteOptions.first { Double($0) >= needed } ?? minuteOptions.last
+    }
+
     static func makePlan(profile: UserProfile,
                          totalQuestions: Int,
                          defaultDailyCount: Int,

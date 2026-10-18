@@ -1,8 +1,15 @@
 import Testing
 import Foundation
+import UIKit
 @testable import HeilpraktikerPrep
 
 struct ContentPackTests {
+    @Test func stringsHaveNoGuaranteeBadge() throws {
+        let data = try Data(contentsOf: Bundle.main.url(forResource: "strings", withExtension: "json")!)
+        let text = String(decoding: data, as: UTF8.self)
+        #expect(!text.contains("planBulletGuarantee"))
+    }
+
     @Test func decodesPackConfig() throws {
         let json = """
         {"examName":"Prep Kit Text","examShortName":"EXAM","tagline":"REPLACE — your one-line tagline",
@@ -44,7 +51,7 @@ struct ContentPackTests {
         #expect(content.pack.products.monthly.hasSuffix(".monthly"))
         let subjectIds = Set(content.pack.subjects.map(\.id))
         #expect(Set(content.questions.map(\.subjectId)).isSubset(of: subjectIds))
-        #expect(!content.strings.paywall.trialCta.isEmpty)
+        #expect(!content.strings.paywall.trialCtaFunnel.isEmpty)
     }
 
     @Test func questionValidationRejectsUnknownSubject() {
@@ -53,5 +60,74 @@ struct ContentPackTests {
         #expect(throws: ContentError.self) {
             try ContentValidator.validate(question: q, subjectIds: ["subject-1"])
         }
+    }
+    // MARK: - Verdadeiro/Falso
+
+    private func trueFalse(_ choices: [String], correct: Int = 0) -> Question {
+        Question(id: "vf1", subjectId: "subject-1", difficulty: 1,
+                 text: "Afirmação.", choices: choices, correctIndex: correct, explanation: "e")
+    }
+
+    @Test func trueFalseModeAcceptsTheConfiguredPair() throws {
+        try ContentValidator.validate(question: trueFalse(["Verdadeiro", "Falso"], correct: 1),
+                                      subjectIds: ["subject-1"],
+                                      trueFalseLabels: ["Verdadeiro", "Falso"])
+        try ContentValidator.validate(question: trueFalse(["True", "False"]),
+                                      subjectIds: ["subject-1"],
+                                      trueFalseLabels: ["True", "False"])
+    }
+
+    @Test func trueFalseModeRejectsFourChoices() {
+        #expect(throws: ContentError.self) {
+            try ContentValidator.validate(question: trueFalse(["a", "b", "c", "d"]),
+                                          subjectIds: ["subject-1"],
+                                          trueFalseLabels: ["Verdadeiro", "Falso"])
+        }
+    }
+
+    @Test func trueFalseModeRejectsSwappedOrder() {
+        #expect(throws: ContentError.self) {
+            try ContentValidator.validate(question: trueFalse(["Falso", "Verdadeiro"]),
+                                          subjectIds: ["subject-1"],
+                                          trueFalseLabels: ["Verdadeiro", "Falso"])
+        }
+    }
+
+    @Test func questionFormatDecodesFromPackNiche() throws {
+        let niche = try JSONDecoder().decode(NicheConfig.self,
+                                             from: Data(#"{"questionFormat":"trueFalse"}"#.utf8))
+        #expect(niche.questionFormat == .trueFalse)
+    }
+
+    @Test func trueFalseLettersComeFromStrings() throws {
+        let content = try ContentLoader.load(from: .main)
+        let letters = ChoiceLetters.letters(for: .trueFalse, strings: content.strings.quiz)
+        #expect(letters == [content.strings.quiz.trueLetter, content.strings.quiz.falseLetter])
+        #expect(ChoiceLetters.letters(for: .multipleChoice, strings: content.strings.quiz).first == "A")
+    }
+
+    // MARK: - Imagem
+
+    @Test func imageQuestionWithMissingAssetFailsValidation() {
+        var q = trueFalse(["a", "b", "c", "d"])
+        q.imageName = "does-not-exist"
+        #expect(throws: ContentError.self) {
+            try ContentValidator.validate(question: q, subjectIds: ["subject-1"],
+                                          imageExists: { _ in false })
+        }
+    }
+
+    /// Banks without image questions (e.g. GED) are valid: only the assets of
+    /// the image questions that do exist are required.
+    @Test func bundledImageQuestionsHaveTheirAssets() throws {
+        let content = try ContentLoader.loadValidated(from: .main)
+        let withImage = content.questions.filter { $0.imageName != nil }
+        #expect(withImage.allSatisfy { UIImage(named: $0.imageName!) != nil })
+    }
+
+    @Test func textOnlyQuestionKeepsNoImage() throws {
+        let q = try JSONDecoder().decode(Question.self, from: Data(
+            #"{"id":"x","subjectId":"s","difficulty":1,"text":"t","choices":["a","b"],"correctIndex":0,"explanation":"e"}"#.utf8))
+        #expect(q.imageName == nil && q.imageURL == nil)
     }
 }

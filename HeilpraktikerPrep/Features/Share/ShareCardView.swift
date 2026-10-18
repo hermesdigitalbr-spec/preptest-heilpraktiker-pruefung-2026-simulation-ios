@@ -16,8 +16,9 @@ struct ShareCardData: Equatable {
     let tagline: String          // from pack.tagline
     let correctLabel: String     // "Correct"
     let streakLabel: String      // "Day Streak"
-    let timeLabel: String        // "Time", scoreLabel: "Meine Punktzahl"
-    let scoreLabel: String     // "My Score" — eyebrow dentro do anel
+    let timeLabel: String        // "Time"
+    let scoreLabel: String       // "Minha pontuação" — under the number
+    let storeBadge: String       // "Baixar na" — over "App Store" in the pill
     let iconGlyph: String        // wordmark in the mini app icon, e.g. "EXAM"
 
     var progress: Double { min(max(Double(score) / 100, 0), 1) }
@@ -39,7 +40,7 @@ struct ShareCardView: View {
     // Palette = AppColor light mode, baked in as literal hex.
     private let background     = Color(hexString: "#F6F8FB")
     private let surface        = Color(hexString: "#FFFFFF")
-    private let surfaceHigh    = Color(hexString: "#EDF1F7")
+    private let surfaceHigh    = Color(hexString: "#D6DEE9")   // ring track — must read against the card
     private let textPrimary    = Color(hexString: "#101720")
     private let textSecondary  = Color(hexString: "#566273")
     private let textDim        = Color(hexString: "#8C97A7")
@@ -53,22 +54,22 @@ struct ShareCardView: View {
         ZStack {
             backdrop
             VStack(spacing: 0) {
-                eyebrow.padding(.top, 32)
-                Spacer(minLength: 12)
-                hero
-                Spacer(minLength: 14)
-                Text(data.headline)
-                    .font(.system(size: 28, weight: .heavy))
-                    .tracking(-0.4)
-                    .foregroundStyle(textPrimary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                    .padding(.horizontal, 28)
-                Spacer(minLength: 14)
-                statRow.padding(.horizontal, 26)
-                Spacer(minLength: 14)
-                challengeLine.padding(.horizontal, 28)
+                eyebrow.padding(.top, 30)
                 Spacer(minLength: 18)
+                hero
+                Spacer(minLength: 18)
+                Text(data.headline)
+                    .font(.system(size: 24, weight: .heavy))
+                    .tracking(-0.3)
+                    .foregroundStyle(textPrimary)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 28)
+                Spacer(minLength: 16)
+                statRow.padding(.horizontal, 26)
+                Spacer(minLength: 16)
+                challengeLine.padding(.horizontal, 28)
+                Spacer(minLength: 20)
                 footer.padding(.horizontal, 22).padding(.bottom, 24)
             }
         }
@@ -96,8 +97,8 @@ struct ShareCardView: View {
             .font(.system(size: 12, weight: .semibold))
             .tracking(1.6)
             .foregroundStyle(textDim)
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 28)
     }
 
@@ -106,22 +107,22 @@ struct ShareCardView: View {
     private var hero: some View {
         ZStack {
             Circle()
-                .inset(by: 7)
-                .stroke(surfaceHigh, style: StrokeStyle(lineWidth: 14, lineCap: .round))
+                .inset(by: 6)
+                .stroke(surfaceHigh, style: StrokeStyle(lineWidth: 12, lineCap: .round))
             Circle()
-                .inset(by: 7)
+                .inset(by: 6)
                 .trim(from: 0, to: data.progress)
-                .stroke(accent, style: StrokeStyle(lineWidth: 14, lineCap: .round))
+                .stroke(accent, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-            VStack(spacing: 2) {
-                // 3-digit scores ("100%") get shrunk 20% so they sit inside the
-                // ring with the same visual weight as 1- or 2-digit scores.
-                let scoreFont: CGFloat = data.score >= 100 ? 77 : 96
-                let pctFont: CGFloat = data.score >= 100 ? 26 : 32
-                HStack(alignment: .firstTextBaseline, spacing: 0) {
+            VStack(spacing: 4) {
+                // The number is the headline, not the whole card: sized to sit
+                // comfortably inside the ring with its label underneath.
+                let scoreFont: CGFloat = data.score >= 100 ? 52 : 62
+                let pctFont: CGFloat = data.score >= 100 ? 20 : 24
+                HStack(alignment: .firstTextBaseline, spacing: 1) {
                     Text("\(data.score)")
                         .font(.system(size: scoreFont, weight: .heavy))
-                        .tracking(-3)
+                        .tracking(-2)
                         .monospacedDigit()
                         .foregroundStyle(textPrimary)
                     Text("%")
@@ -130,14 +131,16 @@ struct ShareCardView: View {
                 }
                 .lineLimit(1)
 
-                Text(data.eyebrowSubLabel)
-                    .font(.system(size: 11, weight: .semibold))
-                    .tracking(0.6)
+                Text(data.scoreLabel.uppercased(with: .current))
+                    .font(.system(size: 10, weight: .semibold))
+                    .tracking(1.2)
                     .foregroundStyle(textDim)
-                    .padding(.top, 2)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 24)
             }
         }
-        .frame(width: 208, height: 208)
+        .frame(width: 176, height: 176)
     }
 
     // MARK: - Stat row (clean chips — light, soft border, semantic tints)
@@ -169,8 +172,8 @@ struct ShareCardView: View {
                 .font(.system(size: 9, weight: .semibold))
                 .tracking(0.6)
                 .foregroundStyle(textDim)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
@@ -192,8 +195,8 @@ struct ShareCardView: View {
             Text(data.challenge)
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(textSecondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
             Spacer()
         }
     }
@@ -242,7 +245,7 @@ struct ShareCardView: View {
                 .font(.system(size: 12))
                 .symbolRenderingMode(.monochrome)
             VStack(alignment: .leading, spacing: 0) {
-                Text("LADEN IM")
+                Text(data.storeBadge.uppercased(with: .current))
                     .font(.system(size: 7, weight: .semibold))
                 Text("App Store")
                     .font(.system(size: 12, weight: .bold))
@@ -255,11 +258,6 @@ struct ShareCardView: View {
     }
 }
 
-private extension ShareCardData {
-    /// Tiny label under the score inside the ring — vem do ContentPack
-    /// (results.scoreLabel), igual aos outros labels do card.
-    var eyebrowSubLabel: String { scoreLabel.uppercased(with: .current) }
-}
 
 /// Renders a ShareCardData into a shareable PNG (1080×1470).
 enum ShareCardRenderer {
@@ -282,7 +280,9 @@ enum ShareCardRenderer {
         correctText: "23/25", streak: 7, timeText: "4:12",
         challenge: "Think you can beat 92%?", brandName: "Prep Kit Text",
         tagline: "REPLACE — your one-line tagline",
-        correctLabel: "Correct", streakLabel: "Day Streak", timeLabel: "Time", scoreLabel: "Meine Punktzahl",
+        correctLabel: "Correct", streakLabel: "Day Streak", timeLabel: "Time",
+        scoreLabel: "My Score",
+        storeBadge: "Download on the",
         iconGlyph: "EXAM"),
         cornerRadius: 24)
     .scaleEffect(0.8)

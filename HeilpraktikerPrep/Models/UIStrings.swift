@@ -36,12 +36,22 @@ struct UIStrings: Codable, Equatable {
         let retry: String
         let pro: String
         let questionsUnit: String
+        // VoiceOver (accessibility) texts
+        let a11yClose: String
+        let a11yExpandImage: String
+        let a11yOptionFormat: String        // %1$@ = letter, %2$@ = option text
+        let a11ySelected: String
+        let a11yCorrectAnswer: String
+        let a11yYourAnswerWrong: String
+        let a11yUnlockedFormat: String      // %1$@ = title, %2$@ = detail
+        let a11yLockedFormat: String        // %1$@ = title, %2$@ = detail
     }
 
     struct Home: Codable, Equatable {
         let greetingMorning: String
         let greetingAfternoon: String
         let greetingEvening: String
+        let greetingWithNameFormat: String
         let dailyQuestionsTitle: String
         let dailyQuestionsSubtitle: String
         let dailyQuestionsDone: String
@@ -84,6 +94,10 @@ struct UIStrings: Codable, Equatable {
 
     struct Quiz: Codable, Equatable {
         let questionCounterFormat: String
+        let verdictCorrect: String
+        let verdictWrong: String
+        let answerChipFormat: String
+        let explanationLabel: String
         let showExplanation: String
         let hideExplanation: String
         let next: String
@@ -99,9 +113,16 @@ struct UIStrings: Codable, Equatable {
         let wrongLabel: String
         let a11yBookmark: String
         let a11yFontSize: String
+        /// Verdadeiro/Falso packs: the two fixed choices and their short tokens
+        /// (pt-BR "V"/"F", en "T"/"F").
+        let trueLabel: String
+        let falseLabel: String
+        let trueLetter: String
+        let falseLetter: String
     }
 
     struct Results: Codable, Equatable {
+        let calculating: String
         let headlineGreat: String
         let headlineGood: String
         let headlineKeepTrying: String
@@ -119,6 +140,11 @@ struct UIStrings: Codable, Equatable {
         let shareButton: String
         let shareFormat: String
         let shareChallengeFormat: String
+        let shareStoreBadge: String
+        let sharePreviewTitle: String
+        let correctOfFormat: String
+        let badgeUnlockedFormat: String
+        let badgeNextFormat: String
     }
 
     struct Study: Codable, Equatable {
@@ -144,6 +170,10 @@ struct UIStrings: Codable, Equatable {
 
     struct Stats: Codable, Equatable {
         let title: String
+        let emptyEmoji: String
+        let emptyTitle: String
+        let emptyBody: String
+        let emptyCta: String
         let upcomingExam: String
         let daysFormat: String
         let dayStreak: String
@@ -176,6 +206,13 @@ struct UIStrings: Codable, Equatable {
         let freezeUsedMessage: String
         let quizTimes: String
         let quizTimesHelp: String
+        let dailyLogTitle: String
+        let dailyLogMinutesFormat: String
+        let dailyLogHoursFormat: String
+        let studyLogDays: String
+        let studyLogMocks: String
+        let dailyLogQuestionsFormat: String
+        let dailyLogMocksFormat: String
         let practiceTime: String
         let practiceTimeHelp: String
         let correctQuestions: String
@@ -193,7 +230,7 @@ struct UIStrings: Codable, Equatable {
         let mockMode: String
         let mockModeDesc: String
         let examDate: String
-        let examState: String
+        let examStateFormat: String
         let dailyGoal: String
         let notifications: String
         let reminderTime: String
@@ -211,11 +248,26 @@ struct UIStrings: Codable, Equatable {
         let resetConfirmTitle: String
         let resetConfirmMessage: String
         let contactUs: String
+        let notifEducationTitle: String
+        let notifEducationBody: String
+        let notifEducationStep1Prefix: String
+        let notifEducationStep1Bold: String
+        let notifEducationStep1Suffix: String
+        let notifEducationStep2Prefix: String
+        let notifEducationStep2Bold: String
+        let notifEducationStep3Prefix: String
+        let notifEducationStep3Bold: String
+        let notifEducationCta: String
+        let notifEducationEnableCta: String
+        let notifEducationLater: String
+        let reminderNudgeTitle: String
+        let reminderNudgeBody: String
+        let reminderNudgeCta: String
         let reminderNotificationTitle: String
         let reminderNotificationBody: String
-        let stateChangeTitle: String
+        let stateChangeTitleFormat: String
         let stateChangeMessageFormat: String
-        let stateChangeConfirm: String
+        let stateChangeConfirmFormat: String
         let signInTitle: String
         let signInSubtitle: String
         let signedInFormat: String
@@ -252,13 +304,18 @@ struct UIStrings: Codable, Equatable {
         let feature4: String
         let weeklyName: String
         let monthlyName: String
+        let quarterlyName: String
+        let perQuarter: String
+        let quarterlySubtitleFormat: String
+        let perDayFormat: String
+        let quarterlyTodayLine: String
+        let quarterlyRenewLine: String
         let perWeek: String
         let perMonth: String
         let saveBadge: String
         let timelineInstall: String
         let timelineToday: String
         let timelineMember: String
-        let trialCta: String
         let continueCta: String
         let monthlySubtitleFormat: String
         let monthlyNoTrialSubtitleFormat: String
@@ -269,99 +326,162 @@ struct UIStrings: Codable, Equatable {
         let weeklyRenewLine: String
         let monthlyTodayLine: String
         let monthlyRenewLine: String
-        let exitOfferTitle: String
-        let exitOfferSubtitle: String
-        let exitOfferCta: String
-        let exitOfferNoThanks: String
-        let exitOfferSubtitleFormat: String
+        let slide1Title: String
+        let slide1TitleScore: String
+        let slide1Subtitle: String
+        let slide2TitleFormat: String
+        let slide2Subtitle: String
+        let slide2CardTitle: String
+        let slide2BadgeFormat: String
+        let slide2Answer: String
+        let signupToastFormat: String
+        let signupToastNames: [String]
+        let slide3Title: String
+        let slide3QuestionsFormat: String
+        let slide3Subtitle: String
+        let slide3SubtitleScore: String
+        let declineCta: String
+        let trialCtaFunnel: String
+        let monthlyCardName: String
+        let quarterlyCardName: String
+        let monthlyCardDetailFormat: String
+        let quarterlyCardDetailFormat: String
+        let saveBadgeFormat: String
+        let summaryMonthlyFormat: String
+        let summaryQuarterlyFormat: String
+        let giftTitle: String
+        let giftRibbon: String
+        let giftPlanName: String
+        let giftPlanDetail: String
+        let giftAfter: String
+        let giftPerWeek: String
+        let giftFreeDays: String
+        let giftCta: String
+        let monthlyCardPriceFormat: String
+        let quarterlyCardPriceFormat: String
+        let trialBadge: String
+        let subscribeMonthlyCta: String
+        let giftSubscribeCta: String
+        let subscribeQuarterlyCta: String
+        let quarterlyTrialSubtitleFormat: String
+        let perDayEquivalentFormat: String
     }
 
     struct Onboarding: Codable, Equatable {
-        let value1Title: String
-        let value1Subtitle: String
-        let value2Title: String
-        let value2Subtitle: String
-        let levelTitle: String
-        let levelSubtitle: String
-        let levelNewbie: String
-        let levelSkilled: String
-        let levelMaster: String
-        let levelExpert: String
-        let goalTitle: String
-        let goalSubtitle: String
-        let goalPass: String
-        let goalKnowledge: String
-        let goalSkills: String
-        let goalBarriers: String
-        let takenTitle: String
-        let takenSubtitle: String
-        let takenNever: String
-        let takenOnce: String
-        let takenMany: String
-        let concernTitle: String
-        let concernSubtitle: String
-        let concernFailing: String
-        let concernTime: String
-        let concernMaterial: String
-        let concernAnxiety: String
-        let painTitle: String
-        let painLead: String
-        let painPoints: [String]
-        let painFailingTitle: String
-        let painFailingLead: String
-        let painFailingPoints: [String]
-        let painTimeTitle: String
-        let painTimeLead: String
-        let painTimePoints: [String]
-        let painMaterialTitle: String
-        let painMaterialLead: String
-        let painMaterialPoints: [String]
-        let painAnxietyTitle: String
-        let painAnxietyLead: String
-        let painAnxietyPoints: [String]
-        let methodTitle: String
-        let methodLead: String
-        let methodPoints: [String]
-        let minutesTitle: String
         let minutesSubtitle: String
-        let minutesFormat: String
-        let minutesMaxLabel: String
-        let daysTitle: String
-        let daysSubtitle: String
-        let timeTitle: String
-        let timeSubtitle: String
-        let stateTitle: String
-        let stateSubtitle: String
-        let stateSearch: String
-        let examDateTitle: String
-        let examDateSubtitle: String
-        let examDateUnknown: String
-        let streakTitle: String
-        let streakSubtitle: String
-        let streakFormat: String
-        let notifTitle: String
-        let notifSubtitle: String
-        let notifEnable: String
-        let notifLater: String
-        let subjectsTitle: String
-        let subjectsSubtitle: String
+        let regionLabelDefault: String
+        let stateSearchFormat: String
         let personalizingTitle: String
-        let personalizingStep1: String
-        let personalizingStep2: String
         let personalizingStep3: String
-        let planTitle: String
-        let planSubtitle: String
-        let planPerDayFormat: String
-        let planCta: String
-        let planBullet1: String
-        let planBullet2: String
-        let planBullet3: String
-        let planCtaSubtext: String
-        let planQuestionsLabel: String
-        let planTopicsLabel: String
-        let welcomeTitle: String
-        let welcomeSubtitle: String
-        let welcomeCta: String
+        let nameTitle: String
+        let nameSubtitle: String
+        let namePlaceholder: String
+        let paceSprint: String
+        let paceActive: String
+        let paceSteady: String
+        let paceAdviceSprint: String
+        let paceAdviceActive: String
+        let paceAdviceSteady: String
+        let minutesHintTightFormat: String
+        let minutesHintFits: String
+        let forecastToday: String
+        let introTitle: String
+        let introSubtitleFormat: String
+        let introTrustChip: String
+        let introStatValue: String
+        let introStatLabel: String
+        let introStatLabelScore: String
+        let stateTitleFunnel: String
+        let examDateTitleFunnel: String
+        let examDateSubtitleFunnel: String
+        let examDateCta: String
+        let examDateNoDate: String
+        let examDateDaysLeftFormat: String
+        let motivationTitle: String
+        let motivationSubtitle: String
+        let motivationStability: String
+        let motivationStabilityDetail: String
+        let motivationCalling: String
+        let motivationCallingDetail: String
+        let motivationFamily: String
+        let motivationFamilyDetail: String
+        let motivationNewCareer: String
+        let motivationNewCareerDetail: String
+        let firstTimeTitle: String
+        let firstTimeYes: String
+        let firstTimeNo: String
+        let affirmationFirst: String
+        let affirmationFirstScore: String
+        let affirmationRetry: String
+        let affirmationLead: String
+        let levelTitleFunnel: String
+        let levelNotReady: String
+        let levelSomewhat: String
+        let levelReady: String
+        let levelVeryReady: String
+        let rightPlaceTitle: String
+        let rightPlaceTitleGreen: String
+        let rightPlaceLead: String
+        let rightPlaceProofTop: String
+        let rightPlaceProofTopScore: String
+        let rightPlaceProofRatingFormat: String
+        let reviewsTitle: String
+        let reviewsLead: String
+        let minutesTitleFunnel: String
+        let minutesDaysLeftFormat: String
+        let personalizingTitleFunnel: String
+        let personalizingApplyingSyllabus: String
+        let personalizingSelectingFormat: String
+        let personalizingSchedulingFormat: String
+        let personalizingPerDayFormat: String
+        let personalizingPerDayTail: String
+        let planTitleFunnelNamedFormat: String
+        let planTitleFunnel: String
+        let planBulletQuestions: String
+        let planBulletMocks: String
+        let planBulletReview: String
+        let planPaceNoDate: String
+        let planPaceSpeedUp: String
+        let planPaceOnTrack: String
+        let planPaceLeadNoDate: String
+        let planPaceLeadSpeedUp: String
+        let planPaceLeadOnTrack: String
+        let planPaceLeadPrefixFormat: String
+        let forecastTitleFunnel: String
+        let detailsTitleFunnel: String
+        let detailsExamLabel: String
+        let detailsExamDateLabel: String
+        let detailsFallbackExamDate: String
+        let planCtaFunnel: String
+        let minutesPerDayFormat: String
+        let hoursPerDayFormat: String
+        let reviews: [Review]
+
+        let nameFieldLabel: String
+        let forecastFinishEmoji: String
+        let detailsExamEmoji: String
+        let detailsStateEmoji: String
+        let detailsExamDateEmoji: String
+        let paceEmoji: String
+        let hintEmojiFits: String
+        let hintEmojiTight: String
+        let rightPlaceProofTopEmoji: String
+        let rightPlaceProofRatingEmoji: String
+        let levelEmojiNotReady: String
+        let levelEmojiSomewhat: String
+        let levelEmojiReady: String
+        let levelEmojiVeryReady: String
+        let amountPerDayFormat: String
+        let hoursMinutesPerDayFormat: String
+        let minutesPaceSlow: String
+        let minutesPaceBalanced: String
+        let minutesPaceFast: String
+        let minutesPaceIntense: String
+        struct Review: Codable, Equatable {
+            let title: String
+            let body: String
+            let author: String
+        }
     }
 
     struct Empty: Codable, Equatable {

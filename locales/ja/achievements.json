@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "初めの一歩",
+    "detail": "初めての演習を終える"
+  },
+  "quizzes-10": {
+    "title": "本気モード",
+    "detail": "演習を10回完了する"
+  },
+  "quizzes-25": {
+    "title": "二十五番勝負",
+    "detail": "演習を25回こなす"
+  },
+  "quizzes-50": {
+    "title": "演習の猛者",
+    "detail": "演習を50回完了する"
+  },
+  "quizzes-100": {
+    "title": "百戦錬磨",
+    "detail": "演習を100回完了する"
+  },
+  "quizzes-250": {
+    "title": "演習の鬼",
+    "detail": "演習を250回こなす"
+  },
+  "quizzes-500": {
+    "title": "演習の達人",
+    "detail": "演習を500回こなす"
+  },
+  "answered-100": {
+    "title": "肩慣らし",
+    "detail": "100問に解答する"
+  },
+  "answered-250": {
+    "title": "熱が入る",
+    "detail": "250問に解答する"
+  },
+  "answered-500": {
+    "title": "問題粉砕",
+    "detail": "500問に解答する"
+  },
+  "answered-1000": {
+    "title": "誰にも止められない",
+    "detail": "1,000問に解答する"
+  },
+  "answered-2500": {
+    "title": "長距離ランナー",
+    "detail": "2,500問に解答する"
+  },
+  "answered-5000": {
+    "title": "伝説の解答者",
+    "detail": "5,000問に解答する"
+  },
+  "answered-10000": {
+    "title": "一万問クラブ",
+    "detail": "10,000問に解答する"
+  },
+  "correct-100": {
+    "title": "的中",
+    "detail": "100問正解する"
+  },
+  "correct-500": {
+    "title": "名射手",
+    "detail": "500問正解する"
+  },
+  "correct-1000": {
+    "title": "鷹の目",
+    "detail": "1,000問正解する"
+  },
+  "correct-2500": {
+    "title": "ど真ん中",
+    "detail": "2,500問正解する"
+  },
+  "correct-5000": {
+    "title": "精度の伝説",
+    "detail": "5,000問正解する"
+  },
+  "accuracy-80": {
+    "title": "射手",
+    "detail": "全体の正答率80%を保つ"
+  },
+  "accuracy-90": {
+    "title": "狙撃手",
+    "detail": "全体の正答率90%を保つ"
+  },
+  "accuracy-95": {
+    "title": "百発百中",
+    "detail": "全体の正答率95%を保つ"
+  },
+  "first-perfect": {
+    "title": "完全無欠",
+    "detail": "ミスなしで演習をクリアする"
+  },
+  "perfect-5": {
+    "title": "精密",
+    "detail": "5回の演習を全問正解する"
+  },
+  "perfect-10": {
+    "title": "完璧主義",
+    "detail": "10回の演習を全問正解する"
+  },
+  "perfect-25": {
+    "title": "一分の隙もなし",
+    "detail": "25回の演習を全問正解する"
+  },
+  "perfect-50": {
+    "title": "満点コレクター",
+    "detail": "50回の演習を全問正解する"
+  },
+  "perfect-100": {
+    "title": "生ける伝説",
+    "detail": "100回の演習を全問正解する"
+  },
+  "pstreak-3": {
+    "title": "波に乗る",
+    "detail": "全問正解を3回連続で達成する"
+  },
+  "pstreak-5": {
+    "title": "無傷の連勝",
+    "detail": "全問正解を5回連続で達成する"
+  },
+  "pstreak-10": {
+    "title": "無敵",
+    "detail": "全問正解を10回連続で達成する"
+  },
+  "streak-3": {
+    "title": "三日坊主、卒業",
+    "detail": "3日連続で演習する"
+  },
+  "streak-7": {
+    "title": "一週間走破",
+    "detail": "7日連続で演習する"
+  },
+  "streak-14": {
+    "title": "二週間の集中",
+    "detail": "14日連続で演習する"
+  },
+  "streak-21": {
+    "title": "三週間の炎",
+    "detail": "21日連続で演習する"
+  },
+  "streak-30": {
+    "title": "鉄の習慣",
+    "detail": "30日連続で演習する"
+  },
+  "streak-50": {
+    "title": "灼熱",
+    "detail": "50日連続で演習する"
+  },
+  "streak-100": {
+    "title": "不屈",
+    "detail": "100日連続で演習する"
+  },
+  "streak-365": {
+    "title": "一年間の炎",
+    "detail": "365日連続で演習する"
+  },
+  "days-5": {
+    "title": "常連",
+    "detail": "5日間演習する"
+  },
+  "days-15": {
+    "title": "習慣づくり",
+    "detail": "15日間演習する"
+  },
+  "days-30": {
+    "title": "本気の継続",
+    "detail": "30日間演習する"
+  },
+  "days-60": {
+    "title": "勤勉",
+    "detail": "60日間演習する"
+  },
+  "days-100": {
+    "title": "ひたむき",
+    "detail": "100日間演習する"
+  },
+  "days-200": {
+    "title": "生涯現役",
+    "detail": "200日間演習する"
+  },
+  "day-25": {
+    "title": "短期集中",
+    "detail": "1日に25問解答する"
+  },
+  "day-50": {
+    "title": "猛勉強",
+    "detail": "1日に50問解答する"
+  },
+  "day-100": {
+    "title": "目標超え",
+    "detail": "1日に100問解答する"
+  },
+  "day-200": {
+    "title": "鉄の意志",
+    "detail": "1日に200問解答する"
+  },
+  "subject-master": {
+    "title": "科目の達人",
+    "detail": "いずれかの科目で90%に到達する"
+  },
+  "subject-perfect": {
+    "title": "分野の覇者",
+    "detail": "いずれかの科目で100%に到達する"
+  },
+  "subjects-1": {
+    "title": "専門家",
+    "detail": "1科目を90%以上で仕上げる"
+  },
+  "subjects-3": {
+    "title": "三刀流",
+    "detail": "3科目を90%以上で仕上げる"
+  },
+  "all-subjects": {
+    "title": "全方位",
+    "detail": "すべての科目を演習する"
+  },
+  "subjects-all": {
+    "title": "全科目制覇",
+    "detail": "すべての科目を90%以上で仕上げる"
+  },
+  "mock-pass": {
+    "title": "合格圏",
+    "detail": "模擬試験に合格する"
+  },
+  "mock-90": {
+    "title": "首席",
+    "detail": "模擬試験で90%を取る"
+  },
+  "mock-100": {
+    "title": "満点",
+    "detail": "模擬試験で100%を取る"
+  },
+  "collect-5": {
+    "title": "収集家",
+    "detail": "問題を5問保存する"
+  },
+  "collect-10": {
+    "title": "保管人",
+    "detail": "問題を10問保存する"
+  },
+  "collect-25": {
+    "title": "目利き",
+    "detail": "問題を25問保存する"
+  },
+  "collect-50": {
+    "title": "書庫番",
+    "detail": "問題を50問保存する"
+  },
+  "collect-100": {
+    "title": "司書",
+    "detail": "問題を100問保存する"
+  },
+  "early-bird": {
+    "title": "早起きは三文の徳",
+    "detail": "朝7時前に演習する"
+  },
+  "early-5": {
+    "title": "夜明けの習慣",
+    "detail": "朝7時前の演習を5回行う"
+  },
+  "early-10": {
+    "title": "朝型人間",
+    "detail": "朝7時前の演習を10回行う"
+  },
+  "night-owl": {
+    "title": "宵っ張り",
+    "detail": "夜22時以降に演習する"
+  },
+  "night-5": {
+    "title": "夜の常連",
+    "detail": "夜22時以降の演習を5回行う"
+  },
+  "night-10": {
+    "title": "蛍雪の功",
+    "detail": "夜22時以降の演習を10回行う"
+  },
+  "weekend-1": {
+    "title": "週末の戦士",
+    "detail": "週末に演習する"
+  },
+  "weekend-8": {
+    "title": "週末の常連",
+    "detail": "週末に8回演習する"
+  },
+  "weekend-20": {
+    "title": "週末を捧げる",
+    "detail": "週末に20回演習する"
+  },
+  "comeback": {
+    "title": "再起",
+    "detail": "7日間の休みから復帰する"
+  },
+  "comeback-3": {
+    "title": "不撓不屈",
+    "detail": "3回の中断から復帰する"
+  },
+  "speedster": {
+    "title": "韋駄天",
+    "detail": "10問以上の演習を短時間で終える"
+  },
+  "speed-5": {
+    "title": "早撃ち",
+    "detail": "演習を5回、短時間で終える"
+  },
+  "speed-10": {
+    "title": "電光石火",
+    "detail": "演習を10回、短時間で終える"
+  },
+  "explorer": {
+    "title": "探究者",
+    "detail": "5つの演習モードを試す"
+  },
+  "time-60": {
+    "title": "最初の1時間",
+    "detail": "合計60分演習する"
+  },
+  "time-300": {
+    "title": "積み上げた5時間",
+    "detail": "合計5時間演習する"
+  },
+  "time-600": {
+    "title": "学徒",
+    "detail": "合計10時間演習する"
+  },
+  "time-1500": {
+    "title": "教授",
+    "detail": "合計25時間演習する"
+  }
+}

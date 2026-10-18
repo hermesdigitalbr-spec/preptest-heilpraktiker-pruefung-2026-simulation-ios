@@ -25,3 +25,8 @@ build/
 xcuserdata/
 *.xcuserstate
 .build/
+
+# v2kit
+_qa/
+_asc_screenshots/
+scripts/__pycache__/

@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "İlk Adımlar",
+    "detail": "İlk testini bitir"
+  },
+  "quizzes-10": {
+    "title": "Ciddiye Alıyoruz",
+    "detail": "10 test tamamla"
+  },
+  "quizzes-25": {
+    "title": "Çeyrek Asır",
+    "detail": "25 test tamamla"
+  },
+  "quizzes-50": {
+    "title": "Test Kurdu",
+    "detail": "50 test tamamla"
+  },
+  "quizzes-100": {
+    "title": "Yüzbaşı",
+    "detail": "100 test tamamla"
+  },
+  "quizzes-250": {
+    "title": "Test Makinesi",
+    "detail": "250 test tamamla"
+  },
+  "quizzes-500": {
+    "title": "Test Ustası",
+    "detail": "500 test tamamla"
+  },
+  "answered-100": {
+    "title": "Isınma Turu",
+    "detail": "100 soru cevapla"
+  },
+  "answered-250": {
+    "title": "Hava Isınıyor",
+    "detail": "250 soru cevapla"
+  },
+  "answered-500": {
+    "title": "Soru Ezen",
+    "detail": "500 soru cevapla"
+  },
+  "answered-1000": {
+    "title": "Durdurulamaz",
+    "detail": "1.000 soru cevapla"
+  },
+  "answered-2500": {
+    "title": "Maraton Zihni",
+    "detail": "2.500 soru cevapla"
+  },
+  "answered-5000": {
+    "title": "Soru Efsanesi",
+    "detail": "5.000 soru cevapla"
+  },
+  "answered-10000": {
+    "title": "On Bin Kulübü",
+    "detail": "10.000 soru cevapla"
+  },
+  "correct-100": {
+    "title": "Tam İsabet",
+    "detail": "100 doğru cevap ver"
+  },
+  "correct-500": {
+    "title": "Keskin Nişancı",
+    "detail": "500 doğru cevap ver"
+  },
+  "correct-1000": {
+    "title": "Kartal Gözü",
+    "detail": "1.000 doğru cevap ver"
+  },
+  "correct-2500": {
+    "title": "On İkiden Vuruş",
+    "detail": "2.500 doğru cevap ver"
+  },
+  "correct-5000": {
+    "title": "İsabet Efsanesi",
+    "detail": "5.000 doğru cevap ver"
+  },
+  "accuracy-80": {
+    "title": "Nişancı",
+    "detail": "Genel doğruluğu %80 seviyesinde tut"
+  },
+  "accuracy-90": {
+    "title": "Tetikçi",
+    "detail": "Genel doğruluğu %90 seviyesinde tut"
+  },
+  "accuracy-95": {
+    "title": "Ölümcül Nişan",
+    "detail": "Genel doğruluğu %95 seviyesinde tut"
+  },
+  "first-perfect": {
+    "title": "Kusursuz",
+    "detail": "Bir testi hiç hata yapmadan bitir"
+  },
+  "perfect-5": {
+    "title": "Hatasız Kul",
+    "detail": "5 testi hatasız bitir"
+  },
+  "perfect-10": {
+    "title": "Mükemmeliyetçi",
+    "detail": "10 testi hatasız bitir"
+  },
+  "perfect-25": {
+    "title": "Usta Atıcı",
+    "detail": "25 testi hatasız bitir"
+  },
+  "perfect-50": {
+    "title": "Tam Puan Koleksiyoncusu",
+    "detail": "50 testi hatasız bitir"
+  },
+  "perfect-100": {
+    "title": "Yaşayan Efsane",
+    "detail": "100 testi hatasız bitir"
+  },
+  "pstreak-3": {
+    "title": "Ateşli Seri",
+    "detail": "Üst üste 3 hatasız test yap"
+  },
+  "pstreak-5": {
+    "title": "Kusursuz Gidiş",
+    "detail": "Üst üste 5 hatasız test yap"
+  },
+  "pstreak-10": {
+    "title": "Dokunulmaz",
+    "detail": "Üst üste 10 hatasız test yap"
+  },
+  "streak-3": {
+    "title": "Gaza Geldi",
+    "detail": "Üst üste 3 gün çalış"
+  },
+  "streak-7": {
+    "title": "Bir Haftalık Disiplin",
+    "detail": "Üst üste 7 gün çalış"
+  },
+  "streak-14": {
+    "title": "İki Hafta Odak",
+    "detail": "Üst üste 14 gün çalış"
+  },
+  "streak-21": {
+    "title": "Üç Haftalık Alev",
+    "detail": "Üst üste 21 gün çalış"
+  },
+  "streak-30": {
+    "title": "Demir Alışkanlık",
+    "detail": "Üst üste 30 gün çalış"
+  },
+  "streak-50": {
+    "title": "Cehennem Ateşi",
+    "detail": "Üst üste 50 gün çalış"
+  },
+  "streak-100": {
+    "title": "Yıkılmaz",
+    "detail": "Üst üste 100 gün çalış"
+  },
+  "streak-365": {
+    "title": "Ateşten Bir Yıl",
+    "detail": "Üst üste 365 gün çalış"
+  },
+  "days-5": {
+    "title": "Müdavim",
+    "detail": "5 farklı günde çalış"
+  },
+  "days-15": {
+    "title": "Alışkanlık Oluyor",
+    "detail": "15 farklı günde çalış"
+  },
+  "days-30": {
+    "title": "Kararlı",
+    "detail": "30 farklı günde çalış"
+  },
+  "days-60": {
+    "title": "Çalışkan",
+    "detail": "60 farklı günde çalış"
+  },
+  "days-100": {
+    "title": "Adanmış",
+    "detail": "100 farklı günde çalış"
+  },
+  "days-200": {
+    "title": "Ömür Boyu Öğrenci",
+    "detail": "200 farklı günde çalış"
+  },
+  "day-25": {
+    "title": "Hızlı Tur",
+    "detail": "Tek günde 25 soru cevapla"
+  },
+  "day-50": {
+    "title": "Çalışkan Arı",
+    "detail": "Tek günde 50 soru cevapla"
+  },
+  "day-100": {
+    "title": "Fazlasıyla Başarılı",
+    "detail": "Tek günde 100 soru cevapla"
+  },
+  "day-200": {
+    "title": "Demir İrade",
+    "detail": "Tek günde 200 soru cevapla"
+  },
+  "subject-master": {
+    "title": "Ders Ustası",
+    "detail": "Herhangi bir derste %90'a ulaş"
+  },
+  "subject-perfect": {
+    "title": "Konu Devi",
+    "detail": "Herhangi bir derste %100'e ulaş"
+  },
+  "subjects-1": {
+    "title": "Uzman",
+    "detail": "1 derste %90 ve üzerine ulaş"
+  },
+  "subjects-3": {
+    "title": "Üçlü Tehdit",
+    "detail": "3 derste %90 ve üzerine ulaş"
+  },
+  "all-subjects": {
+    "title": "Her Alanda",
+    "detail": "Her derste çalış"
+  },
+  "subjects-all": {
+    "title": "Hepsinin Ustası",
+    "detail": "Tüm derslerde %90 ve üzerine ulaş"
+  },
+  "mock-pass": {
+    "title": "Sınava Hazır",
+    "detail": "Bir Deneme Sınavını geç"
+  },
+  "mock-90": {
+    "title": "Sınıfın Birincisi",
+    "detail": "Deneme Sınavında %90 yap"
+  },
+  "mock-100": {
+    "title": "Tam Puan",
+    "detail": "Deneme Sınavında %100 ile tam puan al"
+  },
+  "collect-5": {
+    "title": "Koleksiyoncu",
+    "detail": "5 soruyu Koleksiyon'a kaydet"
+  },
+  "collect-10": {
+    "title": "Biriktirici",
+    "detail": "10 soruyu Koleksiyon'a kaydet"
+  },
+  "collect-25": {
+    "title": "Küratör",
+    "detail": "25 soruyu Koleksiyon'a kaydet"
+  },
+  "collect-50": {
+    "title": "Arşivci",
+    "detail": "50 soruyu Koleksiyon'a kaydet"
+  },
+  "collect-100": {
+    "title": "Kütüphaneci",
+    "detail": "100 soruyu Koleksiyon'a kaydet"
+  },
+  "early-bird": {
+    "title": "Erkenci Kuş",
+    "detail": "Sabah 7'den önce çalış"
+  },
+  "early-5": {
+    "title": "Şafak Devriyesi",
+    "detail": "Sabah 7'den önce 5 kez çalış"
+  },
+  "early-10": {
+    "title": "Horoz",
+    "detail": "Sabah 7'den önce 10 kez çalış"
+  },
+  "night-owl": {
+    "title": "Gece Kuşu",
+    "detail": "Gece 22.00'den sonra çalış"
+  },
+  "night-5": {
+    "title": "Gece Mesaisi",
+    "detail": "Gece 22.00'den sonra 5 kez çalış"
+  },
+  "night-10": {
+    "title": "Sabaha Kadar Ders",
+    "detail": "Gece 22.00'den sonra 10 kez çalış"
+  },
+  "weekend-1": {
+    "title": "Hafta Sonu Savaşçısı",
+    "detail": "Hafta sonu çalış"
+  },
+  "weekend-8": {
+    "title": "Hafta Sonu Müdavimi",
+    "detail": "Hafta sonları 8 kez çalış"
+  },
+  "weekend-20": {
+    "title": "Hafta Sonu Tutkunu",
+    "detail": "Hafta sonları 20 kez çalış"
+  },
+  "comeback": {
+    "title": "Geri Dönen Çocuk",
+    "detail": "7 günlük aradan sonra geri dön"
+  },
+  "comeback-3": {
+    "title": "Azimli",
+    "detail": "3 aradan sonra geri dön"
+  },
+  "speedster": {
+    "title": "Hız Tutkunu",
+    "detail": "10+ soruluk bir testi hızla bitir"
+  },
+  "speed-5": {
+    "title": "Çabuk Kalem",
+    "detail": "5 testi hızla bitir"
+  },
+  "speed-10": {
+    "title": "Şimşek Turu",
+    "detail": "10 testi hızla bitir"
+  },
+  "explorer": {
+    "title": "Kaşif",
+    "detail": "5 farklı test modunu dene"
+  },
+  "time-60": {
+    "title": "Bir Saatlik Güç",
+    "detail": "Toplam 60 dakika çalış"
+  },
+  "time-300": {
+    "title": "Yatırım Zamanı",
+    "detail": "Toplam 5 saat çalış"
+  },
+  "time-600": {
+    "title": "Bilgin",
+    "detail": "Toplam 10 saat çalış"
+  },
+  "time-1500": {
+    "title": "Profesör",
+    "detail": "Toplam 25 saat çalış"
+  }
+}

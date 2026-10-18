@@ -5,7 +5,7 @@
 #   ./scripts/rename-app.sh <OLD_TARGET> <NEW_TARGET> <new_slug> "<Display Name>"
 #
 # Example:
-#   ./scripts/rename-app.sh PrepKitImage AsvabPrep asvabprep "ASVAB Prep"
+#   ./scripts/rename-app.sh TestBaseImage AsvabPrep asvabprep "ASVAB Prep"
 #
 # It replaces, case-sensitively:
 #   - the Xcode target token  OLD_TARGET -> NEW_TARGET   (dirs, files, code)
@@ -14,7 +14,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-OLD_TARGET="${1:?OLD_TARGET (e.g. PrepKitImage)}"
+OLD_TARGET="${1:?OLD_TARGET (e.g. TestBaseImage)}"
 NEW_TARGET="${2:?NEW_TARGET (e.g. AsvabPrep)}"
 NEW_SLUG="${3:?new_slug (lowercase, e.g. asvabprep)}"
 DISPLAY="${4:?"Display Name" (e.g. \"ASVAB Prep\")}"
@@ -48,7 +48,7 @@ find . -depth -name "*${OLD_TARGET}*" -not -path './.git/*' | while IFS= read -r
 done
 
 # 4) display name (best-effort; adjust in project.yml if your old display differs)
-while IFS= read -r f; do LC_ALL=C sed -i '' "s/Prep Kit Image/${DISPLAY}/g; s/Prep Kit Text/${DISPLAY}/g" "$f"; done \
+while IFS= read -r f; do DISPLAY="$DISPLAY" perl -0pi -e 's/(DisplayName["\x27]?:?\s*(?:<\/key>\s*<string>)?"?)Simulado/$1$ENV{DISPLAY}/g' "$f"; done \
   < <(find . -name '*.yml' -o -name '*.plist')
 
 echo "Done. Now: set the display name / SKU in project.yml + fastlane, then run:"

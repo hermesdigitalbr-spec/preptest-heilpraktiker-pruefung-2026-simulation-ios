@@ -14,6 +14,7 @@ struct ChoiceRow: View {
 
     @State private var checkScale: CGFloat = 1
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(AppSession.self) private var session
 
     enum ChoiceState {
         case idle
@@ -25,47 +26,65 @@ struct ChoiceRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(alignment: .top, spacing: AppSpacing.md) {
-                Text(letter)
-                    .font(AppFont.bodyMedium(15 * fontScale))
-                    .foregroundStyle(letterColor)
-                    .frame(width: 28, height: 28)
-                    .background(letterBackground)
-                    .clipShape(Circle())
+            HStack(alignment: .center, spacing: AppSpacing.md) {
+                // The letter badge becomes the verdict: a check or a cross takes
+                // the letter's place on the revealed rows.
+                ZStack {
+                    Circle().fill(state.letterBackground)
+                    if state.isRevealed {
+                        Image(systemName: state == .revealedWrong ? "xmark" : "checkmark")
+                            .font(.system(size: 15 * fontScale, weight: .bold))
+                            .foregroundStyle(.white)
+                            .scaleEffect(state == .revealedCorrect ? checkScale : 1)
+                    } else {
+                        Text(letter)
+                            .font(AppFont.bodyMedium(15 * fontScale))
+                            .foregroundStyle(state.letterColor)
+                    }
+                }
+                .frame(width: 32, height: 32)
+                .overlay(Circle().stroke(state == .dimmed ? AppColor.border : .clear, lineWidth: 1))
+                .onChange(of: state) { _, newState in
+                    guard newState == .revealedCorrect, !reduceMotion else { return }
+                    checkScale = 0.3
+                    withAnimation(AppMotion.bouncy) { checkScale = 1 }
+                }
 
                 Text(text.prefix(1).uppercased() + text.dropFirst())
                     .font(AppFont.body(17 * fontScale))
-                    .foregroundStyle(textColor)
+                    .foregroundStyle(state.textColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
-                trailingIcon
             }
             .padding(AppSpacing.cardPadding)
-            .background(background)
+            .background(state.background)
             .overlay(
                 RoundedRectangle(cornerRadius: AppRadius.card)
-                    .stroke(borderColor, lineWidth: state == .idle || state == .dimmed ? 1 : 2)
+                    .stroke(state.borderColor, lineWidth: state == .idle || state == .dimmed ? 1 : 2)
             )
             .clipShape(RoundedRectangle(cornerRadius: AppRadius.card))
         }
         .buttonStyle(.pressable)
-        .animation(AppMotion.snap, value: stateKey)
-        .accessibilityLabel("Option \(letter): \(text)")
-        .accessibilityValue(accessibilityValue)
+        .animation(AppMotion.snap, value: state.key)
+        .accessibilityLabel(String(format: session.strings.common.a11yOptionFormat, letter, text))
+        .accessibilityValue(state.accessibilityValue(session.strings.common))
     }
+}
 
-    private var accessibilityValue: String {
-        switch state {
-        case .selected: "Selected"
-        case .revealedCorrect: "Correct answer"
-        case .revealedWrong: "Your answer, incorrect"
+/// Shared palette so the multiple-choice row and the Verdadeiro/Falso buttons
+/// read as the same component.
+extension ChoiceRow.ChoiceState {
+    func accessibilityValue(_ s: UIStrings.Common) -> String {
+        switch self {
+        case .selected: s.a11ySelected
+        case .revealedCorrect: s.a11yCorrectAnswer
+        case .revealedWrong: s.a11yYourAnswerWrong
         case .idle, .dimmed: ""
         }
     }
 
-    private var stateKey: Int {
-        switch state {
+    var key: Int {
+        switch self {
         case .idle: 0
         case .selected: 1
         case .revealedCorrect: 2
@@ -74,29 +93,12 @@ struct ChoiceRow: View {
         }
     }
 
-    @ViewBuilder private var trailingIcon: some View {
-        switch state {
-        case .revealedCorrect:
-            // A single restrained pop turns the most-repeated moment in the app
-            // into a quiet beat of confidence. Color + haptic carry it under
-            // Reduce Motion (no scale).
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(AppColor.success)
-                .scaleEffect(checkScale)
-                .onAppear {
-                    guard !reduceMotion else { return }
-                    checkScale = 0.3
-                    withAnimation(AppMotion.bouncy) { checkScale = 1 }
-                }
-        case .revealedWrong:
-            Image(systemName: "xmark.circle.fill").foregroundStyle(AppColor.error)
-        default:
-            EmptyView()
-        }
+    var isRevealed: Bool {
+        self == .revealedCorrect || self == .revealedWrong
     }
 
-    private var background: Color {
-        switch state {
+    var background: Color {
+        switch self {
         case .revealedCorrect: AppColor.successSoft
         case .revealedWrong: AppColor.errorSoft
         // Dimmed (non-answer) rows recede behind the colored correct/wrong rows
@@ -106,8 +108,8 @@ struct ChoiceRow: View {
         }
     }
 
-    private var borderColor: Color {
-        switch state {
+    var borderColor: Color {
+        switch self {
         case .idle, .dimmed: AppColor.border
         case .selected: AppColor.accent
         case .revealedCorrect: AppColor.success
@@ -115,22 +117,28 @@ struct ChoiceRow: View {
         }
     }
 
-    private var textColor: Color {
-        state == .dimmed ? AppColor.textDim : AppColor.textPrimary
+    var textColor: Color {
+        switch self {
+        case .dimmed: AppColor.textDim
+        case .revealedCorrect: AppColor.success
+        case .revealedWrong: AppColor.error
+        default: AppColor.textPrimary
+        }
     }
 
-    private var letterColor: Color {
-        switch state {
+    var letterColor: Color {
+        switch self {
         case .selected, .revealedCorrect, .revealedWrong: .white
         default: AppColor.textSecondary
         }
     }
 
-    private var letterBackground: Color {
-        switch state {
+    var letterBackground: Color {
+        switch self {
         case .selected: AppColor.accent
         case .revealedCorrect: AppColor.success
         case .revealedWrong: AppColor.error
+        case .dimmed: .clear
         default: AppColor.surfaceHigh
         }
     }

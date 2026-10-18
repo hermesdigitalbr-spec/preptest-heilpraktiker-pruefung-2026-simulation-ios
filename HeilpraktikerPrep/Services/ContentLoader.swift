@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 enum ContentError: Error, Equatable {
     case missingResource(String)
@@ -12,9 +13,31 @@ struct ContentBundle: Equatable {
 }
 
 enum ContentValidator {
-    static func validate(question: Question, subjectIds: Set<String>) throws {
-        guard (2...6).contains(question.choices.count) else {
-            throw ContentError.validationFailed("question \(question.id): needs 2–6 choices")
+    /// Production check for bundled images: the asset must exist in the catalog.
+    static let assetExists: (String) -> Bool = { UIImage(named: $0) != nil }
+
+    /// - Parameters:
+    ///   - trueFalseLabels: nil = multiple choice (2–6 options). Otherwise the
+    ///     pack is Verdadeiro/Falso and `choices` must be exactly this pair, in
+    ///     this order (index 0 = true) — the UI never shuffles it.
+    ///   - imageExists: a question with `imageName` fails when its asset is missing.
+    static func validate(question: Question, subjectIds: Set<String>,
+                         trueFalseLabels: [String]? = nil,
+                         imageExists: (String) -> Bool = { _ in true }) throws {
+        if let labels = trueFalseLabels {
+            guard question.choices == labels else {
+                throw ContentError.validationFailed(
+                    "question \(question.id): choices must be exactly \(labels)")
+            }
+        } else {
+            guard (2...6).contains(question.choices.count) else {
+                throw ContentError.validationFailed("question \(question.id): needs 2–6 choices")
+            }
+        }
+        if let name = question.imageName {
+            guard !name.isEmpty, imageExists(name) else {
+                throw ContentError.validationFailed("question \(question.id): image asset '\(name)' not found")
+            }
         }
         guard (0..<question.choices.count).contains(question.correctIndex) else {
             throw ContentError.validationFailed("question \(question.id): correctIndex out of range")
@@ -30,7 +53,8 @@ enum ContentValidator {
         }
     }
 
-    static func validate(_ content: ContentBundle) throws {
+    static func validate(_ content: ContentBundle,
+                         imageExists: (String) -> Bool = assetExists) throws {
         guard !content.pack.subjects.isEmpty else {
             throw ContentError.validationFailed("pack has no subjects")
         }
@@ -48,8 +72,12 @@ enum ContentValidator {
         guard content.pack.mockExam.questionCount <= content.questions.count else {
             throw ContentError.validationFailed("mock exam asks for more questions than the pack has")
         }
+        let trueFalseLabels: [String]? = content.pack.nicheConfig.questionFormat == .trueFalse
+            ? [content.strings.quiz.trueLabel, content.strings.quiz.falseLabel]
+            : nil
         for question in content.questions {
-            try validate(question: question, subjectIds: subjectIds)
+            try validate(question: question, subjectIds: subjectIds,
+                         trueFalseLabels: trueFalseLabels, imageExists: imageExists)
         }
     }
 }

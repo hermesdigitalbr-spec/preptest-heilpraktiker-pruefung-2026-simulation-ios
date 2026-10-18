@@ -7,6 +7,7 @@ import SwiftUI
 struct QuestionImageView: View {
     let question: Question
     var height: CGFloat = 150
+    @Environment(AppSession.self) private var session
 
     @State private var remoteImage: UIImage?
     @State private var fullScreenImage: IdentifiableImage?
@@ -54,7 +55,7 @@ struct QuestionImageView: View {
                     .clipShape(Circle())
             }
             .padding(AppSpacing.sm)
-            .accessibilityLabel("Bild vergrößern")
+            .accessibilityLabel(session.strings.common.a11yExpandImage)
         }
         .frame(maxWidth: .infinity)
         .frame(height: height)

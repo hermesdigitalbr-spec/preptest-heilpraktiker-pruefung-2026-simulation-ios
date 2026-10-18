@@ -12,7 +12,11 @@ struct QuizView: View {
     @State private var fontScale: CGFloat = 1.0
     @Environment(\.horizontalSizeClass) private var hSize
 
-    private static let letters = ["A", "B", "C", "D", "E", "F"]
+    private var questionFormat: NicheConfig.QuestionFormat { app.pack.nicheConfig.questionFormat }
+
+    private func letter(_ index: Int) -> String {
+        ChoiceLetters.letter(at: index, format: questionFormat, strings: app.strings.quiz)
+    }
 
     var body: some View {
         ZStack {
@@ -158,13 +162,25 @@ struct QuizView: View {
     private func choices(for question: Question) -> some View {
         VStack(spacing: AppSpacing.cardGap) {
             ForEach(Array(question.choices.enumerated()), id: \.offset) { index, choice in
-                ChoiceRow(
-                    letter: Self.letters[index],
-                    text: choice,
-                    state: choiceState(index: index, question: question),
-                    fontScale: fontScale
-                ) {
-                    answer(index)
+                if questionFormat == .trueFalse {
+                    TrueFalseChoiceRow(
+                        letter: letter(index),
+                        text: choice,
+                        isTrue: index == 0,
+                        state: choiceState(index: index, question: question),
+                        fontScale: fontScale
+                    ) {
+                        answer(index)
+                    }
+                } else {
+                    ChoiceRow(
+                        letter: letter(index),
+                        text: choice,
+                        state: choiceState(index: index, question: question),
+                        fontScale: fontScale
+                    ) {
+                        answer(index)
+                    }
                 }
             }
         }
@@ -195,6 +211,10 @@ struct QuizView: View {
     private func answer(_ index: Int) {
         guard !controller.session.hasAnsweredCurrent else { return }
         let correct = controller.submit(index)
+        // Learning mode: the explanation is the point, so it opens by itself.
+        if controller.session.feedback == .learning {
+            withAnimation(AppMotion.smooth) { showExplanation = true }
+        }
         if controller.session.feedback == .mock {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         } else {
@@ -209,6 +229,57 @@ struct QuizView: View {
 
     @ViewBuilder
     private func explanationSection(for question: Question) -> some View {
+        if controller.session.feedback == .learning {
+            verdictCard(for: question)
+        } else {
+            explanationToggle(for: question)
+        }
+    }
+
+    /// Learning mode: verdict, the right letter, and the explanation — all
+    /// open at once, the moment the answer lands.
+    private func verdictCard(for question: Question) -> some View {
+        let correct = controller.session.isCurrentCorrect
+        let tint = correct ? AppColor.success : AppColor.error
+        let letter = letter(question.correctIndex)
+        return VStack(alignment: .leading, spacing: AppSpacing.md) {
+            HStack(spacing: AppSpacing.sm) {
+                Image(systemName: correct ? "checkmark" : "xmark")
+                    .font(.system(size: 13, weight: .black))
+                    .foregroundStyle(.white)
+                    .frame(width: 28, height: 28)
+                    .background(tint, in: Circle())
+                Text(correct ? app.strings.quiz.verdictCorrect : app.strings.quiz.verdictWrong)
+                    .font(AppFont.display(20 * fontScale))
+                    .foregroundStyle(tint)
+                Spacer(minLength: AppSpacing.sm)
+                Text(String(format: app.strings.quiz.answerChipFormat, letter))
+                    .font(AppFont.strong(12))
+                    .tracking(1)
+                    .foregroundStyle(AppColor.success)
+                    .padding(.horizontal, AppSpacing.sm)
+                    .padding(.vertical, 5)
+                    .background(AppColor.successSoft, in: Capsule())
+            }
+            Rectangle().fill(tint.opacity(0.25)).frame(height: 1)
+            Text(app.strings.quiz.explanationLabel)
+                .font(AppFont.strong(12))
+                .tracking(1.5)
+                .foregroundStyle(AppColor.textDim)
+            Text(question.explanation)
+                .font(AppFont.body(16 * fontScale))
+                .foregroundStyle(AppColor.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(AppSpacing.cardPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(correct ? AppColor.successSoft.opacity(0.6) : AppColor.errorSoft.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.card))
+        .overlay(RoundedRectangle(cornerRadius: AppRadius.card).stroke(tint.opacity(0.35), lineWidth: 1))
+        .transition(.opacity.combined(with: .move(edge: .bottom)))
+    }
+
+    private func explanationToggle(for question: Question) -> some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             Button {
                 withAnimation(AppMotion.smooth) { showExplanation.toggle() }

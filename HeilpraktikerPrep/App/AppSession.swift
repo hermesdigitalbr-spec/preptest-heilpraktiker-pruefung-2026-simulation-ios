@@ -21,6 +21,20 @@ final class AppSession {
     var strings: UIStrings { content.strings }
     var pack: PackConfig { content.pack }
 
+    /// Substantivo da região usado nas telas: o do pack quando a prova tem um
+    /// nome próprio ("estado", "Bundesland"), senão o neutro do idioma.
+    var regionLabel: String {
+        pack.nicheConfig.regionLabel(default: strings.onboarding.regionLabelDefault)
+    }
+
+    /// Mesma palavra com inicial maiúscula segundo o idioma do conteúdo — só a
+    /// primeira letra, para não virar "Khu Vực" em rótulos de duas palavras.
+    var regionLabelCapitalized: String {
+        let label = regionLabel
+        guard let first = label.first else { return label }
+        return String(first).capitalized(with: pack.contentLocale) + label.dropFirst()
+    }
+
     /// Questions visible to this user: universal ones plus the ones scoped to
     /// their chosen region. With no region chosen (or no regions in the pack),
     /// region-scoped questions are excluded only when a region system exists.

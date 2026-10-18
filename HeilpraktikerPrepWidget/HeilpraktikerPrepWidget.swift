@@ -31,13 +31,15 @@ struct Provider: TimelineProvider {
 // MARK: - Widget
 
 struct HeilpraktikerPrepWidget: Widget {
+    private let strings = WidgetStrings.load()
+
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "HeilpraktikerPrepWidget", provider: Provider()) { entry in
             HeilpraktikerPrepWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("Prüfungs-Countdown")
-        .description("Countdown bis zur Prüfung, Serie und Tagesfortschritt.")
+        .configurationDisplayName(strings.displayName)
+        .description(strings.description)
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular, .accessoryRectangular])
     }
 }
@@ -47,6 +49,7 @@ struct HeilpraktikerPrepWidget: Widget {
 struct HeilpraktikerPrepWidgetView: View {
     @Environment(\.widgetFamily) private var family
     let entry: ExamEntry
+    private let strings = WidgetStrings.load()
 
     private var accent: Color { Color(widgetHex: entry.snapshot.accentHex) }
 
@@ -83,11 +86,11 @@ struct HeilpraktikerPrepWidgetView: View {
                 Text("\(days)")
                     .font(.system(size: 44, weight: .bold)).monospacedDigit()
                     .foregroundStyle(accent)
-                Text(days == 1 ? "Tag bis zur Prüfung" : "Tage bis zur Prüfung")
+                Text(strings.daysLabel(days))
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
             } else {
-                Text("Leg deinen Prüfungstermin fest")
+                Text(strings.setExamDate)
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.secondary)
             }
@@ -107,11 +110,11 @@ struct HeilpraktikerPrepWidgetView: View {
                     Text("\(days)")
                         .font(.system(size: 46, weight: .bold)).monospacedDigit()
                         .foregroundStyle(accent)
-                    Text(days == 1 ? "Tag bis zur Prüfung" : "Tage bis zur Prüfung")
+                    Text(strings.daysLabel(days))
                         .font(.system(size: 13, weight: .medium))
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("Leg deinen\nPrüfungstermin fest")
+                    Text(strings.setExamDateMultiline)
                         .font(.system(size: 16, weight: .semibold))
                 }
                 Spacer()
@@ -127,7 +130,7 @@ struct HeilpraktikerPrepWidgetView: View {
                 }
                 .gaugeStyle(.accessoryCircular)
                 .tint(accent)
-                Text("Bereit")
+                Text(strings.readiness)
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.secondary)
                 HStack(spacing: 3) {
@@ -143,7 +146,7 @@ struct HeilpraktikerPrepWidgetView: View {
         HStack(spacing: 4) {
             Image(systemName: entry.snapshot.dailyDone ? "checkmark.circle.fill" : "circle")
                 .foregroundStyle(entry.snapshot.dailyDone ? .green : .secondary)
-            Text(entry.snapshot.dailyDone ? "Heute erledigt" : "\(entry.snapshot.dailyTarget) heute")
+            Text(entry.snapshot.dailyDone ? strings.doneToday : strings.dailyTarget(entry.snapshot.dailyTarget))
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(.secondary)
         }
@@ -169,14 +172,14 @@ struct HeilpraktikerPrepWidgetView: View {
             Text(entry.snapshot.examShortName)
                 .font(.system(size: 13, weight: .semibold))
             if let days = entry.snapshot.daysToExam {
-                Text("\(days) \(days == 1 ? "Tag" : "Tage") bis zur Prüfung")
+                Text(strings.countdown(days))
                     .font(.system(size: 15, weight: .bold))
             } else {
-                Text("Leg deinen Prüfungstermin fest").font(.system(size: 13))
+                Text(strings.setExamDate).font(.system(size: 13))
             }
             HStack(spacing: 4) {
                 Image(systemName: "flame.fill")
-                Text("\(entry.snapshot.streak) \(entry.snapshot.streak == 1 ? "Tag" : "Tage") in Serie")
+                Text(strings.streak(entry.snapshot.streak))
             }
             .font(.system(size: 12, weight: .medium))
         }

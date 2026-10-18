@@ -13,9 +13,14 @@ enum NotificationService {
     }
 
     /// Requests permission (if not yet determined) and schedules the daily reminder.
-    /// If already denied, opens the system Settings page instead of silently failing.
+    ///
+    /// When permission was already denied, iOS will not show the dialog again —
+    /// the only way through is the Settings app. That detour is right when the
+    /// user just tapped a reminder switch, and wrong in the middle of the
+    /// onboarding funnel, so the caller decides with `openSettingsIfDenied`.
     @MainActor
-    static func enableDailyReminder(hour: Int, minute: Int = 0, title: String, body: String) async -> EnableResult {
+    static func enableDailyReminder(hour: Int, minute: Int = 0, title: String, body: String,
+                                    openSettingsIfDenied: Bool = true) async -> EnableResult {
         let center = UNUserNotificationCenter.current()
         let status = await center.notificationSettings().authorizationStatus
 
@@ -26,8 +31,7 @@ enum NotificationService {
         case .authorized, .provisional, .ephemeral:
             break  // already good — just reschedule
         case .denied:
-            // System won't show the dialog again; send user to Settings.
-            if let url = URL(string: UIApplication.openSettingsURLString) {
+            if openSettingsIfDenied, let url = URL(string: UIApplication.openSettingsURLString) {
                 await UIApplication.shared.open(url)
             }
             return .denied
@@ -109,6 +113,14 @@ enum NotificationService {
     // MARK: - Exam countdown notifications
 
     private static let countdownIds = ["exam.30d", "exam.14d", "exam.7d", "exam.3d", "exam.day"]
+
+    /// Limpa a contagem regressiva quando o usuário deixa de ter data marcada.
+    /// Sem isso, quem apagou a data continuava recebendo "faltam 7 dias" de uma
+    /// prova que não existe mais.
+    static func cancelExamCountdowns() {
+        UNUserNotificationCenter.current()
+            .removePendingNotificationRequests(withIdentifiers: countdownIds)
+    }
 
     /// Pure, testable selection: which countdown ids fire (and on what day) for an
     /// exam on `examDate` relative to `now`. Each fires at 08:00 on its day; days

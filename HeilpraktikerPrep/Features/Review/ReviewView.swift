@@ -144,7 +144,6 @@ struct ReviewDetailSheet: View {
 
     let question: Question
 
-    private static let letters = ["A", "B", "C", "D", "E", "F"]
 
     var body: some View {
         ScrollView {
@@ -176,7 +175,9 @@ struct ReviewDetailSheet: View {
                 VStack(spacing: AppSpacing.cardGap) {
                     ForEach(Array(question.choices.enumerated()), id: \.offset) { index, choice in
                         ChoiceRow(
-                            letter: Self.letters[index],
+                            letter: ChoiceLetters.letter(at: index,
+                                                         format: session.pack.nicheConfig.questionFormat,
+                                                         strings: session.strings.quiz),
                             text: choice,
                             state: state(for: index),
                             fontScale: 1.0

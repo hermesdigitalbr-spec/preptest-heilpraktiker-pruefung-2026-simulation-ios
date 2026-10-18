@@ -35,6 +35,8 @@ final class QuizController {
         let pool = app.questionPool
         let pack = app.pack
         let answeredIds = Set(app.progress.allAnswers.map(\.questionId))
+        let attemptsDone = app.progress.state.attempts.count
+        let seenImageIds = Self.seenImageIds(app)
 
         var questions: [Question]
         var feedback: FeedbackMode = app.settings.feedbackMode
@@ -62,7 +64,8 @@ final class QuizController {
                 seed: Self.daySeed())
         case .quick10:
             questions = QuestionSelector.quick(
-                from: pool, count: pack.quickQuizCount, seed: .random(in: .min ... .max))
+                from: pool, count: pack.quickQuizCount, seed: .random(in: .min ... .max),
+                quicksDoneCount: attemptsDone, seenImageQuestionIds: seenImageIds)
         case .timed:
             // Default config; the Home sheet uses makeTimed for custom setups.
             questions = QuestionSelector.quick(
@@ -87,34 +90,40 @@ final class QuizController {
             return nil
         }
 
+        if mode != .quick10, mode != .collected {
+            questions = QuestionSelector.injectImageIfNeeded(
+                into: questions, pool: pool, attemptsDone: attemptsDone, seenImageIds: seenImageIds)
+        }
         guard !questions.isEmpty else { return nil }
         return QuizController(
             session: QuizSession(mode: mode, feedback: feedback, questions: questions,
-                                 shuffleSeed: .random(in: .min ... .max)),
+                                 shuffleSeed: shuffleSeed(app)),
             timeLimitSeconds: limit,
             progress: app.progress)
     }
 
     /// Timed quiz with user-chosen size and clock (from the Home sheet).
     static func makeTimed(count: Int, minutes: Int, app: AppSession) -> QuizController? {
-        let questions = QuestionSelector.quick(
+        let drawn = QuestionSelector.quick(
             from: app.questionPool, count: count, seed: .random(in: .min ... .max))
+        let questions = withImage(drawn, app: app)
         guard !questions.isEmpty else { return nil }
         return QuizController(
             session: QuizSession(mode: .timed, feedback: .quick, questions: questions,
-                                 shuffleSeed: .random(in: .min ... .max)),
+                                 shuffleSeed: shuffleSeed(app)),
             timeLimitSeconds: minutes * 60,
             progress: app.progress)
     }
 
     static func makeCustom(subjectIds: Set<String>, count: Int, app: AppSession) -> QuizController? {
-        let questions = QuestionSelector.custom(
+        let drawn = QuestionSelector.custom(
             from: app.questionPool, subjectIds: subjectIds,
             count: count, seed: .random(in: .min ... .max))
+        let questions = withImage(drawn, app: app)
         guard !questions.isEmpty else { return nil }
         return QuizController(
             session: QuizSession(mode: .custom, feedback: app.settings.feedbackMode, questions: questions,
-                                 shuffleSeed: .random(in: .min ... .max)),
+                                 shuffleSeed: shuffleSeed(app)),
             timeLimitSeconds: nil,
             progress: app.progress)
     }
@@ -126,9 +135,25 @@ final class QuizController {
         guard !questions.isEmpty else { return nil }
         return QuizController(
             session: QuizSession(mode: .custom, feedback: app.settings.feedbackMode, questions: questions,
-                                 shuffleSeed: .random(in: .min ... .max)),
+                                 shuffleSeed: shuffleSeed(app)),
             timeLimitSeconds: nil,
             progress: app.progress)
+    }
+
+    /// Verdadeiro/Falso must keep index 0 = true, so its two buttons never swap.
+    static func shuffleSeed(_ app: AppSession, fixed: UInt64? = nil) -> UInt64? {
+        app.pack.nicheConfig.questionFormat == .trueFalse ? nil : (fixed ?? .random(in: .min ... .max))
+    }
+
+    private static func seenImageIds(_ app: AppSession) -> Set<String> {
+        let imageIds = Set(app.questionPool.filter(QuestionSelector.hasImage).map(\.id))
+        return Set(app.progress.allAnswers.map(\.questionId)).intersection(imageIds)
+    }
+
+    private static func withImage(_ questions: [Question], app: AppSession) -> [Question] {
+        QuestionSelector.injectImageIfNeeded(
+            into: questions, pool: app.questionPool,
+            attemptsDone: app.progress.state.attempts.count, seenImageIds: seenImageIds(app))
     }
 
     /// Same seed for the whole calendar day → reopening daily quiz shows the same set.

@@ -1,0 +1,330 @@
+{
+  "first-quiz": {
+    "title": "Bước đầu tiên",
+    "detail": "Hoàn thành bài luyện đầu tiên"
+  },
+  "quizzes-10": {
+    "title": "Bắt đầu nghiêm túc",
+    "detail": "Hoàn thành 10 bài luyện"
+  },
+  "quizzes-25": {
+    "title": "Cột mốc 25",
+    "detail": "Luyện 25 bài"
+  },
+  "quizzes-50": {
+    "title": "Kỳ cựu phòng luyện",
+    "detail": "Hoàn thành 50 bài luyện"
+  },
+  "quizzes-100": {
+    "title": "Bách chiến",
+    "detail": "Hoàn thành 100 bài luyện"
+  },
+  "quizzes-250": {
+    "title": "Cỗ máy luyện đề",
+    "detail": "Luyện 250 bài"
+  },
+  "quizzes-500": {
+    "title": "Bậc thầy luyện đề",
+    "detail": "Luyện 500 bài"
+  },
+  "answered-100": {
+    "title": "Khởi động",
+    "detail": "Trả lời 100 câu hỏi"
+  },
+  "answered-250": {
+    "title": "Càng lúc càng hăng",
+    "detail": "Trả lời 250 câu hỏi"
+  },
+  "answered-500": {
+    "title": "Nghiền câu hỏi",
+    "detail": "Trả lời 500 câu hỏi"
+  },
+  "answered-1000": {
+    "title": "Không thể cản",
+    "detail": "Trả lời 1.000 câu hỏi"
+  },
+  "answered-2500": {
+    "title": "Trí óc bền bỉ",
+    "detail": "Trả lời 2.500 câu hỏi"
+  },
+  "answered-5000": {
+    "title": "Huyền thoại câu hỏi",
+    "detail": "Trả lời 5.000 câu hỏi"
+  },
+  "answered-10000": {
+    "title": "Câu lạc bộ 10 nghìn",
+    "detail": "Trả lời 10.000 câu hỏi"
+  },
+  "correct-100": {
+    "title": "Trúng đích",
+    "detail": "Trả lời đúng 100 câu"
+  },
+  "correct-500": {
+    "title": "Thiện xạ",
+    "detail": "Trả lời đúng 500 câu"
+  },
+  "correct-1000": {
+    "title": "Mắt tinh",
+    "detail": "Trả lời đúng 1.000 câu"
+  },
+  "correct-2500": {
+    "title": "Bách phát bách trúng",
+    "detail": "Trả lời đúng 2.500 câu"
+  },
+  "correct-5000": {
+    "title": "Huyền thoại chính xác",
+    "detail": "Trả lời đúng 5.000 câu"
+  },
+  "accuracy-80": {
+    "title": "Tay ngắm chuẩn",
+    "detail": "Giữ tỷ lệ đúng 80% tổng thể"
+  },
+  "accuracy-90": {
+    "title": "Xạ thủ tinh nhuệ",
+    "detail": "Giữ tỷ lệ đúng 90% tổng thể"
+  },
+  "accuracy-95": {
+    "title": "Chính xác tuyệt đối",
+    "detail": "Giữ tỷ lệ đúng 95% tổng thể"
+  },
+  "first-perfect": {
+    "title": "Không tì vết",
+    "detail": "Hoàn thành một bài luyện không sai câu nào"
+  },
+  "perfect-5": {
+    "title": "Chuẩn xác",
+    "detail": "Hoàn thành 5 bài luyện không sai câu nào"
+  },
+  "perfect-10": {
+    "title": "Người cầu toàn",
+    "detail": "Hoàn thành 10 bài luyện không sai câu nào"
+  },
+  "perfect-25": {
+    "title": "Xạ thủ bắn tỉa",
+    "detail": "Hoàn thành 25 bài luyện không sai câu nào"
+  },
+  "perfect-50": {
+    "title": "Sưu tầm điểm tuyệt đối",
+    "detail": "Hoàn thành 50 bài luyện không sai câu nào"
+  },
+  "perfect-100": {
+    "title": "Huyền thoại sống",
+    "detail": "Hoàn thành 100 bài luyện không sai câu nào"
+  },
+  "pstreak-3": {
+    "title": "Đang lên phong độ",
+    "detail": "3 bài luyện hoàn hảo liên tiếp"
+  },
+  "pstreak-5": {
+    "title": "Chuỗi hoàn hảo",
+    "detail": "5 bài luyện hoàn hảo liên tiếp"
+  },
+  "pstreak-10": {
+    "title": "Bất khả xâm phạm",
+    "detail": "10 bài luyện hoàn hảo liên tiếp"
+  },
+  "streak-3": {
+    "title": "Vào nhịp",
+    "detail": "Luyện tập 3 ngày liên tiếp"
+  },
+  "streak-7": {
+    "title": "Tuần vững vàng",
+    "detail": "Luyện tập 7 ngày liên tiếp"
+  },
+  "streak-14": {
+    "title": "Hai tuần tập trung",
+    "detail": "Luyện tập 14 ngày liên tiếp"
+  },
+  "streak-21": {
+    "title": "Ngọn lửa ba tuần",
+    "detail": "Luyện tập 21 ngày liên tiếp"
+  },
+  "streak-30": {
+    "title": "Thói quen thép",
+    "detail": "Luyện tập 30 ngày liên tiếp"
+  },
+  "streak-50": {
+    "title": "Lửa thử vàng",
+    "detail": "Luyện tập 50 ngày liên tiếp"
+  },
+  "streak-100": {
+    "title": "Không thể phá vỡ",
+    "detail": "Luyện tập 100 ngày liên tiếp"
+  },
+  "streak-365": {
+    "title": "Năm rực lửa",
+    "detail": "Luyện tập 365 ngày liên tiếp"
+  },
+  "days-5": {
+    "title": "Chuyên cần",
+    "detail": "Luyện tập vào 5 ngày khác nhau"
+  },
+  "days-15": {
+    "title": "Đang tạo thói quen",
+    "detail": "Luyện tập vào 15 ngày khác nhau"
+  },
+  "days-30": {
+    "title": "Kiên định",
+    "detail": "Luyện tập vào 30 ngày khác nhau"
+  },
+  "days-60": {
+    "title": "Miệt mài",
+    "detail": "Luyện tập vào 60 ngày khác nhau"
+  },
+  "days-100": {
+    "title": "Tận tâm",
+    "detail": "Luyện tập vào 100 ngày khác nhau"
+  },
+  "days-200": {
+    "title": "Lão làng",
+    "detail": "Luyện tập vào 200 ngày khác nhau"
+  },
+  "day-25": {
+    "title": "Buổi luyện chớp nhoáng",
+    "detail": "Trả lời 25 câu hỏi trong một ngày"
+  },
+  "day-50": {
+    "title": "Cày miệt mài",
+    "detail": "Trả lời 50 câu hỏi trong một ngày"
+  },
+  "day-100": {
+    "title": "Vượt giới hạn",
+    "detail": "Trả lời 100 câu hỏi trong một ngày"
+  },
+  "day-200": {
+    "title": "Ý chí thép",
+    "detail": "Trả lời 200 câu hỏi trong một ngày"
+  },
+  "subject-master": {
+    "title": "Cao thủ một môn",
+    "detail": "Đạt 90% ở bất kỳ môn nào"
+  },
+  "subject-perfect": {
+    "title": "Trùm chủ đề",
+    "detail": "Đạt 100% ở bất kỳ môn nào"
+  },
+  "subjects-1": {
+    "title": "Chuyên gia",
+    "detail": "Thành thạo 1 môn với 90%+"
+  },
+  "subjects-3": {
+    "title": "Bộ ba lợi hại",
+    "detail": "Thành thạo 3 môn với 90%+"
+  },
+  "all-subjects": {
+    "title": "Toàn diện",
+    "detail": "Luyện tập tất cả các môn"
+  },
+  "subjects-all": {
+    "title": "Bậc thầy toàn năng",
+    "detail": "Thành thạo tất cả các môn với 90%+"
+  },
+  "mock-pass": {
+    "title": "Sẵn sàng đi thi",
+    "detail": "Đỗ một đề thi thử"
+  },
+  "mock-90": {
+    "title": "Tốp đầu",
+    "detail": "Đạt 90% trong một đề thi thử"
+  },
+  "mock-100": {
+    "title": "Điểm tuyệt đối",
+    "detail": "Đạt 100% trong một đề thi thử"
+  },
+  "collect-5": {
+    "title": "Người sưu tầm",
+    "detail": "Lưu 5 câu hỏi vào mục Đã lưu"
+  },
+  "collect-10": {
+    "title": "Người giữ kho",
+    "detail": "Lưu 10 câu hỏi vào mục Đã lưu"
+  },
+  "collect-25": {
+    "title": "Người tuyển chọn",
+    "detail": "Lưu 25 câu hỏi vào mục Đã lưu"
+  },
+  "collect-50": {
+    "title": "Người lưu trữ",
+    "detail": "Lưu 50 câu hỏi vào mục Đã lưu"
+  },
+  "collect-100": {
+    "title": "Thủ thư",
+    "detail": "Lưu 100 câu hỏi vào mục Đã lưu"
+  },
+  "early-bird": {
+    "title": "Dậy sớm",
+    "detail": "Luyện tập trước 7 giờ sáng"
+  },
+  "early-5": {
+    "title": "Tuần tra bình minh",
+    "detail": "Luyện tập trước 7 giờ sáng 5 lần"
+  },
+  "early-10": {
+    "title": "Gà gáy sáng",
+    "detail": "Luyện tập trước 7 giờ sáng 10 lần"
+  },
+  "night-owl": {
+    "title": "Cú đêm",
+    "detail": "Luyện tập sau 10 giờ tối"
+  },
+  "night-5": {
+    "title": "Lữ khách đêm",
+    "detail": "Luyện tập sau 10 giờ tối 5 lần"
+  },
+  "night-10": {
+    "title": "Đèn sáng thâu đêm",
+    "detail": "Luyện tập sau 10 giờ tối 10 lần"
+  },
+  "weekend-1": {
+    "title": "Chiến binh cuối tuần",
+    "detail": "Luyện tập vào một ngày cuối tuần"
+  },
+  "weekend-8": {
+    "title": "Thường trực cuối tuần",
+    "detail": "Luyện tập 8 lần vào cuối tuần"
+  },
+  "weekend-20": {
+    "title": "Tín đồ cuối tuần",
+    "detail": "Luyện tập 20 lần vào cuối tuần"
+  },
+  "comeback": {
+    "title": "Trở lại lợi hại",
+    "detail": "Quay lại sau 7 ngày nghỉ"
+  },
+  "comeback-3": {
+    "title": "Bền bỉ",
+    "detail": "Quay lại sau 3 lần gián đoạn"
+  },
+  "speedster": {
+    "title": "Thần tốc",
+    "detail": "Hoàn thành nhanh một bài luyện 10+ câu"
+  },
+  "speed-5": {
+    "title": "Ra tay chớp nhoáng",
+    "detail": "Hoàn thành nhanh 5 bài luyện"
+  },
+  "speed-10": {
+    "title": "Vòng đấu chớp nhoáng",
+    "detail": "Hoàn thành nhanh 10 bài luyện"
+  },
+  "explorer": {
+    "title": "Nhà thám hiểm",
+    "detail": "Thử 5 chế độ luyện tập khác nhau"
+  },
+  "time-60": {
+    "title": "Giờ vàng",
+    "detail": "Luyện tập tổng cộng 60 phút"
+  },
+  "time-300": {
+    "title": "Thời gian đã đầu tư",
+    "detail": "Luyện tập tổng cộng 5 giờ"
+  },
+  "time-600": {
+    "title": "Học giả",
+    "detail": "Luyện tập tổng cộng 10 giờ"
+  },
+  "time-1500": {
+    "title": "Giáo sư",
+    "detail": "Luyện tập tổng cộng 25 giờ"
+  }
+}

@@ -9,6 +9,9 @@ struct MockExamConfig: Codable, Equatable {
 struct ProductIDs: Codable, Equatable {
     let weekly: String
     let monthly: String
+    /// Opcional: packs antigos não têm trimestral. Sem ele o paywall
+    /// simplesmente não oferece o plano, em vez de falhar ao decodificar.
+    let quarterly: String?
 }
 
 struct LegalLinks: Codable, Equatable {
@@ -49,6 +52,20 @@ struct PackConfig: Codable, Equatable {
     /// Optional regional variation (e.g., region-specific exam content). Drives the onboarding
     /// state-picker step, the Settings row, and question-pool filtering.
     let regions: [Region]?
+    /// Live App Store score, kept in the pack so the onboarding proof chip
+    /// can be turned off (or corrected) without a Swift change.
+    let appStoreRating: Double?
     /// Optional gamification badges. Omitted → no achievements UI.
     let achievements: [AchievementDef]?
+    /// Optional niche particulars (motivations, pass × score copy, hero photo…).
+    let niche: NicheConfig?
+}
+
+extension PackConfig {
+    /// The one locale the app formats dates and numbers in — the pack ships in
+    /// a single language, so the device's locale must not override it.
+    var contentLocale: Locale { Locale(identifier: language) }
+
+    /// The pack's niche particulars, or the generic defaults when omitted.
+    var nicheConfig: NicheConfig { niche ?? NicheConfig() }
 }

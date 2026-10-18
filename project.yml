@@ -31,11 +31,11 @@ options:
   knownRegions:
     - Base
     - de
-    # - en        # adicionar quando en.lproj existir
     # - pt-BR     # adicionar quando pt-BR.lproj existir
     # - es        # adicionar quando es.lproj existir
     # - zh-Hans
     # - ja
+    # - de
     # - fr
     # - ko
     # - ru
@@ -142,6 +142,8 @@ targets:
           - "**/*.md"
           - "**/Previews/**"
           - "**/*.storekit"   # só para o scheme — nunca embarcar no bundle
+          - "**/Fonts/OFL-*.txt"   # licença das fontes, não vai no bundle
+          - "**/Licenses/**"        # licenças de ícones, não vão no bundle
 
     # ── Resources incluídos automaticamente ────────────────────────────────
     # Tudo dentro de HeilpraktikerPrep/ com estas extensões é incluído:
@@ -170,10 +172,17 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
 
-        # Fontes customizadas — descomentar e listar se o app usar
-        # UIAppFonts:
-        #   - NomeDaFonte-Regular.ttf
-        #   - NomeDaFonte-Bold.ttf
+        # Manrope (texto) e Sora (números de destaque) — Open Font License,
+        # licenças em HeilpraktikerPrep/Resources/Fonts/OFL-*.txt
+        UIAppFonts:
+          - Manrope-Regular.ttf
+          - Manrope-Medium.ttf
+          - Manrope-SemiBold.ttf
+          - Manrope-Bold.ttf
+          - Manrope-ExtraBold.ttf
+          - Sora-SemiBold.ttf
+          - Sora-Bold.ttf
+          - Sora-ExtraBold.ttf
 
         # App Transport Security — necessário apenas se o app acessa HTTP (raro)
         # NSAppTransportSecurity:
@@ -250,10 +259,13 @@ targets:
     sources:
       - path: HeilpraktikerPrepWidget
       - path: HeilpraktikerPrep/Shared/WidgetSnapshot.swift   # shared with the app target
+      - path: HeilpraktikerPrep/Shared/WidgetStrings.swift    # widget texts loader
+      - path: HeilpraktikerPrep/ContentPack/strings.json      # bloco `widget` = textos do widget
+        buildPhase: resources
     info:
       path: HeilpraktikerPrepWidget/Info.plist
       properties:
-        CFBundleDisplayName: HP Übungstest
+        CFBundleDisplayName: "HP Übungstest"
         # Deve bater com a versão/build do app host.
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
@@ -269,7 +281,7 @@ targets:
         DEVELOPMENT_TEAM: RQFN2YXCJ5
         CODE_SIGN_STYLE: Automatic
         GENERATE_INFOPLIST_FILE: NO
-        INFOPLIST_KEY_CFBundleDisplayName: HP Übungstest
+        INFOPLIST_KEY_CFBundleDisplayName: "HP Übungstest"
         ENABLE_BITCODE: NO
         SWIFT_VERSION: "5.10"
       configs:

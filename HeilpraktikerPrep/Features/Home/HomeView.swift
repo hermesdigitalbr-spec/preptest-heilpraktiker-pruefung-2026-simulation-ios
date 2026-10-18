@@ -1,9 +1,15 @@
 import SwiftUI
+import UserNotifications
 
 struct HomeView: View {
     @Environment(AppSession.self) private var session
 
     @State private var activeQuiz: QuizController?
+    /// First quiz without notifications on: explain them once, then launch.
+    @State private var notifEducationDenied = false
+    @State private var showNotifEducation = false
+    @State private var launchAfterEducation: QuizMode?
+    private static let notifEducationShownKey = "notifEducation.firstQuiz.v1"
     @State private var emptyModeAlert: EmptyModeAlert?
     @State private var showCustomSheet = false
     @State private var showTimedSheet = false
@@ -29,6 +35,7 @@ struct HomeView: View {
                 VStack(spacing: AppSpacing.cardGap) {
                     WeekStripView()
                     dailyCard
+                    ReminderNudge()
                     unlockBanner
                 }
                 modeGrid
@@ -42,6 +49,14 @@ struct HomeView: View {
         }
         .background(AppColor.background.ignoresSafeArea())
         .overlay { WelcomeConfettiOverlay(isPlaying: $playWelcomeConfetti) }
+        .sheet(isPresented: $showNotifEducation, onDismiss: {
+            if let mode = launchAfterEducation {
+                launchAfterEducation = nil
+                launch(mode, skipNotificationCheck: true)
+            }
+        }) {
+            NotificationEducationSheet(deniedBefore: notifEducationDenied, onEnable: enableReminderFromEducation)
+        }
         .fullScreenCover(item: $activeQuiz) { controller in
             QuizView(controller: controller)
         }
@@ -76,10 +91,9 @@ struct HomeView: View {
             if !appeared {
                 if reduceMotion { appeared = true }
                 else { withAnimation(AppMotion.smooth) { appeared = true } }
-                // First-ever entry into Home (right after onboarding
-                // completes) — play the welcome confetti, one-shot via its
-                // own UserDefaults flag. No rating prompt here: asking before
-                // the user has engaged with the app violates Guideline 5.6.3.
+                // First-ever entry into Home (right after the funnel completes)
+                // — one-shot welcome confetti via its own UserDefaults flag.
+                // Distinct moment from the funnel's affirmation confetti (step 7).
                 if WelcomeConfetti.consumePending() {
                     playWelcomeConfetti = true
                 }
@@ -103,9 +117,12 @@ struct HomeView: View {
 
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
-        if hour < 12 { return session.strings.home.greetingMorning }
-        if hour < 18 { return session.strings.home.greetingAfternoon }
-        return session.strings.home.greetingEvening
+        let strings = session.strings.home
+        let base = hour < 12 ? strings.greetingMorning
+            : hour < 18 ? strings.greetingAfternoon
+            : strings.greetingEvening
+        guard let name = session.profile.name else { return base }
+        return String(format: strings.greetingWithNameFormat, base, name)
     }
 
     private var daysLeft: Int? {
@@ -152,6 +169,13 @@ struct HomeView: View {
         !dailyDoneToday && !isPro && dailyQuizzesLeft == 0
     }
 
+    /// Não-assinante que já gastou toda a amostra grátis. A cota é VITALÍCIA
+    /// (conta todas as tentativas, não reinicia à meia-noite), então para essa
+    /// pessoa não existe "até amanhã" — amanhã custa dinheiro.
+    private var dailySampleSpent: Bool {
+        !isPro && dailyQuizzesLeft == 0
+    }
+
     /// Days until the exam, or nil if the user hasn't set one.
     private var daysUntilExam: Int? {
         guard let exam = session.profile.examDate else { return nil }
@@ -178,7 +202,20 @@ struct HomeView: View {
         return strings.dailyQuestionsSubtitle
     }
 
+    @ViewBuilder
     private var dailyCard: some View {
+        if dailyDoneToday && dailySampleSpent {
+            Button {
+                paywallSource = .dailyCapHit
+                showPaywall = true
+            } label: { dailyCardBody }
+                .buttonStyle(.pressable)
+        } else {
+            dailyCardBody
+        }
+    }
+
+    private var dailyCardBody: some View {
         Card {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 HStack(spacing: AppSpacing.md) {
@@ -200,20 +237,26 @@ struct HomeView: View {
                     }
                 }
                 if dailyDoneToday {
-                    // Make "already done today" unmistakable instead of leaving an
-                    // empty, button-less card that reads as broken.
-                    HStack(spacing: AppSpacing.xs) {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text(session.strings.home.dailyQuestionsDone)
-                        Spacer(minLength: 0)
+                    if dailySampleSpent {
+                        // A amostra acabou: o card inteiro vira o caminho de
+                        // saída, no pico de intenção, em vez de anunciar o fim
+                        // da amostra e deixar a pessoa sem o que fazer.
+                        dailyUnlockButton
+                    } else {
+                        // Voltou hoje já tendo feito: confirma, sem CTA.
+                        HStack(spacing: AppSpacing.xs) {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text(session.strings.home.dailyQuestionsDone)
+                            Spacer(minLength: 0)
+                        }
+                        .font(AppFont.bodyMedium(15))
+                        .foregroundStyle(AppColor.success)
+                        .padding(.vertical, AppSpacing.sm)
+                        .padding(.horizontal, AppSpacing.md)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(AppColor.successSoft)
+                        .clipShape(RoundedRectangle(cornerRadius: AppRadius.button))
                     }
-                    .font(AppFont.bodyMedium(15))
-                    .foregroundStyle(AppColor.success)
-                    .padding(.vertical, AppSpacing.sm)
-                    .padding(.horizontal, AppSpacing.md)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(AppColor.successSoft)
-                    .clipShape(RoundedRectangle(cornerRadius: AppRadius.button))
                 } else if dailyLocked {
                     dailyUnlockButton
                 } else {
@@ -366,7 +409,38 @@ struct HomeView: View {
 
     // MARK: - Launching
 
-    private func launch(_ mode: QuizMode) {
+    /// The not-yet-asked variant of the education sheet: raise the real prompt.
+    private func enableReminderFromEducation() {
+        let strings = session.strings.settings
+        Task {
+            let result = await NotificationService.enableDailyReminder(
+                hour: session.settings.reminderHour, minute: session.settings.reminderMinute,
+                title: strings.reminderNotificationTitle, body: strings.reminderNotificationBody,
+                openSettingsIfDenied: false)
+            if case .granted = result {
+                session.settings.notificationsEnabled = true
+                Haptics.success()
+            }
+        }
+    }
+
+    private func launch(_ mode: QuizMode, skipNotificationCheck: Bool = false) {
+        if !skipNotificationCheck, session.progress.allAnswers.isEmpty,
+           !UserDefaults.standard.bool(forKey: Self.notifEducationShownKey) {
+            // Decide async, then come back through here with the check off.
+            Task {
+                let status = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+                if status == .authorized || status == .provisional || status == .ephemeral {
+                    launch(mode, skipNotificationCheck: true)
+                    return
+                }
+                UserDefaults.standard.set(true, forKey: Self.notifEducationShownKey)
+                notifEducationDenied = (status == .denied)
+                launchAfterEducation = mode
+                showNotifEducation = true
+            }
+            return
+        }
         if ProAccess.isLocked(mode: mode, isPro: isPro,
                               quickQuizzesUsed: quickQuizzesUsed,
                               freeQuickQuizzes: session.pack.freeQuickQuizzes,

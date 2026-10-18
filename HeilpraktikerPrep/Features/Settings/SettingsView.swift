@@ -1,5 +1,6 @@
 import AuthenticationServices
 import SwiftUI
+import UserNotifications
 import StoreKit
 
 struct SettingsView: View {
@@ -9,6 +10,7 @@ struct SettingsView: View {
     @State private var showResetConfirm = false
     @State private var showDeleteAccountConfirm = false
     @State private var showExamDatePicker = false
+    @State private var showNotifEducation = false
     @State private var showQuizModeSheet = false
     @State private var showStatePicker = false
     @State private var pendingRegion: Region?
@@ -62,7 +64,10 @@ struct SettingsView: View {
         .sheet(isPresented: $showExamDatePicker) {
             // On iPad the .medium form-sheet height clips the tall graphical
             // calendar, so use the full form sheet there; iPhone keeps .medium.
-            examDateSheet.presentationDetents(hSize == .regular ? [.large] : [.medium])
+            examDateSheet.presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showNotifEducation) {
+            NotificationEducationSheet()
         }
         .sheet(isPresented: $showQuizModeSheet) {
             quizModeSheet.presentationDetents([.medium])
@@ -72,10 +77,10 @@ struct SettingsView: View {
         }
         // Confirm before swapping the state: question pool changes, which
         // could surprise a user who picked the row by mistake.
-        .alert(session.strings.settings.stateChangeTitle,
+        .alert(String(format: session.strings.settings.stateChangeTitleFormat, session.regionLabel),
                isPresented: Binding(get: { pendingRegion != nil },
                                     set: { if !$0 { pendingRegion = nil } })) {
-            Button(session.strings.settings.stateChangeConfirm) {
+            Button(String(format: session.strings.settings.stateChangeConfirmFormat, session.regionLabel)) {
                 if let region = pendingRegion {
                     session.profile.stateId = region.id
                     UISelectionFeedbackGenerator().selectionChanged()
@@ -93,20 +98,26 @@ struct SettingsView: View {
 
     // MARK: - Exam state
 
+    /// Just the state code in the pill — the full name is on the picker.
+    /// "Estado da prova" — a palavra vem do pack (`niche.regionLabel`).
+    private var examStateTitle: String {
+        String(format: session.strings.settings.examStateFormat, session.regionLabelCapitalized)
+    }
+
     private var stateLabel: String {
         guard let stateId = session.profile.stateId,
-              let region = session.pack.regions?.first(where: { $0.id == stateId }) else { return "—" }
-        return region.name
+              (session.pack.regions ?? []).contains(where: { $0.id == stateId }) else { return "—" }
+        return stateId
     }
 
     private var statePickerSheet: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            Text(session.strings.settings.examState)
+            Text(examStateTitle)
                 .font(AppFont.heading(22))
                 .foregroundStyle(AppColor.textPrimary)
             RegionPickerList(
                 regions: session.pack.regions ?? [],
-                searchPlaceholder: session.strings.onboarding.stateSearch,
+                searchPlaceholder: String(format: session.strings.onboarding.stateSearchFormat, session.regionLabel),
                 selectedId: session.profile.stateId
             ) { region in
                 showStatePicker = false
@@ -137,7 +148,7 @@ struct SettingsView: View {
 
             if !(session.pack.regions ?? []).isEmpty {
                 SettingsTile(symbol: "mappin.and.ellipse", tint: Color(hexString: "#2FB8C5"),
-                             title: session.strings.settings.examState,
+                             title: examStateTitle,
                              valuePill: stateLabel) {
                     showStatePicker = true
                 }
@@ -146,7 +157,7 @@ struct SettingsView: View {
             HStack(spacing: AppSpacing.md) {
                 SettingsGlyph(symbol: "bell.fill", tint: Color(hexString: "#F25C54"))
                 Text(session.strings.settings.notifications)
-                    .font(AppFont.bodyMedium(17))
+                    .font(AppFont.bodyMedium(15))
                     .foregroundStyle(AppColor.textPrimary)
                 Spacer()
                 Toggle("", isOn: Binding(
@@ -218,7 +229,7 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(String(format: session.strings.settings.signedInFormat,
                                 session.auth.displayName ?? "Apple ID"))
-                        .font(AppFont.bodyMedium(17))
+                        .font(AppFont.bodyMedium(15))
                         .foregroundStyle(AppColor.textPrimary)
                         .lineLimit(1)
                 }
@@ -412,7 +423,7 @@ struct SettingsView: View {
                     .foregroundStyle(selected ? AppColor.accent : AppColor.border)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(AppFont.bodyMedium(17))
+                        .font(AppFont.bodyMedium(15))
                         .foregroundStyle(AppColor.textPrimary)
                     Text(description)
                         .font(AppFont.caption(13))
@@ -442,7 +453,12 @@ struct SettingsView: View {
     }
 
     private var examDateSheet: some View {
-        VStack(spacing: AppSpacing.lg) {
+        VStack(spacing: AppSpacing.md) {
+            Text(session.strings.settings.examDate)
+                .font(AppFont.display(20))
+                .foregroundStyle(AppColor.textPrimary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, AppSpacing.sm)
             DatePicker(
                 session.strings.settings.examDate,
                 selection: Binding(
@@ -453,7 +469,11 @@ struct SettingsView: View {
                     }),
                 in: Date.now...,
                 displayedComponents: .date)
-                .datePickerStyle(.graphical)
+                // Wheel, like the onboarding step: the graphical calendar plus
+                // two full-size buttons does not fit a medium sheet, which was
+                // clipping the header and the bottom button.
+                .datePickerStyle(.wheel)
+                .labelsHidden()
                 .tint(AppColor.accent)
 
             PrimaryCTAButton(title: session.strings.common.done) {
@@ -461,6 +481,17 @@ struct SettingsView: View {
                     let strings = session.strings.settings
                     Task { await NotificationService.scheduleExamCountdowns(examDate: date, strings: strings) }
                 }
+                showExamDatePicker = false
+            }
+
+            // Dá para VOLTAR a não ter data: antes, uma vez marcada, o
+            // DatePicker não oferecia caminho de saída — quem teve a prova
+            // adiada ficava com uma contagem regressiva falsa e recebendo
+            // lembrete de uma data que não vale mais. Mesma copy do onboarding.
+            SecondaryCTAButton(title: session.strings.onboarding.examDateNoDate) {
+                session.profile.examDate = nil
+                session.profile.examDateSetAt = nil
+                NotificationService.cancelExamCountdowns()
                 showExamDatePicker = false
             }
         }
@@ -500,6 +531,12 @@ struct SettingsView: View {
     private func toggleReminder(_ enabled: Bool) {
         if enabled {
             Task {
+                let status = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+                if status == .denied {
+                    // The prompt won't come back; walk the user through Settings.
+                    showNotifEducation = true
+                    return
+                }
                 let result = await NotificationService.enableDailyReminder(
                     hour: session.settings.reminderHour,
                     minute: session.settings.reminderMinute,
@@ -537,7 +574,7 @@ struct SettingsView: View {
                 HStack(spacing: AppSpacing.md) {
                     SettingsGlyph(symbol: "crown.fill", tint: AppColor.warning)
                     Text("Access state")
-                        .font(AppFont.bodyMedium(17))
+                        .font(AppFont.bodyMedium(15))
                         .foregroundStyle(AppColor.textPrimary)
                     Spacer()
                     Picker("", selection: Binding(
@@ -573,7 +610,7 @@ struct SettingsView: View {
         .alert("Onboarding reset", isPresented: $showOnboardingResetAlert) {
             Button("OK") {}
         } message: {
-            Text("Flag zurückgesetzt — das Onboarding (Phase 5) erscheint beim nächsten App-Start.")
+            Text("Flag reset — onboarding will show on next app launch.")
         }
     }
     #endif
@@ -629,7 +666,7 @@ private struct SettingsTileLabel: View {
         HStack(spacing: AppSpacing.md) {
             SettingsGlyph(symbol: symbol, tint: tint)
             Text(title)
-                .font(AppFont.bodyMedium(17))
+                .font(AppFont.bodyMedium(15))
                 .foregroundStyle(AppColor.textPrimary)
             Spacer()
             if let valuePill {

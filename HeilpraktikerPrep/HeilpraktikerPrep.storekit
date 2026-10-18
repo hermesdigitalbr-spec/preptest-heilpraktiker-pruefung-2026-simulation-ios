@@ -71,6 +71,26 @@
           "referenceName": "Prep Kit Text Pro Monthly",
           "subscriptionGroupID": "21684210",
           "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "34.99",
+          "familyShareable": false,
+          "groupNumber": 3,
+          "internalID": "6796318999",
+          "localizations": [
+            {
+              "description": "Voller Zugriff für 3 Monate",
+              "displayName": "Quartalsabo",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "app.hermesdigital.hp.quarterly",
+          "recurringSubscriptionPeriod": "P3M",
+          "referenceName": "Prep Kit Text Pro Muarterly",
+          "subscriptionGroupID": "21684210",
+          "type": "RecurringSubscription"
         }
       ]
     }

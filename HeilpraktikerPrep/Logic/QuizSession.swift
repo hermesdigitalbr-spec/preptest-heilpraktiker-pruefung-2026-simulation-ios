@@ -41,6 +41,11 @@ struct QuizSession: Equatable {
         return questions[currentIndex]
     }
 
+    /// Whether the answer given to the current question was right.
+    var isCurrentCorrect: Bool {
+        answers.first { $0.questionId == currentQuestion?.id }?.isCorrect ?? false
+    }
+
     var hasAnsweredCurrent: Bool {
         guard let current = currentQuestion else { return false }
         return answers.contains { $0.questionId == current.id }
@@ -125,7 +130,7 @@ struct QuizSession: Equatable {
                 text: question.text,
                 choices: shuffledChoices,
                 correctIndex: newCorrectIndex,
-                explanation: question.explanation,
+                explanation: remapExplanationLetters(question.explanation, mapped: mapped),
                 states: question.states,
                 imageName: question.imageName,
                 imageURL: question.imageURL,
@@ -133,5 +138,102 @@ struct QuizSession: Equatable {
             maps.append(mapped)
         }
         return (newQuestions, maps)
+    }
+
+    // MARK: - Explanation letter remapping
+
+    /// Rewrites option-letter references inside an explanation so they point at
+    /// the option the user is ACTUALLY looking at.
+    ///
+    /// The banks are written against the canonical order in `questions.json`, and
+    /// many explanations end with "故選D" / "alternativa B" / "(C) está correta".
+    /// Since `shuffleChoices` reorders the options per session, those letters would
+    /// name the wrong option on screen — the learner answers correctly and then
+    /// reads an explanation pointing somewhere else. Measured on 2026-08-21: 99% of
+    /// the 初考 bank, 43% of 不動產經紀人, 33% of 一般警察.
+    ///
+    /// `mapped[displayed] = original`, so the inverse says where each canonical
+    /// option ended up. Only letters in an explicit option-reference context are
+    /// rewritten — never a stray capital in ordinary prose (e.g. Portuguese "A
+    /// alternativa…" must not be touched).
+    static func remapExplanationLetters(_ text: String, mapped: [Int]) -> String {
+        guard !text.isEmpty, mapped.count > 1 else { return text }
+
+        var inverse = Array(repeating: 0, count: mapped.count)
+        for (displayed, original) in mapped.enumerated() where original < inverse.count {
+            inverse[original] = displayed
+        }
+
+        let half = Array("ABCDEFGH")
+        let full = Array("ＡＢＣＤＥＦＧＨ")
+        func remapped(_ ch: Character) -> Character? {
+            let isFull = full.contains(ch)
+            let table = isFull ? full : half
+            guard let idx = table.firstIndex(of: ch), idx < inverse.count else { return nil }
+            let target = inverse[idx]
+            guard target < table.count else { return nil }
+            return table[target]
+        }
+
+        // Só letras dentro da faixa real de opções. "A-H" fixo reescrevia siglas.
+        let last = half[min(mapped.count, half.count) - 1]
+        let range = "A-\(last)Ａ-\(full[min(mapped.count, full.count) - 1])"
+
+        // Guarda contra notação: se o texto tem letra entre parênteses FORA da faixa de
+        // opções, os parênteses ali são sigla, não referência a alternativa. Caso real:
+        // "適應（A）與模式維護（L）" (AGIL de Parsons) — o （L） denuncia que （A） não é opção.
+        var parenIsNotation = false
+        if let probe = try? NSRegularExpression(pattern: "[（(【\\[]\\s*([A-ZＡ-Ｚ])\\s*[）)】\\]]") {
+            let ns = text as NSString
+            for m in probe.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
+                guard let ch = ns.substring(with: m.range(at: 1)).first else { continue }
+                let table = full.contains(ch) ? full : half
+                guard let i = table.firstIndex(of: ch) else { parenIsNotation = true; break }
+                if i >= mapped.count { parenIsNotation = true; break }
+            }
+        }
+
+        // Cada padrão captura exatamente uma letra de alternativa no grupo 1.
+        var patterns = [
+            "(?:故選|正確答案為|正確答案是|答案為|答案是|應選|選項|選)\\s*([\(range)])",
+            "(?:故|則)?\\s*([\(range)])\\s*(?:敘述)?\\s*(?:錯誤|正確|選項)",
+            "(?:錯誤者為|正確者為|答案應為)\\s*([\(range)])",
+            "(?:alternativa|letra|opção|opcao|item|option|choice|answer)\\s+([\(range)])"
+        ]
+        if !parenIsNotation {
+            patterns.insert("[（(【\\[]\\s*([\(range)])\\s*[）)】\\]]", at: 0)
+        }
+
+        // PASSE ÚNICO. Aplicar os padrões em sequência remapeava duas vezes o mesmo trecho
+        // quando dois deles se sobrepunham — "故選項 C 錯誤" casava em `選項 C` (padrão 2) e
+        // depois em `C 錯誤` (padrão 3) sobre o texto já reescrito, saindo com a letra errada.
+        // Agora as ocorrências de TODOS os padrões são coletadas sobre o texto original, as
+        // sobreposições descartadas, e a reescrita acontece uma vez só.
+        let ns = text as NSString
+        var hits: [(NSRange, Character)] = []
+        for pattern in patterns {
+            guard let regex = try? NSRegularExpression(pattern: pattern,
+                                                       options: [.caseInsensitive]) else { continue }
+            for match in regex.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
+                let r = match.range(at: 1)
+                guard r.location != NSNotFound,
+                      let ch = ns.substring(with: r).first,
+                      let new = remapped(ch) else { continue }
+                hits.append((r, new))
+            }
+        }
+        guard !hits.isEmpty else { return text }
+        hits.sort { $0.0.location < $1.0.location }
+
+        var result = ""
+        var cursor = 0
+        for (r, new) in hits {
+            guard r.location >= cursor else { continue }   // descarta sobreposição
+            result += ns.substring(with: NSRange(location: cursor, length: r.location - cursor))
+            result += String(new)
+            cursor = r.location + r.length
+        }
+        result += ns.substring(from: cursor)
+        return result
     }
 }
