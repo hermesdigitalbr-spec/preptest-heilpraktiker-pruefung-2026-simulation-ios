@@ -23,7 +23,7 @@
     {
       "id": "21684210",
       "localizations": [],
-      "name": "Prep Kit Text Pro",
+      "name": "Heilpraktiker Prep Pro",
       "subscriptions": [
         {
           "adHocOffers": [],
@@ -42,7 +42,7 @@
           ],
           "productID": "app.hermesdigital.hp.weekly",
           "recurringSubscriptionPeriod": "P1W",
-          "referenceName": "Prep Kit Text Pro Weekly",
+          "referenceName": "Heilpraktiker Prep Weekly",
           "subscriptionGroupID": "21684210",
           "type": "RecurringSubscription"
         },
@@ -68,7 +68,7 @@
           ],
           "productID": "app.hermesdigital.hp.monthly",
           "recurringSubscriptionPeriod": "P1M",
-          "referenceName": "Prep Kit Text Pro Monthly",
+          "referenceName": "Heilpraktiker Prep Monthly",
           "subscriptionGroupID": "21684210",
           "type": "RecurringSubscription"
         },
@@ -88,7 +88,7 @@
           ],
           "productID": "app.hermesdigital.hp.quarterly",
           "recurringSubscriptionPeriod": "P3M",
-          "referenceName": "Prep Kit Text Pro Muarterly",
+          "referenceName": "Heilpraktiker Prep Quarterly",
           "subscriptionGroupID": "21684210",
           "type": "RecurringSubscription"
         }
